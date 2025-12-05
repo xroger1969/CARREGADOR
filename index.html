@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulador de Carregamento – Carro Elétrico</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS interno -->
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 640px;
+      margin: 30px auto;
+      background: #ffffff;
+      padding: 20px 20px 25px 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .row {
+      margin-bottom: 12px;
+    }
+
+    .row-inline {
+      display: flex;
+      gap: 10px;
+    }
+
+    .col {
+      flex: 1;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 6px 8px;
+      margin-top: 4px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 0.95rem;
+    }
+
+    small {
+      display: block;
+      margin-top: 3px;
+      color: #777;
+    }
+
+    button {
+      margin-top: 10px;
+      width: 100%;
+      padding: 10px;
+      border-radius: 4px;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      background: #0077cc;
+      color: #fff;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    #resultado {
+      margin-top: 15px;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background: #fafafa;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 480px) {
+      .row-inline {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Simulador de Carregamento – Carro Elétrico</h1>
+
+    <!-- Capacidade da bateria -->
+    <div class="row">
+      <label for="bateria">Capacidade da bateria (kWh)</label>
+      <input type="number" id="bateria" min="40" max="80" step="1" value="54">
+      <small>(intervalo típico: 40 kWh – 80 kWh)</small>
+    </div>
+
+    <!-- Percentagens de carga -->
+    <div class="row row-inline">
+      <div class="col">
+        <label for="socInicial">% atual da bateria</label>
+        <input type="number" id="socInicial" min="0" max="99" step="1" value="18">
+      </div>
+      <div class="col">
+        <label for="socFinal">% alvo da bateria</label>
+        <input type="number" id="socFinal" min="1" max="100" step="1" value="80">
+      </div>
+    </div>
+
+    <!-- Potência de carga -->
+    <div class="row">
+      <label for="potencia">Potência de carga (kW)</label>
+      <select id="potencia">
+        <option value="2.3">2,3 kW – Tomada Schuko ~10 A</option>
+        <option value="3.25" selected>3,25 kW – Wallbox / tomada dedicada</option>
+        <option value="3.7">3,7 kW – Wallbox monofásico 16 A</option>
+        <option value="5.75">5,75 kW – Contrato 25 A</option>
+        <option value="7.4">7,4 kW – Wallbox monofásico 32 A</option>
+        <option value="11">11 kW – Wallbox trifásico</option>
+        <option value="custom">Outro valor (kW)</option>
+      </select>
+    </div>
+
+    <!-- Potência personalizada -->
+    <div class="row" id="linhaCustom" style="display:none;">
+      <label for="potenciaCustom">Introduzir potência manual (kW)</label>
+      <input type="number" id="potenciaCustom" step="0.1" placeholder="Ex.: 3.2">
+    </div>
+
+    <!-- Botão -->
+    <button id="btnCalcular">Calcular tempo de carga</button>
+
+    <!-- Resultado -->
+    <div id="resultado">
+      Introduz os dados e clica em “Calcular”.
+    </div>
+  </div>
+
+  <!-- JavaScript interno -->
+  <script>
+    function atualizarPotenciaCustom() {
+      const select = document.getElementById('potencia');
+      const linhaCustom = document.getElementById('linhaCustom');
+      if (select.value === 'custom') {
+        linhaCustom.style.display = 'block';
+      } else {
+        linhaCustom.style.display = 'none';
+      }
+    }
+
+    function calcular() {
+      const capacidade = parseFloat(document.getElementById('bateria').value);
+      const socInicial = parseFloat(document.getElementById('socInicial').value);
+      const socFinal = parseFloat(document.getElementById('socFinal').value);
+      const selectPot = document.getElementById('potencia').value;
+
+      let potencia;
+      if (selectPot === 'custom') {
+        potencia = parseFloat(document.getElementById('potenciaCustom').value);
+      } else {
+        potencia = parseFloat(selectPot);
+      }
+
+      const resultadoDiv = document.getElementById('resultado');
+
+      // Validações básicas
+      if (isNaN(capacidade) || capacidade < 40 || capacidade > 80) {
+        resultadoDiv.textContent = 'Verifica a capacidade da bateria (40–80 kWh).';
+        return;
+      }
+      if (
+        isNaN(socInicial) ||
+        isNaN(socFinal) ||
+        socInicial < 0 ||
+        socFinal > 100 ||
+        socFinal <= socInicial
+      ) {
+        resultadoDiv.textContent =
+          'Verifica os valores de percentagem (o alvo deve ser maior que o valor atual).';
+        return;
+      }
+      if (isNaN(potencia) || potencia <= 0) {
+        resultadoDiv.textContent = 'Verifica a potência de carga (kW).';
+        return;
+      }
+
+      // Energia necessária em kWh
+      const deltaPercent = (socFinal - socInicial) / 100.0;
+      const energiaNecessaria = capacidade * deltaPercent; // kWh
+
+      // Tempo em horas
+      const tempoHoras = energiaNecessaria / potencia;
+
+      // Converter para horas e minutos
+      const horasInteiras = Math.floor(tempoHoras);
+      const minutos = Math.round((tempoHoras - horasInteiras) * 60);
+
+      const tempoHorasArredondado = tempoHoras.toFixed(2);
+
+      resultadoDiv.innerHTML =
+        '<strong>Resultados:</strong><br>' +
+        'Energia necessária: <strong>' +
+        energiaNecessaria.toFixed(2) +
+        ' kWh</strong><br>' +
+        'Potência de carga: <strong>' +
+        potencia.toFixed(2) +
+        ' kW</strong><br>' +
+        'Tempo estimado: <strong>' +
+        tempoHorasArredondado +
+        ' horas</strong><br>' +
+        'Ou aproximadamente: <strong>' +
+        horasInteiras +
+        ' h ' +
+        (minutos < 10 ? '0' + minutos : minutos) +
+        ' min</strong><br>' +
+        '<small>(Valor teórico; na prática pode ser um pouco mais devido a perdas e gestão da bateria.)</small>';
+    }
+
+    // Ligar eventos quando a página carregar
+    window.addEventListener('DOMContentLoaded', () => {
+      const selectPotencia = document.getElementById('potencia');
+      const btnCalcular = document.getElementById('btnCalcular');
+
+      selectPotencia.addEventListener('change', atualizarPotenciaCustom);
+      btnCalcular.addEventListener('click', calcular);
+    });
+  </script>
+</body>
+</html>
