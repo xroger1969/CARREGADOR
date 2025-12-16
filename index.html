@@ -19,27 +19,30 @@
     }
 
     .container {
-      max-width: 640px;
+      max-width: 720px;
       margin: 30px auto;
-      background: #ffffff;
-      padding: 20px 20px 25px 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
+      padding: 28px 24px 30px 24px;
+      border-radius: 12px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e6eef8;
     }
 
     h1 {
-      font-size: 1.5rem;
+      font-size: 1.7rem;
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
+      color: #0f172a;
+      letter-spacing: 0.2px;
     }
 
     .row {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .row-inline {
       display: flex;
-      gap: 10px;
+      gap: 12px;
     }
 
     .col {
@@ -47,49 +50,66 @@
     }
 
     label {
-      font-weight: bold;
+      font-weight: 600;
       display: block;
+      color: #1f2937;
+      margin-bottom: 4px;
     }
 
     input,
     select {
       width: 100%;
-      padding: 6px 8px;
-      margin-top: 4px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      font-size: 0.95rem;
+      padding: 9px 10px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      font-size: 0.97rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      background: #fff;
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
     }
 
     small {
       display: block;
-      margin-top: 3px;
-      color: #777;
+      margin-top: 4px;
+      color: #6b7280;
     }
 
     button {
-      margin-top: 10px;
+      margin-top: 12px;
       width: 100%;
-      padding: 10px;
-      border-radius: 4px;
+      padding: 12px;
+      border-radius: 10px;
       border: none;
       font-size: 1rem;
       cursor: pointer;
-      background: #0077cc;
+      background: linear-gradient(90deg, #2563eb, #1d4ed8);
       color: #fff;
+      font-weight: 600;
+      letter-spacing: 0.1px;
+      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.18);
+      transition: transform 0.1s ease, box-shadow 0.2s ease;
     }
 
     button:hover {
-      opacity: 0.9;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(37, 99, 235, 0.22);
     }
 
     #resultado {
-      margin-top: 15px;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      background: #fafafa;
-      font-size: 0.95rem;
+      margin-top: 18px;
+      padding: 14px 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      background: #f8fafc;
+      font-size: 0.97rem;
+      line-height: 1.5;
+      color: #0f172a;
     }
 
     @media (max-width: 480px) {
@@ -142,8 +162,22 @@
       <input type="number" id="potenciaCustom" step="0.1" placeholder="Ex.: 3.2">
     </div>
 
+    <!-- Tarifa energética -->
+    <div class="row">
+      <label for="precoKwh">Preço da energia (€ / kWh)</label>
+      <input
+        type="number"
+        id="precoKwh"
+        min="0"
+        step="0.01"
+        placeholder="Ex.: 0,20"
+        value="0.20"
+      >
+      <small>Utiliza o valor da tua tarifa ou o preço do posto público.</small>
+    </div>
+
     <!-- Botão -->
-    <button id="btnCalcular">Calcular tempo de carga</button>
+    <button id="btnCalcular">Calcular tempo e custo</button>
 
     <!-- Resultado -->
     <div id="resultado">
@@ -168,6 +202,7 @@
       const socInicial = parseFloat(document.getElementById('socInicial').value);
       const socFinal = parseFloat(document.getElementById('socFinal').value);
       const selectPot = document.getElementById('potencia').value;
+      const precoKwh = parseFloat(document.getElementById('precoKwh').value);
 
       let potencia;
       if (selectPot === 'custom') {
@@ -198,6 +233,10 @@
         resultadoDiv.textContent = 'Verifica a potência de carga (kW).';
         return;
       }
+      if (isNaN(precoKwh) || precoKwh < 0) {
+        resultadoDiv.textContent = 'Indica um preço de energia válido (€/kWh).';
+        return;
+      }
 
       // Energia necessária em kWh
       const deltaPercent = (socFinal - socInicial) / 100.0;
@@ -206,11 +245,19 @@
       // Tempo em horas
       const tempoHoras = energiaNecessaria / potencia;
 
+      // Custo estimado
+      const custo = precoKwh * energiaNecessaria;
+
       // Converter para horas e minutos
       const horasInteiras = Math.floor(tempoHoras);
       const minutos = Math.round((tempoHoras - horasInteiras) * 60);
 
       const tempoHorasArredondado = tempoHoras.toFixed(2);
+
+      const formatadorEuro = new Intl.NumberFormat('pt-PT', {
+        style: 'currency',
+        currency: 'EUR'
+      });
 
       resultadoDiv.innerHTML =
         '<strong>Resultados:</strong><br>' +
@@ -220,6 +267,12 @@
         'Potência de carga: <strong>' +
         potencia.toFixed(2) +
         ' kW</strong><br>' +
+        'Tarifa aplicada: <strong>' +
+        formatadorEuro.format(precoKwh) +
+        ' / kWh</strong><br>' +
+        'Custo estimado: <strong>' +
+        formatadorEuro.format(custo) +
+        '</strong><br>' +
         'Tempo estimado: <strong>' +
         tempoHorasArredondado +
         ' horas</strong><br>' +
