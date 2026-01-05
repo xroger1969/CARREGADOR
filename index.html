@@ -7,116 +7,24 @@
 
   <!-- CSS interno -->
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
-      margin: 0;
-      padding: 0;
-    }
-
-    .container {
-      max-width: 720px;
-      margin: 30px auto;
-      background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
-      padding: 28px 24px 30px 24px;
-      border-radius: 12px;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
-      border: 1px solid #e6eef8;
-    }
-
-    h1 {
-      font-size: 1.7rem;
-      text-align: center;
-      margin-bottom: 22px;
-      color: #0f172a;
-      letter-spacing: 0.2px;
-    }
-
-    .row {
-      margin-bottom: 14px;
-    }
-
-    .row-inline {
-      display: flex;
-      gap: 12px;
-    }
-
-    .col {
-      flex: 1;
-    }
-
-    label {
-      font-weight: 600;
-      display: block;
-      color: #1f2937;
-      margin-bottom: 4px;
-    }
-
-    input,
-    select {
-      width: 100%;
-      padding: 9px 10px;
-      border-radius: 8px;
-      border: 1px solid #cbd5e1;
-      font-size: 0.97rem;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-      background: #fff;
-    }
-
-    input:focus,
-    select:focus {
-      outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
-    }
-
-    small {
-      display: block;
-      margin-top: 4px;
-      color: #6b7280;
-    }
-
-    button {
-      margin-top: 12px;
-      width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      border: none;
-      font-size: 1rem;
-      cursor: pointer;
-      background: linear-gradient(90deg, #2563eb, #1d4ed8);
-      color: #fff;
-      font-weight: 600;
-      letter-spacing: 0.1px;
-      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.18);
-      transition: transform 0.1s ease, box-shadow 0.2s ease;
-    }
-
-    button:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 14px 28px rgba(37, 99, 235, 0.22);
-    }
-
-    #resultado {
-      margin-top: 18px;
-      padding: 14px 16px;
-      border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      background: #f8fafc;
-      font-size: 0.97rem;
-      line-height: 1.5;
-      color: #0f172a;
-    }
-
-    @media (max-width: 480px) {
-      .row-inline {
-        flex-direction: column;
-      }
-    }
+    * { box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f2f2f2; margin: 0; padding: 0; }
+    .container { max-width: 720px; margin: 30px auto; background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%); padding: 28px 24px 30px 24px; border-radius: 12px; box-shadow: 0 18px 40px rgba(0,0,0,0.08); border: 1px solid #e6eef8; }
+    h1 { font-size: 1.7rem; text-align: center; margin-bottom: 22px; color: #0f172a; letter-spacing: 0.2px; }
+    .row { margin-bottom: 14px; }
+    .row-inline { display: flex; gap: 12px; }
+    .col { flex: 1; }
+    label { font-weight: 600; display: block; color: #1f2937; margin-bottom: 4px; }
+    input, select { width: 100%; padding: 9px 10px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 0.97rem; transition: border-color 0.2s ease, box-shadow 0.2s ease; background: #fff; }
+    input:focus, select:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+    small { display: block; margin-top: 4px; color: #6b7280; }
+    button { margin-top: 12px; width: 100%; padding: 12px; border-radius: 10px; border: none; font-size: 1rem; cursor: pointer; background: linear-gradient(90deg,#2563eb,#1d4ed8); color:#fff; font-weight:600; letter-spacing:0.1px; box-shadow:0 10px 20px rgba(37,99,235,0.18); transition: transform 0.1s ease, box-shadow 0.2s ease; }
+    button:hover { transform: translateY(-1px); box-shadow: 0 14px 28px rgba(37,99,235,0.22); }
+    #resultado { margin-top: 18px; padding: 14px 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc; font-size: 0.97rem; line-height: 1.5; color: #0f172a; }
+    .flex-between { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+    .muted { color:#6b7280; font-size:0.9rem }
+    canvas { display:block; width:100%; height:220px; border-radius:8px; background: #fff; border: 1px solid #e6eef8; }
+    @media (max-width:480px){ .row-inline{flex-direction:column;} }
   </style>
 </head>
 <body>
@@ -126,8 +34,8 @@
     <!-- Capacidade da bateria -->
     <div class="row">
       <label for="bateria">Capacidade da bateria (kWh)</label>
-      <input type="number" id="bateria" min="40" max="80" step="1" value="54">
-      <small>(intervalo típico: 40 kWh – 80 kWh)</small>
+      <input type="number" id="bateria" min="10" max="200" step="1" value="54">
+      <small>(intervalo típico: 40 kWh – 80 kWh; ajustável)</small>
     </div>
 
     <!-- Percentagens de carga -->
@@ -152,6 +60,7 @@
         <option value="5.75">5,75 kW – Contrato 25 A</option>
         <option value="7.4">7,4 kW – Wallbox monofásico 32 A</option>
         <option value="11">11 kW – Wallbox trifásico</option>
+        <option value="22">22 kW – Wallbox trifásico 3φ</option>
         <option value="custom">Outro valor (kW)</option>
       </select>
     </div>
@@ -162,182 +71,276 @@
       <input type="number" id="potenciaCustom" step="0.1" placeholder="Ex.: 3.2">
     </div>
 
-    <!-- Consumo médio -->
+    <!-- Consumo médio: modo de entrada -->
     <div class="row">
+      <div class="flex-between">
+        <label>Modo de consumo</label>
+        <div class="muted">Escolhe a unidade e guarda como preferência</div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:8px;align-items:center;">
+        <label style="font-weight:600"><input type="radio" name="modoConsumo" value="kwh100" id="modo_kwh100"> kWh / 100 km</label>
+        <label style="font-weight:600"><input type="radio" name="modoConsumo" value="kmperkwh" id="modo_kmperkwh"> km / kWh</label>
+      </div>
+    </div>
+
+    <div class="row" id="linhaConsumoKwh100">
       <label for="consumo">Consumo médio do veículo (kWh / 100 km)</label>
-      <input
-        type="number"
-        id="consumo"
-        min="5"
-        max="40"
-        step="0.1"
-        placeholder="Ex.: 16.0"
-        value="16.0"
-      >
+      <input type="number" id="consumo" min="5" max="40" step="0.1" placeholder="Ex.: 16.0" value="16.0">
       <small>Se não souberes o valor, usa ~16 kWh/100 km como referência.</small>
     </div>
 
-    <!-- Tarifa energética -->
+    <div class="row" id="linhaConsumoKmPerKwh" style="display:none;">
+      <label for="consumoKmPerKwh">Eficiência (km / kWh)</label>
+      <input type="number" id="consumoKmPerKwh" min="1" max="20" step="0.01" placeholder="Ex.: 6.25">
+      <small>Ex.: 6,25 km por kWh equivale a ~16 kWh/100 km.</small>
+    </div>
+
     <div class="row">
       <label for="precoKwh">Preço da energia (€ / kWh)</label>
-      <input
-        type="number"
-        id="precoKwh"
-        min="0"
-        step="0.01"
-        placeholder="Ex.: 0,20"
-        value="0.20"
-      >
+      <input type="number" id="precoKwh" min="0" step="0.01" placeholder="Ex.: 0,20" value="0.20">
       <small>Utiliza o valor da tua tarifa ou o preço do posto público.</small>
     </div>
 
+    <div class="row" style="display:flex;gap:8px;align-items:center;">
+      <label style="margin:0"><input type="checkbox" id="guardarPreferencia"> Guardar preferência de consumo</label>
+    </div>
+
     <!-- Botão -->
-    <button id="btnCalcular">Calcular tempo, custo e kms</button>
+    <button id="btnCalcular">Calcular tempo, custo, kms e ver gráfico</button>
 
     <!-- Resultado -->
     <div id="resultado">
       Introduz os dados e clica em “Calcular”.
     </div>
+
+    <!-- Gráfico -->
+    <div class="row" style="margin-top:12px;">
+      <label>Visualização do carregamento</label>
+      <canvas id="grafico" width="680" height="220"></canvas>
+      <small class="muted">Eixo X: tempo (horas). Eixo Y (esquerda): % bateria. Eixo Y (direita): km adicionados.</small>
+    </div>
+
   </div>
 
   <!-- JavaScript interno -->
   <script>
-    function atualizarPotenciaCustom() {
-      const select = document.getElementById('potencia');
-      const linhaCustom = document.getElementById('linhaCustom');
-      if (select.value === 'custom') {
-        linhaCustom.style.display = 'block';
-      } else {
-        linhaCustom.style.display = 'none';
-      }
+    // Utilidades
+    function $(id){ return document.getElementById(id); }
+
+    function atualizarPotenciaCustom(){
+      const select = $('potencia');
+      const linhaCustom = $('linhaCustom');
+      if(select.value === 'custom') linhaCustom.style.display = 'block'; else linhaCustom.style.display = 'none';
     }
 
-    function calcular() {
-      const capacidade = parseFloat(document.getElementById('bateria').value);
-      const socInicial = parseFloat(document.getElementById('socInicial').value);
-      const socFinal = parseFloat(document.getElementById('socFinal').value);
-      const selectPot = document.getElementById('potencia').value;
-      const precoKwh = parseFloat(document.getElementById('precoKwh').value);
-      const consumo = parseFloat(document.getElementById('consumo').value); // kWh / 100 km
+    function mostrarModoConsumo(modo){
+      $('linhaConsumoKwh100').style.display = modo === 'kwh100' ? 'block' : 'none';
+      $('linhaConsumoKmPerKwh').style.display = modo === 'kmperkwh' ? 'block' : 'none';
+    }
+
+    function salvarPreferencias(){
+      if(!$('guardarPreferencia').checked) return;
+      const modo = document.querySelector('input[name="modoConsumo"]:checked').value;
+      const consumo = $('consumo').value;
+      const kmperkwh = $('consumoKmPerKwh').value;
+      localStorage.setItem('carregador_modo', modo);
+      localStorage.setItem('carregador_consumo', consumo);
+      localStorage.setItem('carregador_kmperkwh', kmperkwh);
+    }
+
+    function carregarPreferencias(){
+      const modo = localStorage.getItem('carregador_modo');
+      if(modo){
+        const radio = document.querySelector('input[name="modoConsumo"][value="'+modo+'"]');
+        if(radio) radio.checked = true;
+        mostrarModoConsumo(modo);
+      } else {
+        // padrão
+        $('modo_kwh100').checked = true; mostrarModoConsumo('kwh100');
+      }
+      const consumo = localStorage.getItem('carregador_consumo');
+      if(consumo) $('consumo').value = consumo;
+      const kmperkwh = localStorage.getItem('carregador_kmperkwh');
+      if(kmperkwh) $('consumoKmPerKwh').value = kmperkwh;
+      // marcar checkbox se houver preferência
+      $('guardarPreferencia').checked = !!modo;
+    }
+
+    function calcular(){
+      const capacidade = parseFloat($('bateria').value);
+      const socInicial = parseFloat($('socInicial').value);
+      const socFinal = parseFloat($('socFinal').value);
+      const selectPot = $('potencia').value;
+      const precoKwh = parseFloat($('precoKwh').value);
 
       let potencia;
-      if (selectPot === 'custom') {
-        potencia = parseFloat(document.getElementById('potenciaCustom').value);
+      if(selectPot === 'custom') potencia = parseFloat($('potenciaCustom').value); else potencia = parseFloat(selectPot);
+
+      const modo = document.querySelector('input[name="modoConsumo"]:checked').value;
+      let kmPorKwh;
+      if(modo === 'kwh100'){
+        const consumo = parseFloat($('consumo').value);
+        if(isNaN(consumo) || consumo <= 0){ $('resultado').textContent = 'Indica um consumo médio válido (kWh / 100 km).'; return; }
+        kmPorKwh = 100.0 / consumo;
       } else {
-        potencia = parseFloat(selectPot);
+        const kmVal = parseFloat($('consumoKmPerKwh').value);
+        if(isNaN(kmVal) || kmVal <= 0){ $('resultado').textContent = 'Indica um valor válido de km / kWh.'; return; }
+        kmPorKwh = kmVal;
       }
 
-      const resultadoDiv = document.getElementById('resultado');
+      const resultadoDiv = $('resultado');
+      // Validações
+      if(isNaN(capacidade) || capacidade <= 0){ resultadoDiv.textContent = 'Verifica a capacidade da bateria.'; return; }
+      if(isNaN(socInicial) || isNaN(socFinal) || socInicial < 0 || socFinal > 100 || socFinal <= socInicial){ resultadoDiv.textContent = 'Verifica os valores de percentagem (o alvo deve ser maior que o valor atual).'; return; }
+      if(isNaN(potencia) || potencia <= 0){ resultadoDiv.textContent = 'Verifica a potência de carga (kW).'; return; }
+      if(isNaN(precoKwh) || precoKwh < 0){ resultadoDiv.textContent = 'Indica um preço de energia válido (€/kWh).'; return; }
 
-      // Validações básicas
-      if (isNaN(capacidade) || capacidade < 40 || capacidade > 80) {
-        resultadoDiv.textContent = 'Verifica a capacidade da bateria (40–80 kWh).';
-        return;
-      }
-      if (
-        isNaN(socInicial) ||
-        isNaN(socFinal) ||
-        socInicial < 0 ||
-        socFinal > 100 ||
-        socFinal <= socInicial
-      ) {
-        resultadoDiv.textContent =
-          'Verifica os valores de percentagem (o alvo deve ser maior que o valor atual).';
-        return;
-      }
-      if (isNaN(potencia) || potencia <= 0) {
-        resultadoDiv.textContent = 'Verifica a potência de carga (kW).';
-        return;
-      }
-      if (isNaN(precoKwh) || precoKwh < 0) {
-        resultadoDiv.textContent = 'Indica um preço de energia válido (€/kWh).';
-        return;
-      }
-      if (isNaN(consumo) || consumo <= 0) {
-        resultadoDiv.textContent = 'Indica um consumo médio válido (kWh / 100 km).';
-        return;
-      }
+      // Salva preferências se pediram
+      salvarPreferencias();
 
       // Energia necessária em kWh
       const deltaPercent = (socFinal - socInicial) / 100.0;
       const energiaNecessaria = capacidade * deltaPercent; // kWh
-
       // Tempo em horas
       const tempoHoras = energiaNecessaria / potencia;
-
-      // Custo estimado
+      // Custo
       const custo = precoKwh * energiaNecessaria;
-
-      // Converter para horas e minutos
+      // Horas e minutos
       const horasInteiras = Math.floor(tempoHoras);
       const minutos = Math.round((tempoHoras - horasInteiras) * 60);
-
       const tempoHorasArredondado = tempoHoras.toFixed(2);
+      // Kms
+      const kmPorHora = potencia * kmPorKwh;
+      const kmsAdicionados = energiaNecessaria * kmPorKwh;
 
-      // Cálculos de kms
-      const kmPorKwh = 100.0 / consumo; // km por cada kWh
-      const kmPorHora = potencia * kmPorKwh; // km carregados por hora com a potência atual
-      const kmsAdicionados = energiaNecessaria * kmPorKwh; // km ganhos ao carregar a energiaNecessaria
+      const formatadorEuro = new Intl.NumberFormat('pt-PT',{ style:'currency', currency:'EUR' });
+      const formatadorNum = new Intl.NumberFormat('pt-PT',{ minimumFractionDigits:0, maximumFractionDigits:2 });
 
-      const formatadorEuro = new Intl.NumberFormat('pt-PT', {
-        style: 'currency',
-        currency: 'EUR'
-      });
-
-      const formatadorNum = new Intl.NumberFormat('pt-PT', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2
-      });
-
-      resultadoDiv.innerHTML =
-        '<strong>Resultados:</strong><br>' +
-        'Energia necessária: <strong>' +
-        energiaNecessaria.toFixed(2) +
-        ' kWh</strong><br>' +
-        'Potência de carga: <strong>' +
-        potencia.toFixed(2) +
-        ' kW</strong><br>' +
-        'Tarifa aplicada: <strong>' +
-        formatadorEuro.format(precoKwh) +
-        ' / kWh</strong><br>' +
-        'Custo estimado: <strong>' +
-        formatadorEuro.format(custo) +
-        '</strong><br>' +
-        'Tempo estimado: <strong>' +
-        tempoHorasArredondado +
-        ' horas</strong><br>' +
-        'Ou aproximadamente: <strong>' +
-        horasInteiras +
-        ' h ' +
-        (minutos < 10 ? '0' + minutos : minutos) +
-        ' min</strong><br><br>' +
+      resultadoDiv.innerHTML = '<strong>Resultados:</strong><br>' +
+        'Energia necessária: <strong>' + energiaNecessaria.toFixed(2) + ' kWh</strong><br>' +
+        'Potência de carga: <strong>' + potencia.toFixed(2) + ' kW</strong><br>' +
+        'Tarifa aplicada: <strong>' + formatadorEuro.format(precoKwh) + ' / kWh</strong><br>' +
+        'Custo estimado: <strong>' + formatadorEuro.format(custo) + '</strong><br>' +
+        'Tempo estimado: <strong>' + tempoHorasArredondado + ' horas</strong><br>' +
+        'Ou aproximadamente: <strong>' + horasInteiras + ' h ' + (minutos < 10 ? '0' + minutos : minutos) + ' min</strong><br><br>' +
         '<strong>Estimativa de distância carregada:</strong><br>' +
-        'Consumo médio: <strong>' +
-        consumo.toFixed(1) +
-        ' kWh/100 km</strong><br>' +
-        'Eficiência: <strong>' +
-        formatadorNum.format(kmPorKwh) +
-        ' km / kWh</strong><br>' +
-        'Km carregados por hora (com ' +
-        potencia.toFixed(2) +
-        ' kW): <strong>' +
-        formatadorNum.format(kmPorHora) +
-        ' km/h</strong><br>' +
-        'Km aproximados adicionados ao carregar até ' +
-        socFinal +
-        '%: <strong>' +
-        formatadorNum.format(kmsAdicionados) +
-        ' km</strong><br>' +
+        (modo === 'kwh100' ? ('Consumo médio: <strong>' + parseFloat($('consumo').value).toFixed(1) + ' kWh/100 km</strong><br>') : ('Eficiência: <strong>' + parseFloat($('consumoKmPerKwh').value).toFixed(2) + ' km / kWh</strong><br>')) +
+        'Eficiência (km / kWh): <strong>' + formatadorNum.format(kmPorKwh) + '</strong><br>' +
+        'Km carregados por hora (com ' + potencia.toFixed(2) + ' kW): <strong>' + formatadorNum.format(kmPorHora) + ' km/h</strong><br>' +
+        'Km aproximados adicionados ao carregar até ' + socFinal + '%: <strong>' + formatadorNum.format(kmsAdicionados) + ' km</strong><br>' +
         '<small>(Valores teóricos; na prática podem variar por perdas, gestão da bateria e estilo de condução.)</small>';
+
+      // Desenha gráfico
+      desenharGrafico({ capacidade, socInicial, socFinal, potencia, energiaNecessaria, kmPorKwh });
     }
 
-    // Ligar eventos quando a página carregar
-    window.addEventListener('DOMContentLoaded', () => {
-      const selectPotencia = document.getElementById('potencia');
-      const btnCalcular = document.getElementById('btnCalcular');
+    // Gráfico simples em canvas: SOC (%) vs tempo (horas) e km adicionados (linha secundária)
+    function desenharGrafico({capacidade, socInicial, socFinal, potencia, energiaNecessaria, kmPorKwh}){
+      const canvas = $('grafico');
+      const ctx = canvas.getContext('2d');
+      // ajustar para DPR
+      const dpr = window.devicePixelRatio || 1;
+      const cssW = canvas.clientWidth;
+      const cssH = canvas.clientHeight;
+      canvas.width = Math.round(cssW * dpr);
+      canvas.height = Math.round(cssH * dpr);
+      ctx.scale(dpr,dpr);
+      // limpar
+      ctx.clearRect(0,0,cssW,cssH);
 
+      // Margens
+      const m = { left:50, right:40, top:18, bottom:36 };
+      const w = cssW - m.left - m.right;
+      const h = cssH - m.top - m.bottom;
+
+      // Dados: calcular pontos ao longo do tempo até tempo total
+      const tempoTotal = energiaNecessaria / potencia; // horas
+      const pontos = Math.max(10, Math.ceil(tempoTotal * 6)); // cerca de 10-60 pontos (cada 10 minutos)
+      const data = [];
+      for(let i=0;i<=pontos;i++){
+        const t = (i / pontos) * tempoTotal; // horas
+        const energiaCharged = Math.min(potencia * t, energiaNecessaria);
+        const soc = socInicial + (energiaCharged / capacidade) * 100.0; // %
+        const kms = energiaCharged * kmPerKwh;
+        data.push({t, soc: Math.min(soc, socFinal), kms});
+      }
+
+      // Eixos: X = tempo [0..tempoTotal], Yleft = SOC [%] (de socInicial..socFinal com margem), Yright = kms (0..kmsAdicionados)
+      const xMin = 0, xMax = Math.max(tempoTotal, 0.1);
+      const yMin = Math.min(0, socInicial - 5); // dar pequena margem
+      const yMax = Math.max(100, socFinal + 5);
+      const kmsMax = data[data.length-1].kms;
+
+      // Funções de escala
+      const x = v => m.left + (v - xMin) / (xMax - xMin) * w;
+      const y = v => m.top + h - (v - yMin) / (yMax - yMin) * h;
+      const yRight = v => m.top + h - (v / Math.max(kmsMax,1e-6)) * h;
+
+      // Grade e eixos
+      ctx.font = '12px Arial'; ctx.fillStyle = '#334155'; ctx.textAlign = 'center';
+      ctx.strokeStyle = '#e6eef8'; ctx.fillStyle = '#475569';
+
+      // linhas horizontais (SOC)
+      ctx.lineWidth = 1;
+      for(let s = Math.ceil(yMin/10)*10; s<=yMax; s+=10){
+        const yy = y(s);
+        ctx.strokeStyle = (s===0 ? '#dbeafe' : '#f1f5f9');
+        ctx.beginPath(); ctx.moveTo(m.left, yy); ctx.lineTo(m.left + w, yy); ctx.stroke();
+        // label left
+        ctx.fillStyle = '#475569'; ctx.textAlign = 'right'; ctx.fillText(s + '%', m.left - 8, yy + 4);
+      }
+
+      // eixo X (tempo)
+      ctx.textAlign = 'center'; ctx.fillStyle = '#475569';
+      const passosX = Math.min(6, Math.ceil(xMax));
+      for(let i=0;i<=passosX;i++){
+        const tx = x(xMin + (i/passosX)*(xMax - xMin));
+        const val = (xMin + (i/passosX)*(xMax - xMin));
+        ctx.fillText(val.toFixed(2) + 'h', tx, m.top + h + 20);
+        ctx.beginPath(); ctx.moveTo(tx, m.top + h); ctx.lineTo(tx, m.top + h + 4); ctx.strokeStyle = '#cbd5e1'; ctx.stroke();
+      }
+
+      // eixo direito labels (kms)
+      ctx.textAlign = 'left'; ctx.fillStyle = '#475569';
+      ctx.fillText(kmsMax.toFixed(1) + ' km', m.left + w + 6, m.top + 12);
+
+      // Linha SOC (esquerda)
+      ctx.beginPath(); ctx.lineWidth = 2; ctx.strokeStyle = '#2563eb'; ctx.fillStyle = '#2563eb';
+      data.forEach((p,i)=>{ const px = x(p.t); const py = y(p.soc); if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py); }); ctx.stroke();
+      // Pontos
+      data.forEach(p=>{ const px = x(p.t); const py = y(p.soc); ctx.beginPath(); ctx.arc(px,py,2,0,Math.PI*2); ctx.fill(); });
+
+      // Linha kms (direita)
+      ctx.beginPath(); ctx.lineWidth = 2; ctx.strokeStyle = '#16a34a';
+      data.forEach((p,i)=>{ const px = x(p.t); const py = yRight(p.kms); if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py); }); ctx.stroke();
+
+      // Legendas
+      ctx.fillStyle = '#2563eb'; ctx.fillRect(m.left + 6, m.top + 6, 10, 6); ctx.fillStyle = '#475569'; ctx.textAlign = 'left'; ctx.fillText('SOC (%)', m.left + 24, m.top + 12);
+      ctx.fillStyle = '#16a34a'; ctx.fillRect(m.left + 120, m.top + 6, 10, 6); ctx.fillStyle = '#475569'; ctx.fillText('Km adicionados', m.left + 140, m.top + 12);
+
+      // Linha de objetivo (socFinal)
+      const yGoal = y(socFinal);
+      ctx.setLineDash([4,4]); ctx.strokeStyle = '#f97316'; ctx.beginPath(); ctx.moveTo(m.left, yGoal); ctx.lineTo(m.left + w, yGoal); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = '#f97316'; ctx.textAlign = 'right'; ctx.fillText('Alvo ' + socFinal + '%', m.left + w - 4, yGoal - 6);
+
+    }
+
+    // Inicialização
+    window.addEventListener('DOMContentLoaded', ()=>{
+      const selectPotencia = $('potencia'); const btnCalcular = $('btnCalcular');
       selectPotencia.addEventListener('change', atualizarPotenciaCustom);
       btnCalcular.addEventListener('click', calcular);
+      // modo consumo radios
+      document.querySelectorAll('input[name="modoConsumo"]').forEach(r=> r.addEventListener('change', e => mostrarModoConsumo(e.target.value)));
+      // carregar preferências
+      carregarPreferencias();
+
+      // Preencher consumoKmPerKwh automático se estiver vazio e modo kmperkwh não definido
+      if(!$('consumoKmPerKwh').value){ const c = parseFloat($('consumo').value); if(!isNaN(c) && c>0) $('consumoKmPerKwh').value = (100.0 / c).toFixed(2); }
+
+      // Sincronizar ao alterar consumo kWh/100 -> atualizar km/kWh
+      $('consumo').addEventListener('input', ()=>{ const c = parseFloat($('consumo').value); if(!isNaN(c) && c>0) $('consumoKmPerKwh').value = (100.0/c).toFixed(2); });
+      $('consumoKmPerKwh').addEventListener('input', ()=>{ const k = parseFloat($('consumoKmPerKwh').value); if(!isNaN(k) && k>0) $('consumo').value = (100.0/k).toFixed(2); });
     });
   </script>
 </body>
