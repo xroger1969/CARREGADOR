@@ -4,126 +4,216 @@
   <meta charset="UTF-8">
   <title>Simulador de Carregamento – Carro Elétrico</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- CSS interno -->
+  <!-- CSS interno moderno e discreto -->
   <style>
-    * { box-sizing: border-box; }
-    body { font-family: Arial, sans-serif; background: #f2f2f2; margin: 0; padding: 0; }
-    .container { max-width: 720px; margin: 30px auto; background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%); padding: 28px 24px 30px 24px; border-radius: 12px; box-shadow: 0 18px 40px rgba(0,0,0,0.06); }
-    h1 { font-size: 1.7rem; text-align: center; margin-bottom: 22px; color: #0f172a; letter-spacing: 0.2px; }
-    .row { margin-bottom: 14px; }
-    .row-inline { display: flex; gap: 12px; }
-    .col { flex: 1; }
-    label { font-weight: 600; display: block; color: #1f2937; margin-bottom: 4px; }
-    input, select { width: 100%; padding: 9px 10px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 0.97rem; transition: border-color 0.2s ease, box-shadow 0.2s ease; background: #fff; }
-    input:focus, select:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
-    small { display: block; margin-top: 4px; color: #6b7280; }
-    button { margin-top: 12px; width: 100%; padding: 12px; border-radius: 10px; border: none; font-size: 1rem; cursor: pointer; background: linear-gradient(90deg,#2563eb,#1d4ed8); color:#fff; font-weight:700; }
-    button:hover { transform: translateY(-1px); box-shadow: 0 14px 28px rgba(37,99,235,0.22); }
-    #resultado { margin-top: 18px; padding: 14px 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc; font-size: 0.97rem; line-height: 1.5; color: #0f172a; }
-    .flex-between { display:flex; justify-content:space-between; align-items:center; gap:12px; }
-    .muted { color:#6b7280; font-size:0.9rem }
-    @media (max-width:480px){ .row-inline{flex-direction:column;} }
+    :root{
+      --bg:#f4f7fb;
+      --card:#ffffff;
+      --muted:#6b7280;
+      --accent-1: #3b82f6; /* azul */
+      --accent-2: #06b6d4; /* teal */
+      --accent-3: #8b5cf6; /* lavanda */
+      --border: rgba(15,23,42,0.06);
+      --glass: rgba(255,255,255,0.6);
+      --radius:14px;
+      --shadow: 0 12px 30px rgba(15,23,42,0.06);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg,var(--bg) 0%, #eef6ff 100%); color:#0f172a; -webkit-font-smoothing:antialiased;
+      display:flex; align-items:center; justify-content:center; padding:36px;
+    }
+    .wrap{width:100%;max-width:920px}
+    header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+    .logo{
+      width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent-2),var(--accent-1));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;box-shadow:0 6px 18px rgba(59,130,246,0.18)
+    }
+    .title{line-height:1}
+    .title h1{font-size:1.25rem;margin:0;font-weight:700}
+    .title p{margin:0;color:var(--muted);font-size:0.92rem}
+
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:20px}
+    @media (max-width:900px){ .grid{grid-template-columns:1fr} }
+
+    .card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);border:1px solid var(--border)}
+    .card--accent{background:linear-gradient(180deg, rgba(59,130,246,0.03), rgba(6,182,212,0.02));}
+
+    .row{margin-bottom:12px}
+    label{display:block;font-weight:600;color:#0f172a;margin-bottom:6px}
+    .hint{font-size:0.88rem;color:var(--muted)}
+    input,select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #e6eef8;background:transparent;font-size:0.98rem}
+    input:focus,select:focus{outline:none;box-shadow:0 6px 18px rgba(99,102,241,0.08);border-color:var(--accent-1)}
+
+    .row-inline{display:flex;gap:12px}
+    .col{flex:1}
+
+    .modes{display:flex;gap:12px}
+    .modes label{font-weight:600;display:flex;align-items:center;gap:8px}
+
+    .muted{color:var(--muted);font-size:0.9rem}
+
+    .actions{display:flex;flex-direction:column;gap:10px}
+    button{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:700;color:#fff;background:linear-gradient(90deg,var(--accent-1),var(--accent-3));box-shadow:0 8px 24px rgba(59,130,246,0.14)}
+    button.secondary{background:transparent;color:var(--accent-1);border:1px solid rgba(59,130,246,0.12);font-weight:700}
+
+    #resultado{margin-top:8px;padding:14px;border-radius:10px;background:linear-gradient(180deg, rgba(239,246,255,0.6), rgba(255,255,255,0.7));border:1px solid rgba(15,23,42,0.04);color:#0f172a}
+
+    .meta{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:6px}
+    .small-kv{font-size:0.85rem;color:var(--muted)}
+
+    /* subtle input group for kW select and custom */
+    .select-row{display:flex;gap:10px}
+    .select-row select{flex:1}
+    .select-row input[type=number]{width:120px}
+
+    footer{margin-top:12px;text-align:center;color:var(--muted);font-size:0.9rem}
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Simulador de Carregamento – Carro Elétrico</h1>
-
-    <!-- Capacidade da bateria -->
-    <div class="row">
-      <label for="bateria">Capacidade da bateria (kWh)</label>
-      <input type="number" id="bateria" min="10" max="200" step="1" value="54">
-      <small>(intervalo típico: 40 kWh – 80 kWh; ajustável)</small>
-    </div>
-
-    <!-- Percentagens de carga -->
-    <div class="row row-inline">
-      <div class="col">
-        <label for="socInicial">% atual da bateria</label>
-        <input type="number" id="socInicial" min="0" max="99" step="1" value="18">
+  <div class="wrap">
+    <header>
+      <div class="logo">CE</div>
+      <div class="title">
+        <h1>Simulador de Carregamento</h1>
+        <p>Estimador de tempo, custo e distância adicionada</p>
       </div>
-      <div class="col">
-        <label for="socFinal">% alvo da bateria</label>
-        <input type="number" id="socFinal" min="1" max="100" step="1" value="80">
-      </div>
+    </header>
+
+    <div class="grid">
+      <main class="card">
+        <!-- Capacidade da bateria -->
+        <div class="row">
+          <label for="bateria">Capacidade da bateria (kWh)</label>
+          <input type="number" id="bateria" min="10" max="200" step="1" value="54">
+          <div class="hint">Intervalo típico: 40 kWh – 80 kWh</div>
+        </div>
+
+        <!-- Percentagens de carga -->
+        <div class="row row-inline">
+          <div class="col">
+            <label for="socInicial">% atual da bateria</label>
+            <input type="number" id="socInicial" min="0" max="99" step="1" value="18">
+          </div>
+          <div class="col">
+            <label for="socFinal">% alvo da bateria</label>
+            <input type="number" id="socFinal" min="1" max="100" step="1" value="80">
+          </div>
+        </div>
+
+        <!-- Potência de carga -->
+        <div class="row">
+          <label for="potencia">Potência de carga (kW)</label>
+          <div class="select-row">
+            <select id="potencia">
+              <option value="2.3">2,3 kW – Tomada Schuko ~10 A</option>
+              <option value="3.25" selected>3,25 kW – Wallbox / tomada dedicada</option>
+              <option value="3.7">3,7 kW – Wallbox monofásico 16 A</option>
+              <option value="5.75">5,75 kW – Contrato 25 A</option>
+              <option value="7.4">7,4 kW – Wallbox monofásico 32 A</option>
+              <option value="11">11 kW – Wallbox trifásico</option>
+              <option value="22">22 kW – Wallbox trifásico 3φ</option>
+              <option value="custom">Outro valor (kW)</option>
+            </select>
+            <input type="number" id="potenciaCustom" step="0.1" placeholder="Ex.: 3.2" style="display:none">
+          </div>
+        </div>
+
+        <!-- Consumo médio: modo de entrada -->
+        <div class="row">
+          <label>Modo de consumo</label>
+          <div class="modes">
+            <label><input type="radio" name="modoConsumo" value="kwh100" id="modo_kwh100"> kWh / 100 km</label>
+            <label><input type="radio" name="modoConsumo" value="kmperkwh" id="modo_kmperkwh"> km / kWh</label>
+          </div>
+        </div>
+
+        <div class="row" id="linhaConsumoKwh100">
+          <label for="consumo">Consumo médio do veículo (kWh / 100 km)</label>
+          <input type="number" id="consumo" min="5" max="40" step="0.1" placeholder="Ex.: 16.0" value="16.0">
+          <div class="hint">Se não souberes o valor, usa ~16 kWh/100 km como referência.</div>
+        </div>
+
+        <div class="row" id="linhaConsumoKmPerKwh" style="display:none;">
+          <label for="consumoKmPerKwh">Eficiência (km / kWh)</label>
+          <input type="number" id="consumoKmPerKwh" min="1" max="20" step="0.01" placeholder="Ex.: 6.25">
+          <div class="hint">Ex.: 6,25 km por kWh equivale a ~16 kWh/100 km.</div>
+        </div>
+
+        <div class="row">
+          <label for="precoKwh">Preço da energia (€ / kWh)</label>
+          <input type="number" id="precoKwh" min="0" step="0.01" placeholder="Ex.: 0,20" value="0.20">
+          <div class="hint">Utiliza o valor da tua tarifa ou o preço do posto público.</div>
+        </div>
+
+        <div class="actions">
+          <button id="btnCalcular">Calcular tempo, custo, kms</button>
+          <button class="secondary" id="btnLimpar" type="button">Limpar</button>
+        </div>
+
+        <div id="resultado">
+          Introduz os dados e clica em “Calcular”.
+        </div>
+      </main>
+
+      <aside class="card card--accent">
+        <h3 style="margin-top:0">Resumo rápido</h3>
+        <p class="muted">Ajusta os valores à esquerda. O resumo mostra estimativas teóricas — perdas e gestão da bateria não estão incluídas.</p>
+
+        <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="background:rgba(255,255,255,0.7);padding:10px;border-radius:8px;border:1px solid rgba(15,23,42,0.03)">
+            <div class="small-kv">Energia</div>
+            <div id="infoEnergia" style="font-weight:700;font-size:1.05rem">-</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.7);padding:10px;border-radius:8px;border:1px solid rgba(15,23,42,0.03)">
+            <div class="small-kv">Tempo</div>
+            <div id="infoTempo" style="font-weight:700;font-size:1.05rem">-</div>
+          </div>
+
+          <div style="background:rgba(255,255,255,0.7);padding:10px;border-radius:8px;border:1px solid rgba(15,23,42,0.03)">
+            <div class="small-kv">Custo</div>
+            <div id="infoCusto" style="font-weight:700;font-size:1.05rem">-</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.7);padding:10px;border-radius:8px;border:1px solid rgba(15,23,42,0.03)">
+            <div class="small-kv">Km adicionados</div>
+            <div id="infoKm" style="font-weight:700;font-size:1.05rem">-</div>
+          </div>
+        </div>
+
+        <div class="meta">
+          <div class="small-kv">Versão</div>
+          <div class="small-kv">1.1</div>
+        </div>
+      </aside>
     </div>
 
-    <!-- Potência de carga -->
-    <div class="row">
-      <label for="potencia">Potência de carga (kW)</label>
-      <select id="potencia">
-        <option value="2.3">2,3 kW – Tomada Schuko ~10 A</option>
-        <option value="3.25" selected>3,25 kW – Wallbox / tomada dedicada</option>
-        <option value="3.7">3,7 kW – Wallbox monofásico 16 A</option>
-        <option value="5.75">5,75 kW – Contrato 25 A</option>
-        <option value="7.4">7,4 kW – Wallbox monofásico 32 A</option>
-        <option value="11">11 kW – Wallbox trifásico</option>
-        <option value="22">22 kW – Wallbox trifásico 3φ</option>
-        <option value="custom">Outro valor (kW)</option>
-      </select>
-    </div>
-
-    <!-- Potência personalizada -->
-    <div class="row" id="linhaCustom" style="display:none;">
-      <label for="potenciaCustom">Introduzir potência manual (kW)</label>
-      <input type="number" id="potenciaCustom" step="0.1" placeholder="Ex.: 3.2">
-    </div>
-
-    <!-- Consumo médio: modo de entrada -->
-    <div class="row">
-      <div class="flex-between">
-        <label>Modo de consumo</label>
-        <div class="muted">Escolhe a unidade</div>
-      </div>
-      <div style="display:flex;gap:8px;margin-top:8px;align-items:center;">
-        <label style="font-weight:600"><input type="radio" name="modoConsumo" value="kwh100" id="modo_kwh100"> kWh / 100 km</label>
-        <label style="font-weight:600"><input type="radio" name="modoConsumo" value="kmperkwh" id="modo_kmperkwh"> km / kWh</label>
-      </div>
-    </div>
-
-    <div class="row" id="linhaConsumoKwh100">
-      <label for="consumo">Consumo médio do veículo (kWh / 100 km)</label>
-      <input type="number" id="consumo" min="5" max="40" step="0.1" placeholder="Ex.: 16.0" value="16.0">
-      <small>Se não souberes o valor, usa ~16 kWh/100 km como referência.</small>
-    </div>
-
-    <div class="row" id="linhaConsumoKmPerKwh" style="display:none;">
-      <label for="consumoKmPerKwh">Eficiência (km / kWh)</label>
-      <input type="number" id="consumoKmPerKwh" min="1" max="20" step="0.01" placeholder="Ex.: 6.25">
-      <small>Ex.: 6,25 km por kWh equivale a ~16 kWh/100 km.</small>
-    </div>
-
-    <div class="row">
-      <label for="precoKwh">Preço da energia (€ / kWh)</label>
-      <input type="number" id="precoKwh" min="0" step="0.01" placeholder="Ex.: 0,20" value="0.20">
-      <small>Utiliza o valor da tua tarifa ou o preço do posto público.</small>
-    </div>
-
-    <!-- Botão -->
-    <button id="btnCalcular">Calcular tempo, custo, kms</button>
-
-    <!-- Resultado -->
-    <div id="resultado">
-      Introduz os dados e clica em “Calcular”.
-    </div>
-
+    <footer class="muted">Feito com ♥ — estimativas sem garantia</footer>
   </div>
 
-  <!-- JavaScript interno -->
+  <!-- JavaScript interno (mantém funcionalidade atual) -->
   <script>
-    // Utilidades
     function $(id){ return document.getElementById(id); }
 
-    function atualizarPotenciaCustom(){
-      const select = $('potencia');
-      const linhaCustom = $('linhaCustom');
-      if(select.value === 'custom') linhaCustom.style.display = 'block'; else linhaCustom.style.display = 'none';
-    }
+    // Element display logic for custom power
+    const potenciaSelect = $('potencia');
+    const potenciaCustom = $('potenciaCustom');
+    potenciaSelect.addEventListener('change', ()=>{ if(potenciaSelect.value==='custom') potenciaCustom.style.display='block'; else potenciaCustom.style.display='none'; });
 
     function mostrarModoConsumo(modo){
       $('linhaConsumoKwh100').style.display = modo === 'kwh100' ? 'block' : 'none';
       $('linhaConsumoKmPerKwh').style.display = modo === 'kmperkwh' ? 'block' : 'none';
+    }
+
+    function atualizarResumo({energia, tempoStr, custo, kms}){
+      $('infoEnergia').textContent = energia.toFixed(2) + ' kWh';
+      $('infoTempo').textContent = tempoStr;
+      $('infoCusto').textContent = new Intl.NumberFormat('pt-PT',{style:'currency',currency:'EUR'}).format(custo);
+      $('infoKm').textContent = Number(kms.toFixed(1)) + ' km';
     }
 
     function calcular(){
@@ -136,7 +226,8 @@
       let potencia;
       if(selectPot === 'custom') potencia = parseFloat($('potenciaCustom').value); else potencia = parseFloat(selectPot);
 
-      const modo = document.querySelector('input[name="modoConsumo"]:checked').value;
+      const modoRadio = document.querySelector('input[name="modoConsumo"]:checked');
+      const modo = modoRadio ? modoRadio.value : 'kwh100';
       let kmPorKwh;
       if(modo === 'kwh100'){
         const consumo = parseFloat($('consumo').value);
@@ -149,24 +240,18 @@
       }
 
       const resultadoDiv = $('resultado');
-      // Validações
       if(isNaN(capacidade) || capacidade <= 0){ resultadoDiv.textContent = 'Verifica a capacidade da bateria.'; return; }
       if(isNaN(socInicial) || isNaN(socFinal) || socInicial < 0 || socFinal > 100 || socFinal <= socInicial){ resultadoDiv.textContent = 'Verifica os valores de percentagem (o alvo deve ser maior que o atual).'; return; }
       if(isNaN(potencia) || potencia <= 0){ resultadoDiv.textContent = 'Verifica a potência de carga (kW).'; return; }
       if(isNaN(precoKwh) || precoKwh < 0){ resultadoDiv.textContent = 'Indica um preço de energia válido (€/kWh).'; return; }
 
-      // Energia necessária em kWh
       const deltaPercent = (socFinal - socInicial) / 100.0;
       const energiaNecessaria = capacidade * deltaPercent; // kWh
-      // Tempo em horas
       const tempoHoras = energiaNecessaria / potencia;
-      // Custo
       const custo = precoKwh * energiaNecessaria;
-      // Horas e minutos
       const horasInteiras = Math.floor(tempoHoras);
       const minutos = Math.round((tempoHoras - horasInteiras) * 60);
       const tempoHorasArredondado = tempoHoras.toFixed(2);
-      // Kms
       const kmPorHora = potencia * kmPorKwh;
       const kmsAdicionados = energiaNecessaria * kmPorKwh;
 
@@ -187,25 +272,32 @@
         'Km aproximados adicionados ao carregar até ' + socFinal + '%: <strong>' + formatadorNum.format(kmsAdicionados) + ' km</strong><br>' +
         '<small>(Valores teóricos; na prática podem variar por perdas, gestão da bateria e estilo de condução.)</small>';
 
+      // atualizar resumo lateral
+      const tempoStr = horasInteiras + 'h ' + (minutos < 10 ? '0'+minutos : minutos) + 'm';
+      atualizarResumo({energia:energiaNecessaria, tempoStr, custo, kms:kmsAdicionados});
     }
 
-    // Inicialização
+    // limpar
+    $('btnLimpar').addEventListener('click', ()=>{
+      $('bateria').value='54'; $('socInicial').value='18'; $('socFinal').value='80'; $('potencia').value='3.25'; $('potenciaCustom').value=''; $('precoKwh').value='0.20'; $('consumo').value='16.0'; $('consumoKmPerKwh').value='6.25';
+      $('resultado').textContent='Introduz os dados e clica em “Calcular”.';
+      mostrarModoConsumo('kwh100');
+      potenciaCustom.style.display='none';
+      atualizarResumo({energia:0, tempoStr:'-', custo:0, kms:0});
+    });
+
+    // iniciar
     window.addEventListener('DOMContentLoaded', ()=>{
-      const selectPotencia = $('potencia'); const btnCalcular = $('btnCalcular');
-      selectPotencia.addEventListener('change', atualizarPotenciaCustom);
-      btnCalcular.addEventListener('click', calcular);
-      // modo consumo radios
       document.querySelectorAll('input[name="modoConsumo"]').forEach(r=> r.addEventListener('change', e => mostrarModoConsumo(e.target.value)));
-
-      // definir padrão de modo consumo
+      // padrão
       $('modo_kwh100').checked = true; mostrarModoConsumo('kwh100');
-
-      // Preencher consumoKmPerKwh automático se estiver vazio
-      if(!$('consumoKmPerKwh').value){ const c = parseFloat($('consumo').value); if(!isNaN(c) && c>0) $('consumoKmPerKwh').value = (100.0 / c).toFixed(2); }
-
-      // Sincronizar ao alterar consumo kWh/100 -> atualizar km/kWh
-      $('consumo').addEventListener('input', ()=>{ const c = parseFloat($('consumo').value); if(!isNaN(c) && c>0) $('consumoKmPerKwh').value = (100.0/c).toFixed(2); });
+      // sincronizar consumo
+      $('consumo').addEventListener('input', ()=>{ const c = parseFloat($('consumo').value); if(!isNaN(c) && c>0) $('consumoKmPerKwh').value = (100.0 / c).toFixed(2); });
       $('consumoKmPerKwh').addEventListener('input', ()=>{ const k = parseFloat($('consumoKmPerKwh').value); if(!isNaN(k) && k>0) $('consumo').value = (100.0/k).toFixed(2); });
+
+      $('btnCalcular').addEventListener('click', calcular);
+      // valores iniciais resumo
+      atualizarResumo({energia:0, tempoStr:'-', custo:0, kms:0});
     });
   </script>
 </body>
