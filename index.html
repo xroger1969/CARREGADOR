@@ -126,8 +126,8 @@
     <!-- Capacidade da bateria -->
     <div class="row">
       <label for="bateria">Capacidade da bateria (kWh)</label>
-      <input type="number" id="bateria" min="40" max="80" step="1" value="54">
-      <small>(intervalo típico: 40 kWh – 80 kWh)</small>
+      <input type="number" id="bateria" min="40" max="200" step="1" value="54">
+      <small>(intervalo típico: 40 kWh – 200 kWh)</small>
     </div>
 
     <!-- Percentagens de carga -->
@@ -230,8 +230,8 @@
       const resultadoDiv = document.getElementById('resultado');
 
       // Validações básicas
-      if (isNaN(capacidade) || capacidade < 40 || capacidade > 80) {
-        resultadoDiv.textContent = 'Verifica a capacidade da bateria (40–80 kWh).';
+      if (isNaN(capacidade) || capacidade < 40 || capacidade > 200) {
+        resultadoDiv.textContent = 'Verifica a capacidade da bateria (40–200 kWh).';
         return;
       }
       if (
