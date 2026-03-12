@@ -513,9 +513,7 @@
       const kmPorHora = potencia * kmPorKwh;
       const kmsAdicionados = energiaNecessaria * kmPorKwh;
 
-      const custoEletrico100km = consumo * precoKwh;
       const custoCombustao100km = consumoCombustao * precoCombustivel;
-      const poupanca100km = custoCombustao100km - custoEletrico100km;
       const fatorDistancia = kmsAdicionados / 100;
       const custoEletricoTotal = custo;
       const custoCombustaoTotal = custoCombustao100km * fatorDistancia;
@@ -529,8 +527,6 @@
       const formatadorEuro = new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR' });
       const formatadorNum = new Intl.NumberFormat('pt-PT', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 
-      const classePoupanca = poupanca100km >= 0 ? '' : 'is-negative';
-      const textoPoupanca = poupanca100km >= 0 ? 'Poupança do elétrico (100 km)' : 'Diferença de custo (100 km)';
       const classePoupancaTotal = poupancaTotal >= 0 ? '' : 'is-negative';
       const textoPoupancaTotal = poupancaTotal >= 0
         ? 'Poupança do elétrico (simulação total)'
@@ -554,22 +550,6 @@
             '<div class="metric-label">Autonomia adicionada</div>' +
             '<div class="metric-value">' + formatadorNum.format(kmsAdicionados) + ' km</div>' +
           '</article>' +
-        '</div>' +
-
-        '<div class="comparison-grid">' +
-          '<article class="cost-card ev">' +
-            '<p class="cost-label">Elétrico / 100 km</p>' +
-            '<p class="cost-value">' + formatadorEuro.format(custoEletrico100km) + '</p>' +
-          '</article>' +
-          '<article class="cost-card ' + classeComb + '">' +
-            '<p class="cost-label">' + nomeCombustivel + ' / 100 km</p>' +
-            '<p class="cost-value">' + formatadorEuro.format(custoCombustao100km) + '</p>' +
-          '</article>' +
-        '</div>' +
-
-        '<div class="saving-banner ' + classePoupanca + '">' +
-          '<span class="saving-label">' + textoPoupanca + '</span>' +
-          '<div class="saving-value">' + formatadorEuro.format(poupanca100km) + '</div>' +
         '</div>' +
 
         '<div class="comparison-grid">' +
