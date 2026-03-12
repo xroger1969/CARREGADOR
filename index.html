@@ -109,6 +109,23 @@
       box-shadow: 0 14px 28px rgba(37, 99, 235, 0.22);
     }
 
+    .actions {
+      display: none;
+      margin-top: 12px;
+      gap: 10px;
+    }
+
+    .actions button {
+      margin-top: 0;
+      flex: 1;
+      background: linear-gradient(90deg, #0f766e, #0d9488);
+      box-shadow: 0 10px 20px rgba(13, 148, 136, 0.18);
+    }
+
+    .actions button:hover {
+      box-shadow: 0 14px 28px rgba(13, 148, 136, 0.24);
+    }
+
     #resultado {
       margin-top: 18px;
       padding: 14px 16px;
@@ -228,6 +245,11 @@
     <div id="resultado">
       Introduz os dados e clica em “Calcular”.
     </div>
+
+    <div class="actions row-inline" id="acoesResultado">
+      <button id="btnImprimir" type="button">Imprimir</button>
+      <button id="btnPartilhar" type="button">Partilhar</button>
+    </div>
   </div>
 
   <!-- JavaScript interno -->
@@ -240,6 +262,44 @@
       } else {
         linhaCustom.style.display = 'none';
       }
+    }
+
+    function imprimirResultado() {
+      window.print();
+    }
+
+    async function partilharResultado() {
+      const resultadoTexto = document.getElementById('resultado').innerText.trim();
+      const textoPartilha =
+        'Simulador de Carregamento – Carro Elétrico\n\n' +
+        resultadoTexto +
+        '\n\nSimulador: ' + window.location.href;
+
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: 'Resultados do simulador de carregamento',
+            text: textoPartilha
+          });
+          return;
+        } catch (err) {
+          if (err && err.name === 'AbortError') {
+            return;
+          }
+        }
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        try {
+          await navigator.clipboard.writeText(textoPartilha);
+          alert('Resultado copiado para a área de transferência.');
+          return;
+        } catch (err) {
+          // fallback para prompt abaixo
+        }
+      }
+
+      window.prompt('Copia e partilha o resultado:', textoPartilha);
     }
 
     function calcular() {
@@ -261,6 +321,7 @@
       }
 
       const resultadoDiv = document.getElementById('resultado');
+      const acoesResultado = document.getElementById('acoesResultado');
 
       // Validações básicas
       if (isNaN(capacidade) || capacidade < 40 || capacidade > 200) {
@@ -389,15 +450,21 @@
         formatadorEuro.format(poupanca100km) +
         '</strong><br>' +
         '<small>(Valores teóricos; na prática podem variar por perdas, gestão da bateria e estilo de condução.)</small>';
+
+      acoesResultado.style.display = 'flex';
     }
 
     // Ligar eventos quando a página carregar
     window.addEventListener('DOMContentLoaded', () => {
       const selectPotencia = document.getElementById('potencia');
       const btnCalcular = document.getElementById('btnCalcular');
+      const btnImprimir = document.getElementById('btnImprimir');
+      const btnPartilhar = document.getElementById('btnPartilhar');
 
       selectPotencia.addEventListener('change', atualizarPotenciaCustom);
       btnCalcular.addEventListener('click', calcular);
+      btnImprimir.addEventListener('click', imprimirResultado);
+      btnPartilhar.addEventListener('click', partilharResultado);
     });
   </script>
 </body>
