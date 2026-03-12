@@ -304,9 +304,15 @@
 
     @media (max-width: 620px) {
       .row-inline,
-      .comparison-grid,
       .actions {
         flex-direction: column;
+      }
+
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .result-grid {
         grid-template-columns: 1fr;
       }
 
