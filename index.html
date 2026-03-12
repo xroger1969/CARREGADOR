@@ -516,6 +516,10 @@
       const custoEletrico100km = consumo * precoKwh;
       const custoCombustao100km = consumoCombustao * precoCombustivel;
       const poupanca100km = custoCombustao100km - custoEletrico100km;
+      const fatorDistancia = kmsAdicionados / 100;
+      const custoEletricoTotal = custo;
+      const custoCombustaoTotal = custoCombustao100km * fatorDistancia;
+      const poupancaTotal = custoCombustaoTotal - custoEletricoTotal;
 
       const nomeCombustivel =
         tipoCombustivel === 'gasolina' ? 'gasolina' : tipoCombustivel === 'gasoleo' ? 'gasóleo' : 'combustão';
@@ -527,6 +531,10 @@
 
       const classePoupanca = poupanca100km >= 0 ? '' : 'is-negative';
       const textoPoupanca = poupanca100km >= 0 ? 'Poupança do elétrico (100 km)' : 'Diferença de custo (100 km)';
+      const classePoupancaTotal = poupancaTotal >= 0 ? '' : 'is-negative';
+      const textoPoupancaTotal = poupancaTotal >= 0
+        ? 'Poupança do elétrico (simulação total)'
+        : 'Diferença de custo (simulação total)';
 
       resultadoDiv.innerHTML =
         '<div class="result-grid">' +
@@ -562,6 +570,22 @@
         '<div class="saving-banner ' + classePoupanca + '">' +
           '<span class="saving-label">' + textoPoupanca + '</span>' +
           '<div class="saving-value">' + formatadorEuro.format(poupanca100km) + '</div>' +
+        '</div>' +
+
+        '<div class="comparison-grid">' +
+          '<article class="cost-card ev">' +
+            '<p class="cost-label">Elétrico (simulação total)</p>' +
+            '<p class="cost-value">' + formatadorEuro.format(custoEletricoTotal) + '</p>' +
+          '</article>' +
+          '<article class="cost-card ' + classeComb + '">' +
+            '<p class="cost-label">' + nomeCombustivel + ' (simulação total)</p>' +
+            '<p class="cost-value">' + formatadorEuro.format(custoCombustaoTotal) + '</p>' +
+          '</article>' +
+        '</div>' +
+
+        '<div class="saving-banner ' + classePoupancaTotal + '">' +
+          '<span class="saving-label">' + textoPoupancaTotal + '</span>' +
+          '<div class="saving-value">' + formatadorEuro.format(poupancaTotal) + '</div>' +
         '</div>' +
 
         '<div class="footnote">Potência usada: ' + potencia.toFixed(2) + ' kW · Eficiência: ' +
