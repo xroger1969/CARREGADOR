@@ -5,39 +5,80 @@
   <title>Simulador de Carregamento – Carro Elétrico</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- CSS interno -->
   <style>
+    :root {
+      --bg: #f3f6fb;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #dce3ef;
+      --shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --ev: #0f766e;
+      --gasolina: #b45309;
+      --gasoleo: #1e3a8a;
+      --success-bg: #ecfdf3;
+      --success-text: #166534;
+      --danger-bg: #fff1f2;
+      --danger-text: #be123c;
+    }
+
     * {
       box-sizing: border-box;
     }
 
     body {
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
       margin: 0;
-      padding: 0;
+      font-family: "Inter", "Segoe UI", Arial, sans-serif;
+      background: radial-gradient(circle at top, #ffffff 0, var(--bg) 45%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px 14px 36px;
     }
 
     .container {
-      max-width: 720px;
-      margin: 30px auto;
-      background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
-      padding: 28px 24px 30px 24px;
-      border-radius: 12px;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
-      border: 1px solid #e6eef8;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      margin-bottom: 18px;
     }
 
     h1 {
-      font-size: 1.7rem;
-      text-align: center;
-      margin-bottom: 22px;
-      color: #0f172a;
-      letter-spacing: 0.2px;
+      margin: 0;
+      font-size: clamp(1.45rem, 2.6vw, 2rem);
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 0.97rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .card h2 {
+      margin: 0 0 14px;
+      font-size: 1.03rem;
+      letter-spacing: 0.01em;
     }
 
     .row {
-      margin-bottom: 14px;
+      margin-bottom: 12px;
+    }
+
+    .row:last-child {
+      margin-bottom: 0;
     }
 
     .row-inline {
@@ -50,63 +91,185 @@
     }
 
     label {
-      font-weight: 600;
       display: block;
-      color: #1f2937;
-      margin-bottom: 4px;
+      font-size: 0.91rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #1e293b;
     }
 
     input,
     select {
       width: 100%;
-      padding: 9px 10px;
-      border-radius: 8px;
-      border: 1px solid #cbd5e1;
-      font-size: 0.97rem;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      border: 1px solid #cfd8e6;
+      border-radius: 10px;
+      padding: 10px 11px;
+      font-size: 0.96rem;
+      color: var(--text);
       background: #fff;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     input:focus,
     select:focus {
       outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
     }
 
     small {
       display: block;
-      margin-top: 4px;
-      color: #6b7280;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 0.83rem;
+      line-height: 1.45;
     }
 
-    .section-title {
-      margin: 18px 0 8px 0;
-      font-size: 0.95rem;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      color: #1e3a8a;
-    }
+    .theme-ev h2 { color: var(--ev); }
+    .theme-comb h2 { color: #9a3412; }
+    .theme-results h2 { color: #1e3a8a; }
 
-    button {
-      margin-top: 12px;
+    .btn-primary {
       width: 100%;
-      padding: 12px;
-      border-radius: 10px;
       border: none;
+      border-radius: 12px;
+      padding: 13px;
       font-size: 1rem;
-      cursor: pointer;
-      background: linear-gradient(90deg, #2563eb, #1d4ed8);
+      font-weight: 700;
+      letter-spacing: 0.01em;
       color: #fff;
-      font-weight: 600;
-      letter-spacing: 0.1px;
-      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.18);
-      transition: transform 0.1s ease, box-shadow 0.2s ease;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(29, 78, 216, 0.28);
+      transition: transform 0.15s ease, box-shadow 0.2s ease;
     }
 
-    button:hover {
+    .btn-primary:hover {
       transform: translateY(-1px);
-      box-shadow: 0 14px 28px rgba(37, 99, 235, 0.22);
+      box-shadow: 0 14px 24px rgba(29, 78, 216, 0.32);
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .metric {
+      background: #f8fafc;
+      border: 1px solid #e5ebf4;
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .metric-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
+    .metric-value {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .metric-value.large {
+      font-size: clamp(1.45rem, 3.4vw, 1.9rem);
+    }
+
+    .comparison-grid {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .comparison-block-title {
+      margin: 14px 0 6px;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .cost-card {
+      border-radius: 12px;
+      padding: 13px;
+      border: 1px solid #d7dfed;
+      background: #f8fafc;
+    }
+
+    .cost-card.ev { border-left: 4px solid var(--ev); }
+    .cost-card.gasolina { border-left: 4px solid var(--gasolina); }
+    .cost-card.gasoleo { border-left: 4px solid var(--gasoleo); }
+    .cost-card.combustao { border-left: 4px solid #475569; }
+
+    .cost-label {
+      margin: 0;
+      font-size: 0.84rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .cost-value {
+      margin: 6px 0 0;
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .saving-banner {
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid #bbf7d0;
+      background: var(--success-bg);
+      color: var(--success-text);
+    }
+
+    .saving-banner.is-negative {
+      border-color: #fecdd3;
+      background: var(--danger-bg);
+      color: var(--danger-text);
+    }
+
+    .saving-label {
+      display: block;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+      opacity: 0.85;
+      margin-bottom: 4px;
+    }
+
+    .saving-value {
+      font-size: clamp(1.55rem, 3.8vw, 2.1rem);
+      font-weight: 900;
+      line-height: 1.05;
+    }
+
+    #resultado {
+      margin-top: 10px;
+      font-size: 0.92rem;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    #resultado.error {
+      margin-top: 12px;
+      border-radius: 10px;
+      border: 1px solid #fecdd3;
+      background: #fff1f2;
+      color: #9f1239;
+      padding: 10px 12px;
     }
 
     .actions {
@@ -118,150 +281,139 @@
     .actions button {
       margin-top: 0;
       flex: 1;
-      background: linear-gradient(90deg, #0f766e, #0d9488);
-      box-shadow: 0 10px 20px rgba(13, 148, 136, 0.18);
-    }
-
-    .actions button:hover {
-      box-shadow: 0 14px 28px rgba(13, 148, 136, 0.24);
-    }
-
-    #resultado {
-      margin-top: 18px;
-      padding: 14px 16px;
-      border: 1px solid #e2e8f0;
+      border: none;
       border-radius: 10px;
-      background: #f8fafc;
-      font-size: 0.97rem;
-      line-height: 1.5;
-      color: #0f172a;
+      padding: 10px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+      background: linear-gradient(90deg, #0f766e, #0d9488);
+      box-shadow: 0 8px 18px rgba(13, 148, 136, 0.22);
     }
 
-    @media (max-width: 480px) {
-      .row-inline {
+    .footnote {
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 860px) {
+      .result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 620px) {
+      .row-inline,
+      .comparison-grid,
+      .actions {
         flex-direction: column;
+        grid-template-columns: 1fr;
       }
+
+      .metric-value { font-size: 1.08rem; }
+      .container { max-width: 560px; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Simulador de Carregamento – Carro Elétrico</h1>
+    <header class="page-header">
+      <h1>Simulador de Custos Automóveis</h1>
+      <p class="subtitle">Compare carregamento elétrico com viatura de combustão, de forma rápida e clara.</p>
+    </header>
 
-    <!-- Capacidade da bateria -->
-    <div class="row">
-      <label for="bateria">Capacidade da bateria (kWh)</label>
-      <input type="number" id="bateria" min="40" max="200" step="1" value="54">
-      <small>(intervalo típico: 40 kWh – 200 kWh)</small>
-    </div>
+    <section class="card theme-ev">
+      <h2>1. Dados do veículo elétrico</h2>
 
-    <!-- Percentagens de carga -->
-    <div class="row row-inline">
-      <div class="col">
-        <label for="socInicial">% atual da bateria</label>
-        <input type="number" id="socInicial" min="0" max="99" step="1" value="18">
+      <div class="row">
+        <label for="bateria">Capacidade da bateria (kWh)</label>
+        <input type="number" id="bateria" min="40" max="200" step="1" value="54">
+        <small>Intervalo típico: 40 kWh – 200 kWh.</small>
       </div>
-      <div class="col">
-        <label for="socFinal">% alvo da bateria</label>
-        <input type="number" id="socFinal" min="1" max="100" step="1" value="80">
+
+      <div class="row row-inline">
+        <div class="col">
+          <label for="socInicial">% atual da bateria</label>
+          <input type="number" id="socInicial" min="0" max="99" step="1" value="18">
+        </div>
+        <div class="col">
+          <label for="socFinal">% alvo da bateria</label>
+          <input type="number" id="socFinal" min="1" max="100" step="1" value="80">
+        </div>
       </div>
-    </div>
 
-    <!-- Potência de carga -->
-    <div class="row">
-      <label for="potencia">Potência de carga (kW)</label>
-      <select id="potencia">
-        <option value="2.3">2,3 kW – Tomada Schuko ~10 A</option>
-        <option value="3.25" selected>3,25 kW – Wallbox / tomada dedicada</option>
-        <option value="3.7">3,7 kW – Wallbox monofásico 16 A</option>
-        <option value="5.75">5,75 kW – Contrato 25 A</option>
-        <option value="7.4">7,4 kW – Wallbox monofásico 32 A</option>
-        <option value="11">11 kW – Wallbox trifásico</option>
-        <option value="custom">Outro valor (kW)</option>
-      </select>
-    </div>
-
-    <!-- Potência personalizada -->
-    <div class="row" id="linhaCustom" style="display:none;">
-      <label for="potenciaCustom">Introduzir potência manual (kW)</label>
-      <input type="number" id="potenciaCustom" step="0.1" placeholder="Ex.: 3.2">
-    </div>
-
-    <!-- Consumo médio -->
-    <div class="row">
-      <label for="consumo">Consumo médio do veículo (kWh / 100 km)</label>
-      <input
-        type="number"
-        id="consumo"
-        min="5"
-        max="40"
-        step="0.1"
-        placeholder="Ex.: 16.0"
-        value="16.0"
-      >
-      <small>Se não souberes o valor, usa ~16 kWh/100 km como referência.</small>
-    </div>
-
-    <!-- Tarifa energética -->
-    <div class="row">
-      <label for="precoKwh">Preço da energia (€ / kWh)</label>
-      <input
-        type="number"
-        id="precoKwh"
-        min="0"
-        step="0.01"
-        placeholder="Ex.: 0,20"
-        value="0.20"
-      >
-      <small>Utiliza o valor da tua tarifa ou o preço do posto público.</small>
-    </div>
-
-    <h2 class="section-title">Comparação com viatura de combustão</h2>
-
-    <div class="row">
-      <label for="tipoCombustivel">Tipo de combustível (opcional)</label>
-      <select id="tipoCombustivel">
-        <option value="">Selecionar</option>
-        <option value="gasolina">Gasolina</option>
-        <option value="gasoleo">Gasóleo</option>
-      </select>
-    </div>
-
-    <div class="row row-inline">
-      <div class="col">
-        <label for="precoCombustivel">Preço do combustível (€ / litro)</label>
-        <input type="number" id="precoCombustivel" min="0" step="0.01" value="1.65" placeholder="Ex.: 1.65">
+      <div class="row">
+        <label for="potencia">Potência de carga (kW)</label>
+        <select id="potencia">
+          <option value="2.3">2,3 kW – Tomada Schuko ~10 A</option>
+          <option value="3.25" selected>3,25 kW – Wallbox / tomada dedicada</option>
+          <option value="3.7">3,7 kW – Wallbox monofásico 16 A</option>
+          <option value="5.75">5,75 kW – Contrato 25 A</option>
+          <option value="7.4">7,4 kW – Wallbox monofásico 32 A</option>
+          <option value="11">11 kW – Wallbox trifásico</option>
+          <option value="custom">Outro valor (kW)</option>
+        </select>
       </div>
-      <div class="col">
-        <label for="consumoCombustao">Consumo da viatura (L / 100 km)</label>
-        <input type="number" id="consumoCombustao" min="0" step="0.1" value="6.0" placeholder="Ex.: 6.0">
+
+      <div class="row" id="linhaCustom" style="display:none;">
+        <label for="potenciaCustom">Introduzir potência manual (kW)</label>
+        <input type="number" id="potenciaCustom" step="0.1" placeholder="Ex.: 3.2">
       </div>
-    </div>
 
-    <!-- Botão -->
-    <button id="btnCalcular">Calcular tempo, custo, kms e comparação</button>
+      <div class="row">
+        <label for="consumo">Consumo médio do veículo (kWh / 100 km)</label>
+        <input type="number" id="consumo" min="5" max="40" step="0.1" value="16.0">
+      </div>
 
-    <!-- Resultado -->
-    <div id="resultado">
-      Introduz os dados e clica em “Calcular”.
-    </div>
+      <div class="row">
+        <label for="precoKwh">Preço da energia (€ / kWh)</label>
+        <input type="number" id="precoKwh" min="0" step="0.01" value="0.20">
+        <small>Use a sua tarifa doméstica ou o preço do posto público.</small>
+      </div>
+    </section>
 
-    <div class="actions row-inline" id="acoesResultado">
-      <button id="btnImprimir" type="button">Imprimir</button>
-      <button id="btnPartilhar" type="button">Partilhar</button>
-    </div>
+    <section class="card theme-comb">
+      <h2>2. Dados da viatura de combustão</h2>
+
+      <div class="row">
+        <label for="tipoCombustivel">Tipo de combustível</label>
+        <select id="tipoCombustivel">
+          <option value="">Selecionar</option>
+          <option value="gasolina">Gasolina</option>
+          <option value="gasoleo">Gasóleo</option>
+        </select>
+      </div>
+
+      <div class="row row-inline">
+        <div class="col">
+          <label for="precoCombustivel">Preço do combustível (€ / litro)</label>
+          <input type="number" id="precoCombustivel" min="0" step="0.01" value="1.65" placeholder="Ex.: 1.65">
+        </div>
+        <div class="col">
+          <label for="consumoCombustao">Consumo da viatura (L / 100 km)</label>
+          <input type="number" id="consumoCombustao" min="0" step="0.1" value="6.0" placeholder="Ex.: 6.0">
+        </div>
+      </div>
+    </section>
+
+    <button id="btnCalcular" class="btn-primary">Calcular comparação</button>
+
+    <section class="card theme-results">
+      <h2>3. Resultados finais</h2>
+      <div id="resultado">Introduza os dados e clique em “Calcular comparação”.</div>
+
+      <div class="actions row-inline" id="acoesResultado">
+        <button id="btnImprimir" type="button">Imprimir</button>
+        <button id="btnPartilhar" type="button">Partilhar</button>
+      </div>
+    </section>
   </div>
 
-  <!-- JavaScript interno -->
   <script>
     function atualizarPotenciaCustom() {
       const select = document.getElementById('potencia');
       const linhaCustom = document.getElementById('linhaCustom');
-      if (select.value === 'custom') {
-        linhaCustom.style.display = 'block';
-      } else {
-        linhaCustom.style.display = 'none';
-      }
+      linhaCustom.style.display = select.value === 'custom' ? 'block' : 'none';
     }
 
     function imprimirResultado() {
@@ -302,13 +454,19 @@
       window.prompt('Copia e partilha o resultado:', textoPartilha);
     }
 
+    function mostrarErro(resultadoDiv, acoesResultado, mensagem) {
+      resultadoDiv.classList.add('error');
+      resultadoDiv.innerHTML = mensagem;
+      acoesResultado.style.display = 'none';
+    }
+
     function calcular() {
       const capacidade = parseFloat(document.getElementById('bateria').value);
       const socInicial = parseFloat(document.getElementById('socInicial').value);
       const socFinal = parseFloat(document.getElementById('socFinal').value);
       const selectPot = document.getElementById('potencia').value;
       const precoKwh = parseFloat(document.getElementById('precoKwh').value);
-      const consumo = parseFloat(document.getElementById('consumo').value); // kWh / 100 km
+      const consumo = parseFloat(document.getElementById('consumo').value);
       const tipoCombustivel = document.getElementById('tipoCombustivel').value;
       const precoCombustivel = parseFloat(document.getElementById('precoCombustivel').value);
       const consumoCombustao = parseFloat(document.getElementById('consumoCombustao').value);
@@ -322,139 +480,129 @@
 
       const resultadoDiv = document.getElementById('resultado');
       const acoesResultado = document.getElementById('acoesResultado');
+      resultadoDiv.classList.remove('error');
 
-      // Validações básicas
       if (isNaN(capacidade) || capacidade < 40 || capacidade > 200) {
-        resultadoDiv.textContent = 'Verifica a capacidade da bateria (40–200 kWh).';
+        mostrarErro(resultadoDiv, acoesResultado, 'Verifique a capacidade da bateria (40–200 kWh).');
         return;
       }
-      if (
-        isNaN(socInicial) ||
-        isNaN(socFinal) ||
-        socInicial < 0 ||
-        socFinal > 100 ||
-        socFinal <= socInicial
-      ) {
-        resultadoDiv.textContent =
-          'Verifica os valores de percentagem (o alvo deve ser maior que o valor atual).';
+      if (isNaN(socInicial) || isNaN(socFinal) || socInicial < 0 || socFinal > 100 || socFinal <= socInicial) {
+        mostrarErro(resultadoDiv, acoesResultado, 'Verifique as percentagens (o alvo deve ser maior que o valor atual).');
         return;
       }
       if (isNaN(potencia) || potencia <= 0) {
-        resultadoDiv.textContent = 'Verifica a potência de carga (kW).';
+        mostrarErro(resultadoDiv, acoesResultado, 'Verifique a potência de carga (kW).');
         return;
       }
       if (isNaN(precoKwh) || precoKwh < 0) {
-        resultadoDiv.textContent = 'Indica um preço de energia válido (€/kWh).';
+        mostrarErro(resultadoDiv, acoesResultado, 'Indique um preço de energia válido (€/kWh).');
         return;
       }
       if (isNaN(consumo) || consumo <= 0) {
-        resultadoDiv.textContent = 'Indica um consumo médio válido (kWh / 100 km).';
+        mostrarErro(resultadoDiv, acoesResultado, 'Indique um consumo médio válido (kWh / 100 km).');
         return;
       }
       if (isNaN(precoCombustivel) || precoCombustivel <= 0) {
-        resultadoDiv.textContent = 'Indica um preço de combustível válido (€/litro).';
+        mostrarErro(resultadoDiv, acoesResultado, 'Indique um preço de combustível válido (€/litro).');
         return;
       }
       if (isNaN(consumoCombustao) || consumoCombustao <= 0) {
-        resultadoDiv.textContent = 'Indica um consumo válido para a viatura de combustão (L / 100 km).';
+        mostrarErro(resultadoDiv, acoesResultado, 'Indique um consumo válido para a viatura de combustão (L / 100 km).');
         return;
       }
 
-      // Energia necessária em kWh
-      const deltaPercent = (socFinal - socInicial) / 100.0;
-      const energiaNecessaria = capacidade * deltaPercent; // kWh
-
-      // Tempo em horas
+      const deltaPercent = (socFinal - socInicial) / 100;
+      const energiaNecessaria = capacidade * deltaPercent;
       const tempoHoras = energiaNecessaria / potencia;
-
-      // Custo estimado
       const custo = precoKwh * energiaNecessaria;
-
-      // Converter para horas e minutos
       const horasInteiras = Math.floor(tempoHoras);
       const minutos = Math.round((tempoHoras - horasInteiras) * 60);
 
-      const tempoHorasArredondado = tempoHoras.toFixed(2);
-
-      // Cálculos de kms
-      const kmPorKwh = 100.0 / consumo; // km por cada kWh
-      const kmPorHora = potencia * kmPorKwh; // km carregados por hora com a potência atual
-      const kmsAdicionados = energiaNecessaria * kmPorKwh; // km ganhos ao carregar a energiaNecessaria
+      const kmPorKwh = 100 / consumo;
+      const kmPorHora = potencia * kmPorKwh;
+      const kmsAdicionados = energiaNecessaria * kmPorKwh;
 
       const custoEletrico100km = consumo * precoKwh;
       const custoCombustao100km = consumoCombustao * precoCombustivel;
       const poupanca100km = custoCombustao100km - custoEletrico100km;
+      const custoCombustaoTotal = (kmsAdicionados / 100) * custoCombustao100km;
+      const poupancaTotal = custoCombustaoTotal - custo;
 
       const nomeCombustivel =
         tipoCombustivel === 'gasolina' ? 'gasolina' : tipoCombustivel === 'gasoleo' ? 'gasóleo' : 'combustão';
 
-      const formatadorEuro = new Intl.NumberFormat('pt-PT', {
-        style: 'currency',
-        currency: 'EUR'
-      });
+      const classeComb = tipoCombustivel || 'combustao';
 
-      const formatadorNum = new Intl.NumberFormat('pt-PT', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2
-      });
+      const formatadorEuro = new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR' });
+      const formatadorNum = new Intl.NumberFormat('pt-PT', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+
+      const classePoupanca = poupanca100km >= 0 ? '' : 'is-negative';
+      const textoPoupanca = poupanca100km >= 0 ? 'Poupança do elétrico (100 km)' : 'Diferença de custo (100 km)';
+      const classePoupancaTotal = poupancaTotal >= 0 ? '' : 'is-negative';
+      const textoPoupancaTotal = poupancaTotal >= 0
+        ? 'Poupança total desta simulação'
+        : 'Diferença total desta simulação';
 
       resultadoDiv.innerHTML =
-        '<strong>Resultados:</strong><br>' +
-        'Energia necessária: <strong>' +
-        energiaNecessaria.toFixed(2) +
-        ' kWh</strong><br>' +
-        'Potência de carga: <strong>' +
-        potencia.toFixed(2) +
-        ' kW</strong><br>' +
-        'Tarifa aplicada: <strong>' +
-        formatadorEuro.format(precoKwh) +
-        ' / kWh</strong><br>' +
-        'Custo estimado: <strong>' +
-        formatadorEuro.format(custo) +
-        '</strong><br>' +
-        'Tempo estimado: <strong>' +
-        tempoHorasArredondado +
-        ' horas</strong><br>' +
-        'Ou aproximadamente: <strong>' +
-        horasInteiras +
-        ' h ' +
-        (minutos < 10 ? '0' + minutos : minutos) +
-        ' min</strong><br><br>' +
-        '<strong>Estimativa de distância carregada:</strong><br>' +
-        'Consumo médio: <strong>' +
-        consumo.toFixed(1) +
-        ' kWh/100 km</strong><br>' +
-        'Eficiência: <strong>' +
-        formatadorNum.format(kmPorKwh) +
-        ' km / kWh</strong><br>' +
-        'Km carregados por hora (com ' +
-        potencia.toFixed(2) +
-        ' kW): <strong>' +
-        formatadorNum.format(kmPorHora) +
-        ' km/h</strong><br>' +
-        'Km aproximados adicionados ao carregar até ' +
-        socFinal +
-        '%: <strong>' +
-        formatadorNum.format(kmsAdicionados) +
-        ' km</strong><br>' +
-        '<br><strong>Comparação de custo por 100 km:</strong><br>' +
-        'Custo do carro elétrico por 100 km: <strong>' +
-        formatadorEuro.format(custoEletrico100km) +
-        '</strong><br>' +
-        'Custo da viatura de ' +
-        nomeCombustivel +
-        ' por 100 km: <strong>' +
-        formatadorEuro.format(custoCombustao100km) +
-        '</strong><br>' +
-        'Diferença / poupança por 100 km: <strong>' +
-        formatadorEuro.format(poupanca100km) +
-        '</strong><br>' +
-        '<small>(Valores teóricos; na prática podem variar por perdas, gestão da bateria e estilo de condução.)</small>';
+        '<div class="result-grid">' +
+          '<article class="metric">' +
+            '<div class="metric-label">Energia necessária</div>' +
+            '<div class="metric-value">' + formatadorNum.format(energiaNecessaria) + ' kWh</div>' +
+          '</article>' +
+          '<article class="metric">' +
+            '<div class="metric-label">Tempo estimado</div>' +
+            '<div class="metric-value">' + horasInteiras + ' h ' + (minutos < 10 ? '0' + minutos : minutos) + ' min</div>' +
+          '</article>' +
+          '<article class="metric">' +
+            '<div class="metric-label">Custo da sessão</div>' +
+            '<div class="metric-value">' + formatadorEuro.format(custo) + '</div>' +
+          '</article>' +
+          '<article class="metric">' +
+            '<div class="metric-label">Autonomia adicionada</div>' +
+            '<div class="metric-value">' + formatadorNum.format(kmsAdicionados) + ' km</div>' +
+          '</article>' +
+        '</div>' +
+
+        '<div class="comparison-grid">' +
+          '<article class="cost-card ev">' +
+            '<p class="cost-label">Elétrico / 100 km</p>' +
+            '<p class="cost-value">' + formatadorEuro.format(custoEletrico100km) + '</p>' +
+          '</article>' +
+          '<article class="cost-card ' + classeComb + '">' +
+            '<p class="cost-label">' + nomeCombustivel + ' / 100 km</p>' +
+            '<p class="cost-value">' + formatadorEuro.format(custoCombustao100km) + '</p>' +
+          '</article>' +
+        '</div>' +
+
+        '<p class="comparison-block-title">Comparação para ' + formatadorNum.format(kmsAdicionados) + ' km (total desta carga)</p>' +
+        '<div class="comparison-grid">' +
+          '<article class="cost-card ev">' +
+            '<p class="cost-label">Elétrico / total da simulação</p>' +
+            '<p class="cost-value">' + formatadorEuro.format(custo) + '</p>' +
+          '</article>' +
+          '<article class="cost-card ' + classeComb + '">' +
+            '<p class="cost-label">' + nomeCombustivel + ' / total da simulação</p>' +
+            '<p class="cost-value">' + formatadorEuro.format(custoCombustaoTotal) + '</p>' +
+          '</article>' +
+        '</div>' +
+
+        '<div class="saving-banner ' + classePoupancaTotal + '">' +
+          '<span class="saving-label">' + textoPoupancaTotal + '</span>' +
+          '<div class="saving-value">' + formatadorEuro.format(poupancaTotal) + '</div>' +
+        '</div>' +
+
+        '<div class="saving-banner ' + classePoupanca + '">' +
+          '<span class="saving-label">' + textoPoupanca + '</span>' +
+          '<div class="saving-value">' + formatadorEuro.format(poupanca100km) + '</div>' +
+        '</div>' +
+
+        '<div class="footnote">Potência usada: ' + potencia.toFixed(2) + ' kW · Eficiência: ' +
+        formatadorNum.format(kmPorKwh) + ' km/kWh · Ganho por hora: ' + formatadorNum.format(kmPorHora) +
+        ' km/h. Valores teóricos sujeitos a perdas e estilo de condução.</div>';
 
       acoesResultado.style.display = 'flex';
     }
 
-    // Ligar eventos quando a página carregar
     window.addEventListener('DOMContentLoaded', () => {
       const selectPotencia = document.getElementById('potencia');
       const btnCalcular = document.getElementById('btnCalcular');
