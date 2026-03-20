@@ -619,7 +619,8 @@
       const timeoutId = setTimeout(() => controller.abort(), 8000);
 
       try {
-        const response = await fetch('/api/precos-combustiveis', {
+        // GitHub Pages é estático (sem backend/serverless), por isso usamos um JSON local versionado no repositório.
+        const response = await fetch('./dados/precos-combustiveis.json', {
           method: 'GET',
           headers: { Accept: 'application/json' },
           signal: controller.signal,
@@ -633,8 +634,9 @@
         const data = await response.json();
         const gasolina95 = validarPreco(data.gasolina95);
         const gasoleoSimples = validarPreco(data.gasoleoSimples);
-        const dataRef = typeof data.data === 'string' ? data.data : '';
-        const fonte = typeof data.fonte === 'string' ? data.fonte : 'DGEG';
+        const dataOriginal = typeof data.data === 'string' ? data.data.trim() : '';
+        const dataRef = dataOriginal.length >= 10 ? dataOriginal.slice(0, 10) : '';
+        const fonte = typeof data.fonte === 'string' && data.fonte.trim() ? data.fonte.trim() : 'DGEG';
 
         if (!gasolina95 || !gasoleoSimples || !/^\d{4}-\d{2}-\d{2}$/.test(dataRef)) {
           throw new Error('JSON inválido.');
@@ -645,6 +647,7 @@
         sincronizarPrecoCombustivel();
         definirInfoCombustiveis({ fonte: fonte, data: dataRef });
       } catch (error) {
+        console.error('Falha no carregamento automático dos preços de combustíveis:', error);
         definirInfoCombustiveis({ erro: mensagemErro });
       } finally {
         clearTimeout(timeoutId);
