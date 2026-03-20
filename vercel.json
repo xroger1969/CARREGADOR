@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/precos-combustiveis.js": {
+      "maxDuration": 10
+    }
+  }
+}
