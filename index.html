@@ -355,6 +355,14 @@
       color: var(--muted);
     }
 
+    .fuel-auto-meta .line {
+      display: block;
+    }
+
+    .fuel-auto-meta .hidden {
+      display: none;
+    }
+
     .fuel-auto-meta .error {
       color: #9f1239;
     }
@@ -485,7 +493,11 @@
         </div>
       </div>
 
-      <div id="fuelAutoMeta" class="fuel-auto-meta" aria-live="polite"></div>
+      <div id="fuelAutoMeta" class="fuel-auto-meta" aria-live="polite">
+        <span id="fuelAutoMetaSource" class="line hidden"></span>
+        <span id="fuelAutoMetaDate" class="line hidden"></span>
+        <span id="fuelAutoMetaError" class="line error hidden"></span>
+      </div>
     </section>
 
     <div class="cta-wrap">
@@ -568,11 +580,32 @@
       }
     }
 
-    function definirInfoCombustiveis(texto, isError) {
-      const fuelAutoMeta = document.getElementById('fuelAutoMeta');
-      fuelAutoMeta.innerHTML = isError
-        ? '<span class="error">' + texto + '</span>'
-        : texto;
+    function definirInfoCombustiveis(info) {
+      const sourceEl = document.getElementById('fuelAutoMetaSource');
+      const dateEl = document.getElementById('fuelAutoMetaDate');
+      const errorEl = document.getElementById('fuelAutoMetaError');
+
+      sourceEl.classList.add('hidden');
+      dateEl.classList.add('hidden');
+      errorEl.classList.add('hidden');
+
+      if (info && info.erro) {
+        errorEl.textContent = info.erro;
+        errorEl.classList.remove('hidden');
+        return;
+      }
+
+      if (!info) return;
+
+      if (info.fonte) {
+        sourceEl.textContent = 'Origem dos dados: ' + info.fonte + '.';
+        sourceEl.classList.remove('hidden');
+      }
+
+      if (info.data) {
+        dateEl.textContent = 'Data de referência: ' + info.data + '.';
+        dateEl.classList.remove('hidden');
+      }
     }
 
     function validarPreco(valor) {
@@ -586,7 +619,8 @@
       const timeoutId = setTimeout(() => controller.abort(), 8000);
 
       try {
-        const response = await fetch('/api/precos-combustiveis', {
+        // GitHub Pages é estático (sem backend/serverless), por isso usamos um JSON local versionado no repositório.
+        const response = await fetch('./dados/precos-combustiveis.json', {
           method: 'GET',
           headers: { Accept: 'application/json' },
           signal: controller.signal,
@@ -601,18 +635,19 @@
         const gasolina95 = validarPreco(data.gasolina95);
         const gasoleoSimples = validarPreco(data.gasoleoSimples);
         const dataRef = typeof data.data === 'string' ? data.data : '';
-        const fonte = typeof data.fonte === 'string' ? data.fonte : 'DGEG';
+        const fonte = typeof data.fonte === 'string' ? data.fonte.trim() : '';
 
-        if (!gasolina95 || !gasoleoSimples || !/^\\d{4}-\\d{2}-\\d{2}$/.test(dataRef)) {
+        if (!gasolina95 || !gasoleoSimples || !fonte || !/^\d{4}-\d{2}-\d{2}$/.test(dataRef)) {
           throw new Error('JSON inválido.');
         }
 
         document.getElementById('precoGasolina95').value = gasolina95.toFixed(3);
         document.getElementById('precoGasoleoSimples').value = gasoleoSimples.toFixed(3);
         sincronizarPrecoCombustivel();
-        definirInfoCombustiveis('Preços médios diários oficiais (' + fonte + ') · Data: ' + dataRef + '.', false);
+        definirInfoCombustiveis({ fonte: fonte, data: dataRef });
       } catch (error) {
-        definirInfoCombustiveis(mensagemErro, true);
+        console.error('Falha no carregamento automático dos preços de combustíveis:', error);
+        definirInfoCombustiveis({ erro: mensagemErro });
       } finally {
         clearTimeout(timeoutId);
       }
