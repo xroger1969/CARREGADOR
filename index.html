@@ -349,23 +349,6 @@
       color: var(--muted);
     }
 
-    .fuel-auto-meta {
-      margin-top: 8px;
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
-
-    .fuel-auto-meta .line {
-      display: block;
-    }
-
-    .fuel-auto-meta .hidden {
-      display: none;
-    }
-
-    .fuel-auto-meta .error {
-      color: #9f1239;
-    }
 
     @media (min-width: 861px) {
       .theme-results {
@@ -493,11 +476,6 @@
         </div>
       </div>
 
-      <div id="fuelAutoMeta" class="fuel-auto-meta" aria-live="polite">
-        <span id="fuelAutoMetaSource" class="line hidden"></span>
-        <span id="fuelAutoMetaDate" class="line hidden"></span>
-        <span id="fuelAutoMetaError" class="line error hidden"></span>
-      </div>
     </section>
 
     <div class="cta-wrap">
@@ -577,85 +555,6 @@
         precoCombustivel.value = precoGasolina95.value;
       } else if (tipoCombustivel === 'gasoleo' && precoGasoleoSimples.value) {
         precoCombustivel.value = precoGasoleoSimples.value;
-      }
-    }
-
-    function definirInfoCombustiveis(info) {
-      const sourceEl = document.getElementById('fuelAutoMetaSource');
-      const dateEl = document.getElementById('fuelAutoMetaDate');
-      const errorEl = document.getElementById('fuelAutoMetaError');
-
-      sourceEl.classList.add('hidden');
-      dateEl.classList.add('hidden');
-      errorEl.classList.add('hidden');
-
-      if (info && info.erro) {
-        errorEl.textContent = info.erro;
-        errorEl.classList.remove('hidden');
-        return;
-      }
-
-      if (!info) return;
-
-      if (info.fonte) {
-        sourceEl.textContent = 'Origem dos dados: ' + info.fonte + '.';
-        sourceEl.classList.remove('hidden');
-      }
-
-      if (info.data) {
-        dateEl.textContent = 'Data de referência: ' + info.data + '.';
-        dateEl.classList.remove('hidden');
-      }
-    }
-
-    function validarPreco(valor) {
-      const numero = Number.parseFloat(valor);
-      return Number.isFinite(numero) && numero > 0 ? numero : null;
-    }
-
-    async function carregarPrecosCombustiveis() {
-      const mensagemErro = 'Não foi possível atualizar automaticamente os preços dos combustíveis.';
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 8000);
-
-      try {
-        // Em produção Vercel, esta chamada usa uma Function serverless para obter dados atuais da DGEG.
-        const response = await fetch('/api/precos-combustiveis', {
-          method: 'GET',
-          headers: { Accept: 'application/json' },
-          signal: controller.signal,
-          cache: 'no-store'
-        });
-
-        if (!response.ok) {
-          throw new Error('HTTP ' + response.status);
-        }
-
-        const data = await response.json();
-        if (!data || typeof data !== 'object') {
-          throw new Error('JSON inválido: payload ausente ou não é objeto.');
-        }
-
-        const gasolina95 = validarPreco(data.gasolina95);
-        const gasoleoSimples = validarPreco(data.gasoleoSimples);
-        const dataOriginal = typeof data.data === 'string' ? data.data.trim() : '';
-        const dataRef = dataOriginal.length >= 10 ? dataOriginal.slice(0, 10) : '';
-        const fonte = typeof data.fonte === 'string' && data.fonte.trim() ? data.fonte.trim() : 'DGEG';
-
-        if (!gasolina95 || !gasoleoSimples || !/^\d{4}-\d{2}-\d{2}$/.test(dataRef)) {
-          throw new Error('JSON inválido: gasolina95/gasoleoSimples/data fora do formato esperado.');
-        }
-
-        document.getElementById('precoGasolina95').value = gasolina95.toFixed(3);
-        document.getElementById('precoGasoleoSimples').value = gasoleoSimples.toFixed(3);
-        sincronizarPrecoCombustivel();
-        definirInfoCombustiveis({ fonte: fonte, data: dataRef });
-      } catch (error) {
-        const causa = error instanceof Error ? error.message : String(error);
-        console.error('Falha no carregamento automático dos preços de combustíveis. Causa:', causa, error);
-        definirInfoCombustiveis({ erro: mensagemErro });
-      } finally {
-        clearTimeout(timeoutId);
       }
     }
 
@@ -801,7 +700,6 @@
       precoGasoleoSimples.addEventListener('input', sincronizarPrecoCombustivel);
 
       sincronizarPrecoCombustivel();
-      carregarPrecosCombustiveis();
     });
   </script>
 </body>
