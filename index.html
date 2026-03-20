@@ -619,8 +619,8 @@
       const timeoutId = setTimeout(() => controller.abort(), 8000);
 
       try {
-        // GitHub Pages é estático (sem backend/serverless), por isso usamos um JSON local versionado no repositório.
-        const response = await fetch('./dados/precos-combustiveis.json', {
+        // Em produção Vercel, esta chamada usa uma Function serverless para obter dados atuais da DGEG.
+        const response = await fetch('/api/precos-combustiveis', {
           method: 'GET',
           headers: { Accept: 'application/json' },
           signal: controller.signal,
@@ -632,6 +632,10 @@
         }
 
         const data = await response.json();
+        if (!data || typeof data !== 'object') {
+          throw new Error('JSON inválido: payload ausente ou não é objeto.');
+        }
+
         const gasolina95 = validarPreco(data.gasolina95);
         const gasoleoSimples = validarPreco(data.gasoleoSimples);
         const dataOriginal = typeof data.data === 'string' ? data.data.trim() : '';
@@ -639,7 +643,7 @@
         const fonte = typeof data.fonte === 'string' && data.fonte.trim() ? data.fonte.trim() : 'DGEG';
 
         if (!gasolina95 || !gasoleoSimples || !/^\d{4}-\d{2}-\d{2}$/.test(dataRef)) {
-          throw new Error('JSON inválido.');
+          throw new Error('JSON inválido: gasolina95/gasoleoSimples/data fora do formato esperado.');
         }
 
         document.getElementById('precoGasolina95').value = gasolina95.toFixed(3);
@@ -647,7 +651,8 @@
         sincronizarPrecoCombustivel();
         definirInfoCombustiveis({ fonte: fonte, data: dataRef });
       } catch (error) {
-        console.error('Falha no carregamento automático dos preços de combustíveis:', error);
+        const causa = error instanceof Error ? error.message : String(error);
+        console.error('Falha no carregamento automático dos preços de combustíveis. Causa:', causa, error);
         definirInfoCombustiveis({ erro: mensagemErro });
       } finally {
         clearTimeout(timeoutId);
