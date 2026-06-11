@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mundial 2026 Portugal</title>
+  <meta name="description" content="Guia rápido da seleção de Portugal no Mundial 2026: Grupo K, calendário, horários em Portugal continental e adversários.">
+  <style>
+    :root {
+      --green: #006747;
+      --green-dark: #003f2c;
+      --red: #da291c;
+      --gold: #ffcc33;
+      --ink: #102019;
+      --muted: #5f6f68;
+      --paper: #fffaf0;
+      --card: rgba(255, 255, 255, 0.92);
+      --line: rgba(0, 103, 71, 0.18);
+      --shadow: 0 24px 70px rgba(0, 45, 30, 0.2);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: Inter, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+      background:
+        radial-gradient(circle at 12% 12%, rgba(255, 204, 51, 0.32), transparent 28%),
+        radial-gradient(circle at 85% 8%, rgba(218, 41, 28, 0.22), transparent 30%),
+        linear-gradient(135deg, #f7fff8 0%, #fff7e1 42%, #f2fff7 100%);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 34px 18px 28px;
+      background:
+        linear-gradient(120deg, rgba(0, 103, 71, 0.95), rgba(0, 63, 44, 0.92) 52%, rgba(218, 41, 28, 0.92));
+      color: white;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    .hero::before {
+      width: 420px;
+      height: 420px;
+      right: -170px;
+      top: -170px;
+      background: rgba(255, 204, 51, 0.24);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .hero::after {
+      width: 210px;
+      height: 210px;
+      left: -90px;
+      bottom: -120px;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .wrap {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 52px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--green), var(--red));
+      border: 2px solid rgba(255, 255, 255, 0.84);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+      font-size: 1.4rem;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      font-size: 0.92rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    h1 {
+      max-width: 820px;
+      margin: 0;
+      font-size: clamp(2.3rem, 7vw, 5.9rem);
+      line-height: 0.95;
+      letter-spacing: -0.075em;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 22px 0 0;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: clamp(1.05rem, 2vw, 1.32rem);
+      line-height: 1.55;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 46px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      color: var(--green-dark);
+      background: var(--gold);
+      text-decoration: none;
+      font-weight: 900;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 34px rgba(0, 0, 0, 0.22);
+    }
+
+    .button.secondary {
+      color: white;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      box-shadow: none;
+    }
+
+    main {
+      padding: 28px 18px 56px;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(14px);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border-bottom: 1px solid var(--line);
+    }
+
+    .stat {
+      padding: 22px;
+      border-right: 1px solid var(--line);
+    }
+
+    .stat:last-child { border-right: 0; }
+
+    .label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .value {
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      font-weight: 950;
+      letter-spacing: -0.04em;
+    }
+
+    .section {
+      padding: 28px;
+    }
+
+    .section + .section {
+      border-top: 1px solid var(--line);
+    }
+
+    .section-title {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      margin: 0;
+      color: var(--green-dark);
+      font-size: clamp(1.45rem, 3vw, 2.3rem);
+      letter-spacing: -0.05em;
+    }
+
+    .note {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+
+    .fixtures {
+      display: grid;
+      gap: 14px;
+    }
+
+    .match {
+      display: grid;
+      grid-template-columns: 150px minmax(0, 1fr) 180px;
+      gap: 18px;
+      align-items: center;
+      padding: 18px;
+      border: 1px solid rgba(0, 103, 71, 0.16);
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(255, 250, 240, 0.9));
+    }
+
+    .date {
+      font-weight: 950;
+      color: var(--red);
+      line-height: 1.25;
+    }
+
+    .date span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 800;
+      margin-top: 3px;
+    }
+
+    .teams {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      font-size: clamp(1.12rem, 2vw, 1.45rem);
+      font-weight: 950;
+      letter-spacing: -0.03em;
+    }
+
+    .versus {
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .venue {
+      color: var(--muted);
+      font-weight: 750;
+      line-height: 1.45;
+    }
+
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .timebox {
+      padding: 18px;
+      text-align: center;
+      border-radius: 20px;
+      background: linear-gradient(180deg, var(--green), var(--green-dark));
+      color: white;
+      box-shadow: 0 14px 28px rgba(0, 63, 44, 0.18);
+    }
+
+    .timebox strong {
+      display: block;
+      font-size: clamp(1.8rem, 5vw, 3.2rem);
+      letter-spacing: -0.06em;
+    }
+
+    .timebox span {
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .info-card {
+      min-height: 170px;
+      padding: 20px;
+      border-radius: 22px;
+      color: white;
+      background: linear-gradient(145deg, var(--green), var(--green-dark));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .info-card:nth-child(2) { background: linear-gradient(145deg, #b91c1c, var(--red)); }
+    .info-card:nth-child(3) { background: linear-gradient(145deg, #b7791f, #7a4b00); }
+
+    .info-card::after {
+      content: "";
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      right: -70px;
+      bottom: -80px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .info-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.18rem;
+    }
+
+    .info-card p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.82);
+      line-height: 1.55;
+    }
+
+    footer {
+      padding: 0 18px 30px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 820px) {
+      .topbar,
+      .section-title {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .stats,
+      .cards,
+      .countdown {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .stat:nth-child(2) { border-right: 0; }
+      .stat:nth-child(-n + 2) { border-bottom: 1px solid var(--line); }
+
+      .match {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .hero { padding-top: 22px; }
+      .topbar { margin-bottom: 38px; }
+      .pill { white-space: normal; }
+      .stats,
+      .cards,
+      .countdown { grid-template-columns: 1fr; }
+      .stat { border-right: 0; border-bottom: 1px solid var(--line); }
+      .stat:last-child { border-bottom: 0; }
+      .section { padding: 22px; }
+      .match { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <nav class="topbar" aria-label="Topo da página">
+        <div class="brand"><span class="badge" aria-hidden="true">🇵🇹</span> Portugal 2026</div>
+        <div class="pill">🏆 FIFA World Cup 2026 · Grupo K</div>
+      </nav>
+
+      <h1>Mundial 2026: Portugal</h1>
+      <p class="lead">Calendário rápido para acompanhar a seleção portuguesa na fase de grupos, com horários em Portugal continental, adversários e estádios.</p>
+      <div class="hero-actions">
+        <a class="button" href="#calendario">Ver jogos</a>
+        <a class="button secondary" href="#contagem">Contagem para a estreia</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap panel" aria-label="Resumo de Portugal no Mundial 2026">
+      <section class="stats" aria-label="Dados principais">
+        <div class="stat">
+          <span class="label">Grupo</span>
+          <span class="value">K</span>
+        </div>
+        <div class="stat">
+          <span class="label">Adversários</span>
+          <span class="value">RD Congo · Uzbequistão · Colômbia</span>
+        </div>
+        <div class="stat">
+          <span class="label">Estreia</span>
+          <span class="value">17 jun</span>
+        </div>
+        <div class="stat">
+          <span class="label">Países-sede</span>
+          <span class="value">Canadá · EUA · México</span>
+        </div>
+      </section>
+
+      <section id="calendario" class="section">
+        <div class="section-title">
+          <h2>Calendário de Portugal</h2>
+          <p class="note">Horários apresentados para Portugal continental (WEST/UTC+1). Confirma sempre o horário oficial antes do jogo.</p>
+        </div>
+
+        <div class="fixtures">
+          <article class="match">
+            <div class="date">17 junho 2026 <span>18:00</span></div>
+            <div class="teams"><span>🇵🇹 Portugal</span><span class="versus">vs</span><span>🇨🇩 RD Congo</span></div>
+            <div class="venue">Houston Stadium<br>Houston, EUA</div>
+          </article>
+
+          <article class="match">
+            <div class="date">23 junho 2026 <span>18:00</span></div>
+            <div class="teams"><span>🇵🇹 Portugal</span><span class="versus">vs</span><span>🇺🇿 Uzbequistão</span></div>
+            <div class="venue">Houston Stadium<br>Houston, EUA</div>
+          </article>
+
+          <article class="match">
+            <div class="date">28 junho 2026 <span>00:30</span></div>
+            <div class="teams"><span>🇨🇴 Colômbia</span><span class="versus">vs</span><span>🇵🇹 Portugal</span></div>
+            <div class="venue">Miami Stadium<br>Miami Gardens, EUA</div>
+          </article>
+        </div>
+      </section>
+
+      <section id="contagem" class="section">
+        <div class="section-title">
+          <h2>Contagem para a estreia</h2>
+          <p class="note">Primeiro jogo: Portugal vs RD Congo, 17 de junho de 2026, às 18:00 em Portugal continental.</p>
+        </div>
+        <div class="countdown" aria-live="polite">
+          <div class="timebox"><strong id="days">--</strong><span>Dias</span></div>
+          <div class="timebox"><strong id="hours">--</strong><span>Horas</span></div>
+          <div class="timebox"><strong id="minutes">--</strong><span>Minutos</span></div>
+          <div class="timebox"><strong id="seconds">--</strong><span>Segundos</span></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <h2>Notas rápidas</h2>
+          <p class="note">Um resumo simples para partilhar antes de cada jogo.</p>
+        </div>
+        <div class="cards">
+          <article class="info-card">
+            <h3>Objetivo</h3>
+            <p>Terminar no topo do Grupo K e garantir uma posição forte para a fase a eliminar.</p>
+          </article>
+          <article class="info-card">
+            <h3>Jogo grande</h3>
+            <p>O duelo com a Colômbia fecha o grupo e pode ser decisivo para a classificação final.</p>
+          </article>
+          <article class="info-card">
+            <h3>Ambiente</h3>
+            <p>Dois jogos em Houston e um em Miami prometem forte presença de adeptos portugueses.</p>
+          </article>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    Página estática criada para consulta rápida. Última atualização do conteúdo: 11 de junho de 2026.
+  </footer>
+
+  <script>
+    const opener = new Date('2026-06-17T18:00:00+01:00').getTime();
+    const fields = {
+      days: document.getElementById('days'),
+      hours: document.getElementById('hours'),
+      minutes: document.getElementById('minutes'),
+      seconds: document.getElementById('seconds')
+    };
+
+    function pad(value) {
+      return String(value).padStart(2, '0');
+    }
+
+    function updateCountdown() {
+      const remaining = Math.max(0, opener - Date.now());
+      const totalSeconds = Math.floor(remaining / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      fields.days.textContent = days;
+      fields.hours.textContent = pad(hours);
+      fields.minutes.textContent = pad(minutes);
+      fields.seconds.textContent = pad(seconds);
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
