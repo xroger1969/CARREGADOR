@@ -1,0 +1,100 @@
+name: One-time tariff cleanup
+
+on:
+  push:
+    paths:
+      - '.trigger-tariff-cleanup'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clean tariff section
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          section_pattern = r'(<section class="card theme-tariffs">\s*<h2>5\. Tarifários de carregamento</h2>).*?(<div id="listaTarifarios" class="tariff-grid" aria-live="polite"></div>\s*</section>)'
+          section_replacement = '''<section class="card theme-tariffs">
+        <h2>5. Tarifários de carregamento</h2>
+
+        <div class="tariff-actions">
+          <button id="btnTarifarios" class="btn-secondary is-purple" type="button">Atualizar tarifários</button>
+        </div>
+
+        <div id="listaTarifarios" class="tariff-grid" aria-live="polite"></div>
+      </section>'''
+
+          s, count = re.subn(section_pattern, section_replacement, s, count=1, flags=re.S)
+          if count != 1:
+              raise SystemExit('Secção de tarifários não encontrada para limpeza.')
+
+          # A caixa de estado foi removida do HTML. O JavaScript fica preparado para funcionar sem ela.
+          s = s.replace("#resultado.error, #estadoTarifarios.error", "#resultado.error")
+
+          s = s.replace("""    async function carregarTarifarios() {
+      const estado = document.getElementById('estadoTarifarios');
+      const lista = document.getElementById('listaTarifarios');
+      estado.classList.remove('error');
+      estado.textContent = 'A carregar tarifários da API Aberta...';
+      lista.innerHTML = '';
+
+      try {
+        const resposta = await fetch(ENDPOINT_TARIFARIOS, { method: 'GET', headers: { 'Accept': 'application/json' } });
+        if (!resposta.ok) throw new Error('Resposta inválida da API');
+
+        const dados = await resposta.json();
+        const tarifarios = extrairListaTarifarios(dados);
+        desenharTarifarios(tarifarios);
+        estado.textContent = 'Tarifários carregados. A apresentação agora dá prioridade aos preços úteis e oculta campos a zero.';
+      } catch (erro) {
+        estado.classList.add('error');
+        estado.textContent = 'Não foi possível carregar os tarifários diretamente no navegador. Use o botão “Abrir dados da API” para consultar o endpoint.';
+        desenharTarifarios([]);
+      }
+    }""", """    async function carregarTarifarios() {
+      const lista = document.getElementById('listaTarifarios');
+      lista.innerHTML = '';
+
+      try {
+        const resposta = await fetch(ENDPOINT_TARIFARIOS, { method: 'GET', headers: { 'Accept': 'application/json' } });
+        if (!resposta.ok) throw new Error('Resposta inválida da API');
+
+        const dados = await resposta.json();
+        const tarifarios = extrairListaTarifarios(dados);
+        desenharTarifarios(tarifarios);
+      } catch (erro) {
+        desenharTarifarios([]);
+      }
+    }""")
+
+          if '.github/workflows/one-time-tariff-cleanup.yml' in s:
+              raise SystemExit('Erro inesperado: referência ao workflow dentro do index.html.')
+
+          p.write_text(s, encoding='utf-8')
+
+          Path('.trigger-tariff-cleanup').unlink(missing_ok=True)
+          Path('.github/workflows/one-time-tariff-cleanup.yml').unlink(missing_ok=True)
+          PY
+
+      - name: Commit cleanup
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html .github/workflows/one-time-tariff-cleanup.yml .trigger-tariff-cleanup
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Limpar secção de tarifários"
+          git push
