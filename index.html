@@ -359,8 +359,7 @@
       color: var(--muted);
     }
 
-    #resultado.error,
-    #estadoCarregadores.error {
+    #resultado.error {
       margin-top: 12px;
       border-radius: 10px;
       border: 1px solid #fecdd3;
@@ -410,7 +409,11 @@
 
     #estadoCarregadores {
       margin: 6px 0 12px;
-      color: var(--muted);
+      border: 1px solid #bae6fd;
+      border-radius: 12px;
+      background: #f0f9ff;
+      color: #075985;
+      padding: 10px 12px;
       font-size: 0.9rem;
       line-height: 1.45;
     }
@@ -437,30 +440,10 @@
       text-decoration: none;
     }
 
-    .station-name:hover {
-      text-decoration: underline;
-    }
-
     .station-meta {
       color: var(--muted);
       font-size: 0.84rem;
       line-height: 1.45;
-    }
-
-    .status-pill {
-      display: inline-block;
-      margin-top: 8px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: #e0f2fe;
-      color: #075985;
-      font-size: 0.75rem;
-      font-weight: 700;
-    }
-
-    .status-available {
-      background: #dcfce7;
-      color: #166534;
     }
 
     .map-frame {
@@ -620,8 +603,8 @@
       <section class="card theme-chargers">
         <h2>4. Postos de carregamento próximos</h2>
         <p class="charger-intro">
-          Consulte pontos de carregamento próximos através da rede pública Open Charge Map.
-          Por defeito, a pesquisa começa em Almada; também pode usar a sua localização atual.
+          Consulte pontos de carregamento próximos através do mapa público Open Charge Map.
+          Por defeito, o mapa abre em Almada; também pode usar a sua localização atual.
         </p>
 
         <div class="charger-actions">
@@ -631,8 +614,18 @@
           </a>
         </div>
 
-        <div id="estadoCarregadores">A carregar postos públicos perto de Almada...</div>
-        <div id="listaCarregadores" class="station-list" aria-live="polite"></div>
+        <div id="estadoCarregadores">Mapa Open Charge Map carregado em Almada. Use o botão acima para centrar na sua localização.</div>
+
+        <div class="station-list">
+          <article class="station-item">
+            <strong class="station-name">Mapa interativo</strong>
+            <div class="station-meta">Pode deslocar o mapa, aproximar, afastar e tocar nos marcadores para ver os detalhes dos postos.</div>
+          </article>
+          <article class="station-item">
+            <strong class="station-name">Consulta em tempo real</strong>
+            <div class="station-meta">Para confirmar disponibilidade, potência e preços, abra o mapa completo ou consulte o operador do posto.</div>
+          </article>
+        </div>
 
         <iframe
           id="mapaOpenChargeMap"
@@ -849,146 +842,37 @@
       return 'https://map.openchargemap.io/?latitude=' + lat + '&longitude=' + lon + '&zoom=' + zoom;
     }
 
-    function atualizarMapaOpenChargeMap(latitude, longitude) {
+    function atualizarMapaOpenChargeMap(latitude, longitude, etiqueta = 'Almada') {
       const mapa = document.getElementById('mapaOpenChargeMap');
       const linkMapa = document.getElementById('btnAbrirMapaOCM');
+      const estado = document.getElementById('estadoCarregadores');
       const url = criarUrlMapa(latitude, longitude);
+
       mapa.src = url;
       linkMapa.href = url;
-    }
-
-    function atualizarEstadoCarregadores(mensagem, isErro = false) {
-      const estado = document.getElementById('estadoCarregadores');
-      estado.classList.toggle('error', isErro);
-      estado.textContent = mensagem;
-    }
-
-    function formatarDistancia(valor) {
-      if (typeof valor !== 'number' || Number.isNaN(valor)) {
-        return '';
-      }
-
-      return valor.toFixed(1).replace('.', ',') + ' km';
-    }
-
-    function obterPotenciaMaxima(conexoes) {
-      if (!Array.isArray(conexoes)) {
-        return '';
-      }
-
-      const potencias = conexoes
-        .map(conexao => Number(conexao.PowerKW))
-        .filter(valor => !Number.isNaN(valor) && valor > 0);
-
-      if (!potencias.length) {
-        return '';
-      }
-
-      return Math.max(...potencias).toFixed(0) + ' kW';
-    }
-
-    function obterEstadoPosto(posto) {
-      if (posto.StatusType && posto.StatusType.Title) {
-        return posto.StatusType.Title;
-      }
-
-      const conexoes = Array.isArray(posto.Connections) ? posto.Connections : [];
-      const conexaoComEstado = conexoes.find(conexao => conexao.StatusType && conexao.StatusType.Title);
-      return conexaoComEstado ? conexaoComEstado.StatusType.Title : 'Estado a confirmar';
-    }
-
-    function desenharPostos(postos) {
-      const lista = document.getElementById('listaCarregadores');
-      lista.innerHTML = '';
-
-      if (!Array.isArray(postos) || postos.length === 0) {
-        lista.innerHTML =
-          '<article class="station-item">' +
-            '<strong>Sem resultados imediatos.</strong>' +
-            '<div class="station-meta">Abra o mapa completo para pesquisar manualmente outros pontos de carregamento.</div>' +
-          '</article>';
-        return;
-      }
-
-      postos.forEach(posto => {
-        const morada = posto.AddressInfo || {};
-        const operador = posto.OperatorInfo && posto.OperatorInfo.Title ? posto.OperatorInfo.Title : 'Operador não indicado';
-        const titulo = morada.Title || 'Posto de carregamento';
-        const localidade = [morada.Town, morada.Postcode].filter(Boolean).join(' · ');
-        const distancia = formatarDistancia(morada.Distance);
-        const potencia = obterPotenciaMaxima(posto.Connections);
-        const estado = obterEstadoPosto(posto);
-        const latitude = morada.Latitude || LOCALIZACAO_PADRAO.latitude;
-        const longitude = morada.Longitude || LOCALIZACAO_PADRAO.longitude;
-        const urlMapa = criarUrlMapa(latitude, longitude, 16);
-        const estadoDisponivel = /available|operational|dispon/i.test(estado);
-        const meta = [operador, localidade, distancia, potencia].filter(Boolean).join(' · ');
-
-        const artigo = document.createElement('article');
-        artigo.className = 'station-item';
-        artigo.innerHTML =
-          '<a class="station-name" href="' + urlMapa + '" target="_blank" rel="noopener">' + titulo + '</a>' +
-          '<div class="station-meta">' + (meta || 'Detalhes a confirmar no mapa.') + '</div>' +
-          '<span class="status-pill ' + (estadoDisponivel ? 'status-available' : '') + '">' + estado + '</span>';
-
-        lista.appendChild(artigo);
-      });
-    }
-
-    async function carregarPostos(latitude, longitude, etiqueta = 'esta zona') {
-      atualizarMapaOpenChargeMap(latitude, longitude);
-      atualizarEstadoCarregadores('A procurar postos de carregamento perto de ' + etiqueta + '...');
-      document.getElementById('listaCarregadores').innerHTML = '';
-
-      const parametros = new URLSearchParams({
-        output: 'json',
-        countrycode: 'PT',
-        latitude: String(latitude),
-        longitude: String(longitude),
-        distance: '20',
-        distanceunit: 'KM',
-        maxresults: '6',
-        compact: 'true',
-        verbose: 'false'
-      });
-
-      try {
-        const resposta = await fetch('https://api.openchargemap.io/v3/poi/?' + parametros.toString());
-
-        if (!resposta.ok) {
-          throw new Error('Resposta inválida da API');
-        }
-
-        const dados = await resposta.json();
-        desenharPostos(dados);
-        atualizarEstadoCarregadores('Postos públicos encontrados perto de ' + etiqueta + '.');
-      } catch (erro) {
-        desenharPostos([]);
-        atualizarEstadoCarregadores(
-          'Não foi possível carregar a lista automática agora. Use o botão “Abrir mapa completo” para consultar a rede Open Charge Map.',
-          true
-        );
-      }
+      estado.textContent = 'Mapa Open Charge Map centrado em ' + etiqueta + '. Toque nos marcadores do mapa para ver os detalhes dos postos.';
     }
 
     function usarLocalizacaoAtual() {
+      const estado = document.getElementById('estadoCarregadores');
+
       if (!navigator.geolocation) {
-        atualizarEstadoCarregadores('O navegador não permite obter localização. A mostrar Almada por defeito.', true);
-        carregarPostos(LOCALIZACAO_PADRAO.latitude, LOCALIZACAO_PADRAO.longitude, LOCALIZACAO_PADRAO.etiqueta);
+        estado.textContent = 'O navegador não permite obter localização. O mapa continua centrado em Almada.';
+        atualizarMapaOpenChargeMap(LOCALIZACAO_PADRAO.latitude, LOCALIZACAO_PADRAO.longitude, LOCALIZACAO_PADRAO.etiqueta);
         return;
       }
 
-      atualizarEstadoCarregadores('A pedir permissão para usar a sua localização...');
+      estado.textContent = 'A pedir permissão para usar a sua localização...';
 
       navigator.geolocation.getCurrentPosition(
         posicao => {
           const latitude = posicao.coords.latitude;
           const longitude = posicao.coords.longitude;
-          carregarPostos(latitude, longitude, 'a sua localização');
+          atualizarMapaOpenChargeMap(latitude, longitude, 'a sua localização');
         },
         () => {
-          atualizarEstadoCarregadores('Localização não autorizada. A mostrar Almada por defeito.', true);
-          carregarPostos(LOCALIZACAO_PADRAO.latitude, LOCALIZACAO_PADRAO.longitude, LOCALIZACAO_PADRAO.etiqueta);
+          estado.textContent = 'Localização não autorizada. O mapa continua centrado em Almada.';
+          atualizarMapaOpenChargeMap(LOCALIZACAO_PADRAO.latitude, LOCALIZACAO_PADRAO.longitude, LOCALIZACAO_PADRAO.etiqueta);
         },
         {
           enableHighAccuracy: true,
@@ -1018,7 +902,7 @@
       btnCarregadores.addEventListener('click', usarLocalizacaoAtual);
 
       sincronizarPrecoCombustivel();
-      carregarPostos(LOCALIZACAO_PADRAO.latitude, LOCALIZACAO_PADRAO.longitude, LOCALIZACAO_PADRAO.etiqueta);
+      atualizarMapaOpenChargeMap(LOCALIZACAO_PADRAO.latitude, LOCALIZACAO_PADRAO.longitude, LOCALIZACAO_PADRAO.etiqueta);
     });
   </script>
 </body>
