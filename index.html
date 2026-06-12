@@ -159,10 +159,20 @@
     .theme-ev h2 { color: var(--ev); }
     .theme-comb h2 { color: #9a3412; }
     .theme-results h2 { color: #1e3a8a; }
+    .theme-chargers h2 { color: #0369a1; }
+
     .theme-results {
       background: linear-gradient(180deg, #ffffff 0%, #f3f7ff 100%);
       border-color: #ccd8f0;
       box-shadow: 0 20px 52px rgba(22, 55, 118, 0.16);
+    }
+
+    .theme-chargers {
+      background:
+        radial-gradient(circle at 100% 0%, rgba(14, 165, 233, 0.12), transparent 34%),
+        linear-gradient(180deg, #ffffff 0%, #eef8ff 100%);
+      border-color: #bfdbfe;
+      box-shadow: 0 20px 52px rgba(3, 105, 161, 0.14);
     }
 
     .btn-primary {
@@ -191,8 +201,40 @@
       box-shadow: 0 8px 16px rgba(29, 78, 216, 0.34);
     }
 
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 12px;
+      color: #ffffff;
+      font-size: 0.94rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, #0f766e, #0d9488);
+      box-shadow: 0 10px 22px rgba(13, 148, 136, 0.22);
+      transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 26px rgba(13, 148, 136, 0.28);
+      filter: saturate(1.08);
+    }
+
+    .btn-secondary.is-outline {
+      color: #0369a1;
+      background: #ffffff;
+      border: 1px solid #bae6fd;
+      box-shadow: none;
+    }
+
     .cta-wrap {
-      margin: 2px 0 18px;
+      grid-column: 1 / -1;
+      margin: 2px 0 0;
     }
 
     .result-grid {
@@ -247,14 +289,17 @@
       border-left: 4px solid var(--ev);
       background: linear-gradient(180deg, #f1fdf9 0%, #e9f9f5 100%);
     }
+
     .cost-card.gasolina {
       border-left: 4px solid var(--gasolina);
       background: linear-gradient(180deg, #fff8f0 0%, #fff4e8 100%);
     }
+
     .cost-card.gasoleo {
       border-left: 4px solid var(--gasoleo);
       background: linear-gradient(180deg, #f2f6ff 0%, #ebf1ff 100%);
     }
+
     .cost-card.combustao {
       border-left: 4px solid #475569;
       background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
@@ -314,7 +359,8 @@
       color: var(--muted);
     }
 
-    #resultado.error {
+    #resultado.error,
+    #estadoCarregadores.error {
       margin-top: 12px;
       border-radius: 10px;
       border: 1px solid #fecdd3;
@@ -349,9 +395,86 @@
       color: var(--muted);
     }
 
+    .charger-intro {
+      margin: -4px 0 14px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .charger-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    #estadoCarregadores {
+      margin: 6px 0 12px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .station-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin: 12px 0 14px;
+    }
+
+    .station-item {
+      border: 1px solid #d7e9f8;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.82);
+      padding: 12px;
+    }
+
+    .station-name {
+      display: block;
+      margin-bottom: 6px;
+      color: #075985;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .station-name:hover {
+      text-decoration: underline;
+    }
+
+    .station-meta {
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+
+    .status-pill {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #075985;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .status-available {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .map-frame {
+      width: 100%;
+      min-height: 340px;
+      border: 0;
+      border-radius: 16px;
+      box-shadow: inset 0 0 0 1px rgba(186, 230, 253, 0.7);
+      background: #dbeafe;
+    }
 
     @media (min-width: 861px) {
-      .theme-results {
+      .theme-results,
+      .theme-chargers {
         grid-column: 1 / -1;
       }
     }
@@ -359,12 +482,14 @@
     @media (max-width: 860px) {
       .simulator-grid { grid-template-columns: 1fr; }
       .result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .station-list { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 620px) {
       .row-inline,
       .comparison-grid,
-      .actions {
+      .actions,
+      .charger-actions {
         flex-direction: column;
         grid-template-columns: 1fr;
       }
@@ -381,6 +506,7 @@
 
       .metric-value { font-size: 1.08rem; }
       .container { max-width: 560px; }
+      .map-frame { min-height: 300px; }
     }
   </style>
 </head>
@@ -392,109 +518,144 @@
     </header>
 
     <div class="simulator-grid">
-    <section class="card theme-ev">
-      <h2>1. Dados do veículo elétrico</h2>
+      <section class="card theme-ev">
+        <h2>1. Dados do veículo elétrico</h2>
 
-      <div class="row">
-        <label for="bateria">Capacidade da bateria (kWh)</label>
-        <input type="number" id="bateria" min="40" max="200" step="1" value="54">
-        <small>Intervalo típico: 40 kWh – 200 kWh.</small>
-      </div>
-
-      <div class="row row-inline">
-        <div class="col">
-          <label for="socInicial">% atual da bateria</label>
-          <input type="number" id="socInicial" min="0" max="99" step="1" value="18">
+        <div class="row">
+          <label for="bateria">Capacidade da bateria (kWh)</label>
+          <input type="number" id="bateria" min="40" max="200" step="1" value="54">
+          <small>Intervalo típico: 40 kWh – 200 kWh.</small>
         </div>
-        <div class="col">
-          <label for="socFinal">% alvo da bateria</label>
-          <input type="number" id="socFinal" min="1" max="100" step="1" value="80">
+
+        <div class="row row-inline">
+          <div class="col">
+            <label for="socInicial">% atual da bateria</label>
+            <input type="number" id="socInicial" min="0" max="99" step="1" value="18">
+          </div>
+          <div class="col">
+            <label for="socFinal">% alvo da bateria</label>
+            <input type="number" id="socFinal" min="1" max="100" step="1" value="80">
+          </div>
         </div>
-      </div>
 
-      <div class="row">
-        <label for="potencia">Potência de carga (kW)</label>
-        <select id="potencia">
-          <option value="2.3">2,3 kW – Tomada Schuko ~10 A</option>
-          <option value="3.25" selected>3,25 kW – Wallbox / tomada dedicada</option>
-          <option value="3.7">3,7 kW – Wallbox monofásico 16 A</option>
-          <option value="5.75">5,75 kW – Contrato 25 A</option>
-          <option value="7.4">7,4 kW – Wallbox monofásico 32 A</option>
-          <option value="11">11 kW – Wallbox trifásico</option>
-          <option value="custom">Outro valor (kW)</option>
-        </select>
-      </div>
-
-      <div class="row" id="linhaCustom" style="display:none;">
-        <label for="potenciaCustom">Introduzir potência manual (kW)</label>
-        <input type="number" id="potenciaCustom" step="0.1" placeholder="Ex.: 3.2">
-      </div>
-
-      <div class="row">
-        <label for="consumo">Consumo médio do veículo (kWh / 100 km)</label>
-        <input type="number" id="consumo" min="5" max="40" step="0.1" value="16.0">
-      </div>
-
-      <div class="row">
-        <label for="precoKwh">Preço da energia (€ / kWh)</label>
-        <input type="number" id="precoKwh" min="0" step="0.01" value="0.20">
-        <small>Use a sua tarifa doméstica ou o preço do posto público.</small>
-      </div>
-    </section>
-
-    <section class="card theme-comb">
-      <h2>2. Dados da viatura de combustão</h2>
-
-      <div class="row">
-        <label for="tipoCombustivel">Tipo de combustível</label>
-        <select id="tipoCombustivel">
-          <option value="">Selecionar</option>
-          <option value="gasolina">Gasolina</option>
-          <option value="gasoleo">Gasóleo</option>
-        </select>
-      </div>
-
-      <div class="row row-inline">
-        <div class="col">
-          <label for="precoCombustivel">Preço do combustível (€ / litro)</label>
-          <input type="number" id="precoCombustivel" min="0" step="0.01" value="1.65" placeholder="Ex.: 1.65">
+        <div class="row">
+          <label for="potencia">Potência de carga (kW)</label>
+          <select id="potencia">
+            <option value="2.3">2,3 kW – Tomada Schuko ~10 A</option>
+            <option value="3.25" selected>3,25 kW – Wallbox / tomada dedicada</option>
+            <option value="3.7">3,7 kW – Wallbox monofásico 16 A</option>
+            <option value="5.75">5,75 kW – Contrato 25 A</option>
+            <option value="7.4">7,4 kW – Wallbox monofásico 32 A</option>
+            <option value="11">11 kW – Wallbox trifásico</option>
+            <option value="custom">Outro valor (kW)</option>
+          </select>
         </div>
-        <div class="col">
-          <label for="consumoCombustao">Consumo da viatura (L / 100 km)</label>
-          <input type="number" id="consumoCombustao" min="0" step="0.1" value="6.0" placeholder="Ex.: 6.0">
+
+        <div class="row" id="linhaCustom" style="display:none;">
+          <label for="potenciaCustom">Introduzir potência manual (kW)</label>
+          <input type="number" id="potenciaCustom" step="0.1" placeholder="Ex.: 3.2">
         </div>
+
+        <div class="row">
+          <label for="consumo">Consumo médio do veículo (kWh / 100 km)</label>
+          <input type="number" id="consumo" min="5" max="40" step="0.1" value="16.0">
+        </div>
+
+        <div class="row">
+          <label for="precoKwh">Preço da energia (€ / kWh)</label>
+          <input type="number" id="precoKwh" min="0" step="0.01" value="0.20">
+          <small>Use a sua tarifa doméstica ou o preço do posto público.</small>
+        </div>
+      </section>
+
+      <section class="card theme-comb">
+        <h2>2. Dados da viatura de combustão</h2>
+
+        <div class="row">
+          <label for="tipoCombustivel">Tipo de combustível</label>
+          <select id="tipoCombustivel">
+            <option value="">Selecionar</option>
+            <option value="gasolina">Gasolina</option>
+            <option value="gasoleo">Gasóleo</option>
+          </select>
+        </div>
+
+        <div class="row row-inline">
+          <div class="col">
+            <label for="precoCombustivel">Preço do combustível (€ / litro)</label>
+            <input type="number" id="precoCombustivel" min="0" step="0.01" value="1.65" placeholder="Ex.: 1.65">
+          </div>
+          <div class="col">
+            <label for="consumoCombustao">Consumo da viatura (L / 100 km)</label>
+            <input type="number" id="consumoCombustao" min="0" step="0.1" value="6.0" placeholder="Ex.: 6.0">
+          </div>
+        </div>
+
+        <div class="row row-inline">
+          <div class="col">
+            <label for="precoGasolina95">Gasolina 95 (€ / litro)</label>
+            <input type="number" id="precoGasolina95" min="0" step="0.001" value="1.777" placeholder="Ex.: 1.777">
+          </div>
+          <div class="col">
+            <label for="precoGasoleoSimples">Gasóleo simples (€ / litro)</label>
+            <input type="number" id="precoGasoleoSimples" min="0" step="0.001" value="1.715" placeholder="Ex.: 1.715">
+          </div>
+        </div>
+      </section>
+
+      <div class="cta-wrap">
+        <button id="btnCalcular" class="btn-primary">Calcular comparação</button>
       </div>
 
-      <div class="row row-inline">
-        <div class="col">
-          <label for="precoGasolina95">Gasolina 95 (€ / litro)</label>
-          <input type="number" id="precoGasolina95" min="0" step="0.001" value="1.777" placeholder="Ex.: 1.777">
+      <section class="card theme-results">
+        <h2>3. Resultados finais</h2>
+        <div id="resultado">Introduza os dados e clique em “Calcular comparação”.</div>
+
+        <div class="actions row-inline" id="acoesResultado">
+          <button id="btnImprimir" type="button">Imprimir</button>
+          <button id="btnPartilhar" type="button">Partilhar</button>
         </div>
-        <div class="col">
-          <label for="precoGasoleoSimples">Gasóleo simples (€ / litro)</label>
-          <input type="number" id="precoGasoleoSimples" min="0" step="0.001" value="1.715" placeholder="Ex.: 1.715">
+      </section>
+
+      <section class="card theme-chargers">
+        <h2>4. Postos de carregamento próximos</h2>
+        <p class="charger-intro">
+          Consulte pontos de carregamento próximos através da rede pública Open Charge Map.
+          Por defeito, a pesquisa começa em Almada; também pode usar a sua localização atual.
+        </p>
+
+        <div class="charger-actions">
+          <button id="btnCarregadores" class="btn-secondary" type="button">Usar a minha localização</button>
+          <a id="btnAbrirMapaOCM" class="btn-secondary is-outline" href="https://map.openchargemap.io/?latitude=38.68000&longitude=-9.15600&zoom=13" target="_blank" rel="noopener">
+            Abrir mapa completo
+          </a>
         </div>
-      </div>
 
-    </section>
+        <div id="estadoCarregadores">A carregar postos públicos perto de Almada...</div>
+        <div id="listaCarregadores" class="station-list" aria-live="polite"></div>
 
-    <div class="cta-wrap">
-      <button id="btnCalcular" class="btn-primary">Calcular comparação</button>
-    </div>
+        <iframe
+          id="mapaOpenChargeMap"
+          class="map-frame"
+          title="Mapa Open Charge Map"
+          loading="lazy"
+          src="https://map.openchargemap.io/?latitude=38.68000&longitude=-9.15600&zoom=13">
+        </iframe>
 
-    <section class="card theme-results">
-      <h2>3. Resultados finais</h2>
-      <div id="resultado">Introduza os dados e clique em “Calcular comparação”.</div>
-
-      <div class="actions row-inline" id="acoesResultado">
-        <button id="btnImprimir" type="button">Imprimir</button>
-        <button id="btnPartilhar" type="button">Partilhar</button>
-      </div>
-    </section>
+        <p class="footnote">
+          Dados fornecidos pela comunidade Open Charge Map. Confirme sempre disponibilidade, potência e condições no operador do posto.
+        </p>
+      </section>
     </div>
   </div>
 
   <script>
+    const LOCALIZACAO_PADRAO = {
+      latitude: 38.68,
+      longitude: -9.156,
+      etiqueta: 'Almada'
+    };
+
     function atualizarPotenciaCustom() {
       const select = document.getElementById('potencia');
       const linhaCustom = document.getElementById('linhaCustom');
@@ -682,6 +843,161 @@
       acoesResultado.style.display = 'flex';
     }
 
+    function criarUrlMapa(latitude, longitude, zoom = 13) {
+      const lat = Number(latitude).toFixed(5);
+      const lon = Number(longitude).toFixed(5);
+      return 'https://map.openchargemap.io/?latitude=' + lat + '&longitude=' + lon + '&zoom=' + zoom;
+    }
+
+    function atualizarMapaOpenChargeMap(latitude, longitude) {
+      const mapa = document.getElementById('mapaOpenChargeMap');
+      const linkMapa = document.getElementById('btnAbrirMapaOCM');
+      const url = criarUrlMapa(latitude, longitude);
+      mapa.src = url;
+      linkMapa.href = url;
+    }
+
+    function atualizarEstadoCarregadores(mensagem, isErro = false) {
+      const estado = document.getElementById('estadoCarregadores');
+      estado.classList.toggle('error', isErro);
+      estado.textContent = mensagem;
+    }
+
+    function formatarDistancia(valor) {
+      if (typeof valor !== 'number' || Number.isNaN(valor)) {
+        return '';
+      }
+
+      return valor.toFixed(1).replace('.', ',') + ' km';
+    }
+
+    function obterPotenciaMaxima(conexoes) {
+      if (!Array.isArray(conexoes)) {
+        return '';
+      }
+
+      const potencias = conexoes
+        .map(conexao => Number(conexao.PowerKW))
+        .filter(valor => !Number.isNaN(valor) && valor > 0);
+
+      if (!potencias.length) {
+        return '';
+      }
+
+      return Math.max(...potencias).toFixed(0) + ' kW';
+    }
+
+    function obterEstadoPosto(posto) {
+      if (posto.StatusType && posto.StatusType.Title) {
+        return posto.StatusType.Title;
+      }
+
+      const conexoes = Array.isArray(posto.Connections) ? posto.Connections : [];
+      const conexaoComEstado = conexoes.find(conexao => conexao.StatusType && conexao.StatusType.Title);
+      return conexaoComEstado ? conexaoComEstado.StatusType.Title : 'Estado a confirmar';
+    }
+
+    function desenharPostos(postos) {
+      const lista = document.getElementById('listaCarregadores');
+      lista.innerHTML = '';
+
+      if (!Array.isArray(postos) || postos.length === 0) {
+        lista.innerHTML =
+          '<article class="station-item">' +
+            '<strong>Sem resultados imediatos.</strong>' +
+            '<div class="station-meta">Abra o mapa completo para pesquisar manualmente outros pontos de carregamento.</div>' +
+          '</article>';
+        return;
+      }
+
+      postos.forEach(posto => {
+        const morada = posto.AddressInfo || {};
+        const operador = posto.OperatorInfo && posto.OperatorInfo.Title ? posto.OperatorInfo.Title : 'Operador não indicado';
+        const titulo = morada.Title || 'Posto de carregamento';
+        const localidade = [morada.Town, morada.Postcode].filter(Boolean).join(' · ');
+        const distancia = formatarDistancia(morada.Distance);
+        const potencia = obterPotenciaMaxima(posto.Connections);
+        const estado = obterEstadoPosto(posto);
+        const latitude = morada.Latitude || LOCALIZACAO_PADRAO.latitude;
+        const longitude = morada.Longitude || LOCALIZACAO_PADRAO.longitude;
+        const urlMapa = criarUrlMapa(latitude, longitude, 16);
+        const estadoDisponivel = /available|operational|dispon/i.test(estado);
+        const meta = [operador, localidade, distancia, potencia].filter(Boolean).join(' · ');
+
+        const artigo = document.createElement('article');
+        artigo.className = 'station-item';
+        artigo.innerHTML =
+          '<a class="station-name" href="' + urlMapa + '" target="_blank" rel="noopener">' + titulo + '</a>' +
+          '<div class="station-meta">' + (meta || 'Detalhes a confirmar no mapa.') + '</div>' +
+          '<span class="status-pill ' + (estadoDisponivel ? 'status-available' : '') + '">' + estado + '</span>';
+
+        lista.appendChild(artigo);
+      });
+    }
+
+    async function carregarPostos(latitude, longitude, etiqueta = 'esta zona') {
+      atualizarMapaOpenChargeMap(latitude, longitude);
+      atualizarEstadoCarregadores('A procurar postos de carregamento perto de ' + etiqueta + '...');
+      document.getElementById('listaCarregadores').innerHTML = '';
+
+      const parametros = new URLSearchParams({
+        output: 'json',
+        countrycode: 'PT',
+        latitude: String(latitude),
+        longitude: String(longitude),
+        distance: '20',
+        distanceunit: 'KM',
+        maxresults: '6',
+        compact: 'true',
+        verbose: 'false'
+      });
+
+      try {
+        const resposta = await fetch('https://api.openchargemap.io/v3/poi/?' + parametros.toString());
+
+        if (!resposta.ok) {
+          throw new Error('Resposta inválida da API');
+        }
+
+        const dados = await resposta.json();
+        desenharPostos(dados);
+        atualizarEstadoCarregadores('Postos públicos encontrados perto de ' + etiqueta + '.');
+      } catch (erro) {
+        desenharPostos([]);
+        atualizarEstadoCarregadores(
+          'Não foi possível carregar a lista automática agora. Use o botão “Abrir mapa completo” para consultar a rede Open Charge Map.',
+          true
+        );
+      }
+    }
+
+    function usarLocalizacaoAtual() {
+      if (!navigator.geolocation) {
+        atualizarEstadoCarregadores('O navegador não permite obter localização. A mostrar Almada por defeito.', true);
+        carregarPostos(LOCALIZACAO_PADRAO.latitude, LOCALIZACAO_PADRAO.longitude, LOCALIZACAO_PADRAO.etiqueta);
+        return;
+      }
+
+      atualizarEstadoCarregadores('A pedir permissão para usar a sua localização...');
+
+      navigator.geolocation.getCurrentPosition(
+        posicao => {
+          const latitude = posicao.coords.latitude;
+          const longitude = posicao.coords.longitude;
+          carregarPostos(latitude, longitude, 'a sua localização');
+        },
+        () => {
+          atualizarEstadoCarregadores('Localização não autorizada. A mostrar Almada por defeito.', true);
+          carregarPostos(LOCALIZACAO_PADRAO.latitude, LOCALIZACAO_PADRAO.longitude, LOCALIZACAO_PADRAO.etiqueta);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 300000
+        }
+      );
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       const selectPotencia = document.getElementById('potencia');
       const btnCalcular = document.getElementById('btnCalcular');
@@ -690,6 +1006,7 @@
       const tipoCombustivel = document.getElementById('tipoCombustivel');
       const precoGasolina95 = document.getElementById('precoGasolina95');
       const precoGasoleoSimples = document.getElementById('precoGasoleoSimples');
+      const btnCarregadores = document.getElementById('btnCarregadores');
 
       selectPotencia.addEventListener('change', atualizarPotenciaCustom);
       btnCalcular.addEventListener('click', calcular);
@@ -698,8 +1015,10 @@
       tipoCombustivel.addEventListener('change', sincronizarPrecoCombustivel);
       precoGasolina95.addEventListener('input', sincronizarPrecoCombustivel);
       precoGasoleoSimples.addEventListener('input', sincronizarPrecoCombustivel);
+      btnCarregadores.addEventListener('click', usarLocalizacaoAtual);
 
       sincronizarPrecoCombustivel();
+      carregarPostos(LOCALIZACAO_PADRAO.latitude, LOCALIZACAO_PADRAO.longitude, LOCALIZACAO_PADRAO.etiqueta);
     });
   </script>
 </body>
