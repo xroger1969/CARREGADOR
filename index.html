@@ -16,7 +16,6 @@
       --shadow: 0 18px 44px rgba(14, 29, 63, 0.12);
       --shadow-soft: 0 8px 24px rgba(14, 29, 63, 0.08);
       --primary: #2563eb;
-      --primary-dark: #1d4ed8;
       --ev: #0f766e;
       --gasolina: #b45309;
       --gasoleo: #1e3a8a;
@@ -40,10 +39,7 @@
       padding: 28px 16px 42px;
     }
 
-    .container {
-      max-width: 1080px;
-      margin: 0 auto;
-    }
+    .container { max-width: 1080px; margin: 0 auto; }
 
     .page-header {
       margin-bottom: 24px;
@@ -113,8 +109,7 @@
       color: #1e293b;
     }
 
-    input,
-    select {
+    input, select {
       width: 100%;
       border: 1px solid #cad5e7;
       border-radius: 12px;
@@ -126,8 +121,7 @@
       transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
     }
 
-    input:focus,
-    select:focus {
+    input:focus, select:focus {
       outline: none;
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
@@ -170,8 +164,7 @@
       box-shadow: 0 20px 52px rgba(91, 33, 182, 0.12);
     }
 
-    .btn-primary,
-    .btn-secondary {
+    .btn-primary, .btn-secondary {
       border: none;
       cursor: pointer;
       text-decoration: none;
@@ -190,8 +183,7 @@
       box-shadow: 0 12px 28px rgba(29, 78, 216, 0.36);
     }
 
-    .btn-primary:hover,
-    .btn-secondary:hover {
+    .btn-primary:hover, .btn-secondary:hover {
       transform: translateY(-1px);
       filter: saturate(1.08);
     }
@@ -229,10 +221,7 @@
       box-shadow: none;
     }
 
-    .cta-wrap {
-      grid-column: 1 / -1;
-      margin: 2px 0 0;
-    }
+    .cta-wrap { grid-column: 1 / -1; margin: 2px 0 0; }
 
     .result-grid {
       display: grid;
@@ -278,25 +267,10 @@
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.9);
     }
 
-    .cost-card.ev {
-      border-left: 4px solid var(--ev);
-      background: linear-gradient(180deg, #f1fdf9 0%, #e9f9f5 100%);
-    }
-
-    .cost-card.gasolina {
-      border-left: 4px solid var(--gasolina);
-      background: linear-gradient(180deg, #fff8f0 0%, #fff4e8 100%);
-    }
-
-    .cost-card.gasoleo {
-      border-left: 4px solid var(--gasoleo);
-      background: linear-gradient(180deg, #f2f6ff 0%, #ebf1ff 100%);
-    }
-
-    .cost-card.combustao {
-      border-left: 4px solid #475569;
-      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
-    }
+    .cost-card.ev { border-left: 4px solid var(--ev); background: linear-gradient(180deg, #f1fdf9 0%, #e9f9f5 100%); }
+    .cost-card.gasolina { border-left: 4px solid var(--gasolina); background: linear-gradient(180deg, #fff8f0 0%, #fff4e8 100%); }
+    .cost-card.gasoleo { border-left: 4px solid var(--gasoleo); background: linear-gradient(180deg, #f2f6ff 0%, #ebf1ff 100%); }
+    .cost-card.combustao { border-left: 4px solid #475569; background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%); }
 
     .cost-label {
       margin: 0;
@@ -352,8 +326,7 @@
       color: var(--muted);
     }
 
-    #resultado.error,
-    #estadoTarifarios.error {
+    #resultado.error, #estadoTarifarios.error {
       margin-top: 12px;
       border-radius: 10px;
       border: 1px solid #fecdd3;
@@ -388,23 +361,20 @@
       color: var(--muted);
     }
 
-    .charger-intro,
-    .tariff-intro {
+    .charger-intro, .tariff-intro {
       margin: -4px 0 14px;
       color: var(--muted);
       line-height: 1.55;
     }
 
-    .charger-actions,
-    .tariff-actions {
+    .charger-actions, .tariff-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       margin-bottom: 12px;
     }
 
-    #estadoCarregadores,
-    #estadoTarifarios {
+    #estadoCarregadores, #estadoTarifarios {
       margin: 6px 0 12px;
       border: 1px solid #bae6fd;
       border-radius: 12px;
@@ -421,16 +391,14 @@
       color: #5b21b6;
     }
 
-    .station-list,
-    .tariff-grid {
+    .station-list, .tariff-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 10px;
       margin: 12px 0 14px;
     }
 
-    .station-item,
-    .tariff-item {
+    .station-item, .tariff-item {
       border-radius: 14px;
       background: rgba(255, 255, 255, 0.82);
       padding: 12px;
@@ -439,8 +407,7 @@
     .station-item { border: 1px solid #d7e9f8; }
     .tariff-item { border: 1px solid #e9d5ff; }
 
-    .station-name,
-    .tariff-name {
+    .station-name, .tariff-name {
       display: block;
       margin-bottom: 6px;
       font-weight: 800;
@@ -450,11 +417,41 @@
     .station-name { color: #075985; }
     .tariff-name { color: #6d28d9; }
 
-    .station-meta,
-    .tariff-meta {
+    .station-meta, .tariff-meta {
       color: var(--muted);
       font-size: 0.84rem;
       line-height: 1.45;
+    }
+
+    .tariff-highlight {
+      margin: 10px 0 8px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .tariff-price-card {
+      border: 1px solid #ddd6fe;
+      border-radius: 12px;
+      background: #faf5ff;
+      padding: 10px;
+    }
+
+    .tariff-price-label {
+      display: block;
+      margin-bottom: 4px;
+      color: #6b21a8;
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .tariff-price-value {
+      color: #1e293b;
+      font-size: 1.08rem;
+      font-weight: 900;
+      line-height: 1.1;
     }
 
     .tariff-field {
@@ -499,34 +496,24 @@
     }
 
     @media (min-width: 861px) {
-      .theme-results,
-      .theme-chargers,
-      .theme-tariffs {
-        grid-column: 1 / -1;
-      }
+      .theme-results, .theme-chargers, .theme-tariffs { grid-column: 1 / -1; }
     }
 
     @media (max-width: 860px) {
       .simulator-grid { grid-template-columns: 1fr; }
       .result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .station-list,
-      .tariff-grid { grid-template-columns: 1fr; }
+      .station-list, .tariff-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 620px) {
-      .row-inline,
-      .comparison-grid,
-      .actions,
-      .charger-actions,
-      .tariff-actions {
+      .row-inline, .comparison-grid, .actions, .charger-actions, .tariff-actions {
         flex-direction: column;
         grid-template-columns: 1fr;
       }
 
       body { padding: 20px 12px 34px; }
 
-      .page-header,
-      .card {
+      .page-header, .card {
         border-radius: 16px;
         padding: 16px;
       }
@@ -536,6 +523,7 @@
       .map-frame { min-height: 300px; }
       .tariff-field { flex-direction: column; gap: 3px; }
       .tariff-field span:last-child { text-align: left; }
+      .tariff-highlight { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -655,9 +643,7 @@
 
         <div class="charger-actions">
           <button id="btnCarregadores" class="btn-secondary" type="button">Usar a minha localização</button>
-          <a id="btnAbrirMapaOCM" class="btn-secondary is-outline" href="https://map.openchargemap.io/?latitude=38.68000&longitude=-9.15600&zoom=13" target="_blank" rel="noopener">
-            Abrir mapa completo
-          </a>
+          <a id="btnAbrirMapaOCM" class="btn-secondary is-outline" href="https://map.openchargemap.io/?latitude=38.68000&longitude=-9.15600&zoom=13" target="_blank" rel="noopener">Abrir mapa completo</a>
         </div>
 
         <div id="estadoCarregadores">Mapa Open Charge Map carregado em Almada. Use o botão acima para centrar na sua localização.</div>
@@ -673,50 +659,33 @@
           </article>
         </div>
 
-        <iframe
-          id="mapaOpenChargeMap"
-          class="map-frame"
-          title="Mapa Open Charge Map"
-          loading="lazy"
-          src="https://map.openchargemap.io/?latitude=38.68000&longitude=-9.15600&zoom=13">
-        </iframe>
+        <iframe id="mapaOpenChargeMap" class="map-frame" title="Mapa Open Charge Map" loading="lazy" src="https://map.openchargemap.io/?latitude=38.68000&longitude=-9.15600&zoom=13"></iframe>
 
-        <p class="footnote">
-          Dados fornecidos pela comunidade Open Charge Map. Confirme sempre disponibilidade, potência e condições no operador do posto.
-        </p>
+        <p class="footnote">Dados fornecidos pela comunidade Open Charge Map. Confirme sempre disponibilidade, potência e condições no operador do posto.</p>
       </section>
 
       <section class="card theme-tariffs">
         <h2>5. Tarifários de carregamento</h2>
         <p class="tariff-intro">
-          Consulte tarifários públicos de carregamento elétrico através da API Aberta. Estes dados ajudam a comparar operadores, preços e condições antes de carregar.
+          Consulte tarifários públicos de carregamento elétrico através da API Aberta. Agora só são destacados valores de preço úteis; campos a zero são ocultados para não confundir.
           <span class="api-code">GET https://api.apiaberta.pt/v1/ev/tariffs</span>
         </p>
 
         <div class="tariff-actions">
           <button id="btnTarifarios" class="btn-secondary is-purple" type="button">Atualizar tarifários</button>
-          <a class="btn-secondary is-purple-outline" href="https://api.apiaberta.pt/v1/ev/tariffs" target="_blank" rel="noopener">
-            Abrir dados da API
-          </a>
+          <a class="btn-secondary is-purple-outline" href="https://api.apiaberta.pt/v1/ev/tariffs" target="_blank" rel="noopener">Abrir dados da API</a>
         </div>
 
         <div id="estadoTarifarios">A carregar tarifários da API Aberta...</div>
         <div id="listaTarifarios" class="tariff-grid" aria-live="polite"></div>
 
-        <p class="footnote">
-          Confirme sempre o preço final na aplicação/cartão do operador, porque os custos podem incluir energia, tempo, taxa de ativação, estacionamento, IVA e outras condições.
-        </p>
+        <p class="footnote">Confirme sempre o preço final na aplicação/cartão do operador, porque os custos podem incluir energia, tempo, taxa de ativação, estacionamento, IVA e outras condições.</p>
       </section>
     </div>
   </div>
 
   <script>
-    const LOCALIZACAO_PADRAO = {
-      latitude: 38.68,
-      longitude: -9.156,
-      etiqueta: 'Almada'
-    };
-
+    const LOCALIZACAO_PADRAO = { latitude: 38.68, longitude: -9.156, etiqueta: 'Almada' };
     const ENDPOINT_TARIFARIOS = 'https://api.apiaberta.pt/v1/ev/tariffs';
 
     function atualizarPotenciaCustom() {
@@ -725,23 +694,15 @@
       linhaCustom.style.display = select.value === 'custom' ? 'block' : 'none';
     }
 
-    function imprimirResultado() {
-      window.print();
-    }
+    function imprimirResultado() { window.print(); }
 
     async function partilharResultado() {
       const resultadoTexto = document.getElementById('resultado').innerText.trim();
-      const textoPartilha =
-        'Comparador de Custos: Elétrico vs Combustão\n\n' +
-        resultadoTexto +
-        '\n\nSimulador: ' + window.location.href;
+      const textoPartilha = 'Comparador de Custos: Elétrico vs Combustão\n\n' + resultadoTexto + '\n\nSimulador: ' + window.location.href;
 
       if (navigator.share) {
         try {
-          await navigator.share({
-            title: 'Resultados do simulador de carregamento',
-            text: textoPartilha
-          });
+          await navigator.share({ title: 'Resultados do simulador de carregamento', text: textoPartilha });
           return;
         } catch (err) {
           if (err && err.name === 'AbortError') return;
@@ -753,9 +714,7 @@
           await navigator.clipboard.writeText(textoPartilha);
           alert('Resultado copiado para a área de transferência.');
           return;
-        } catch (err) {
-          // fallback para prompt abaixo
-        }
+        } catch (err) {}
       }
 
       window.prompt('Copia e partilha o resultado:', textoPartilha);
@@ -790,46 +749,19 @@
       const tipoCombustivel = document.getElementById('tipoCombustivel').value;
       const precoCombustivel = parseFloat(document.getElementById('precoCombustivel').value);
       const consumoCombustao = parseFloat(document.getElementById('consumoCombustao').value);
-
-      let potencia;
-      if (selectPot === 'custom') {
-        potencia = parseFloat(document.getElementById('potenciaCustom').value);
-      } else {
-        potencia = parseFloat(selectPot);
-      }
+      const potencia = selectPot === 'custom' ? parseFloat(document.getElementById('potenciaCustom').value) : parseFloat(selectPot);
 
       const resultadoDiv = document.getElementById('resultado');
       const acoesResultado = document.getElementById('acoesResultado');
       resultadoDiv.classList.remove('error');
 
-      if (isNaN(capacidade) || capacidade < 40 || capacidade > 200) {
-        mostrarErro(resultadoDiv, acoesResultado, 'Verifique a capacidade da bateria (40–200 kWh).');
-        return;
-      }
-      if (isNaN(socInicial) || isNaN(socFinal) || socInicial < 0 || socFinal > 100 || socFinal <= socInicial) {
-        mostrarErro(resultadoDiv, acoesResultado, 'Verifique as percentagens (o alvo deve ser maior que o valor atual).');
-        return;
-      }
-      if (isNaN(potencia) || potencia <= 0) {
-        mostrarErro(resultadoDiv, acoesResultado, 'Verifique a potência de carga (kW).');
-        return;
-      }
-      if (isNaN(precoKwh) || precoKwh < 0) {
-        mostrarErro(resultadoDiv, acoesResultado, 'Indique um preço de energia válido (€/kWh).');
-        return;
-      }
-      if (isNaN(consumo) || consumo <= 0) {
-        mostrarErro(resultadoDiv, acoesResultado, 'Indique um consumo médio válido (kWh / 100 km).');
-        return;
-      }
-      if (isNaN(precoCombustivel) || precoCombustivel <= 0) {
-        mostrarErro(resultadoDiv, acoesResultado, 'Indique um preço de combustível válido (€/litro).');
-        return;
-      }
-      if (isNaN(consumoCombustao) || consumoCombustao <= 0) {
-        mostrarErro(resultadoDiv, acoesResultado, 'Indique um consumo válido para a viatura de combustão (L / 100 km).');
-        return;
-      }
+      if (isNaN(capacidade) || capacidade < 40 || capacidade > 200) return mostrarErro(resultadoDiv, acoesResultado, 'Verifique a capacidade da bateria (40–200 kWh).');
+      if (isNaN(socInicial) || isNaN(socFinal) || socInicial < 0 || socFinal > 100 || socFinal <= socInicial) return mostrarErro(resultadoDiv, acoesResultado, 'Verifique as percentagens (o alvo deve ser maior que o valor atual).');
+      if (isNaN(potencia) || potencia <= 0) return mostrarErro(resultadoDiv, acoesResultado, 'Verifique a potência de carga (kW).');
+      if (isNaN(precoKwh) || precoKwh < 0) return mostrarErro(resultadoDiv, acoesResultado, 'Indique um preço de energia válido (€/kWh).');
+      if (isNaN(consumo) || consumo <= 0) return mostrarErro(resultadoDiv, acoesResultado, 'Indique um consumo médio válido (kWh / 100 km).');
+      if (isNaN(precoCombustivel) || precoCombustivel <= 0) return mostrarErro(resultadoDiv, acoesResultado, 'Indique um preço de combustível válido (€/litro).');
+      if (isNaN(consumoCombustao) || consumoCombustao <= 0) return mostrarErro(resultadoDiv, acoesResultado, 'Indique um consumo válido para a viatura de combustão (L / 100 km).');
 
       const deltaPercent = (socFinal - socInicial) / 100;
       const energiaNecessaria = capacidade * deltaPercent;
@@ -837,68 +769,34 @@
       const custo = precoKwh * energiaNecessaria;
       const horasInteiras = Math.floor(tempoHoras);
       const minutos = Math.round((tempoHoras - horasInteiras) * 60);
-
       const kmPorKwh = 100 / consumo;
       const kmPorHora = potencia * kmPorKwh;
       const kmsAdicionados = energiaNecessaria * kmPorKwh;
-
       const custoCombustao100km = consumoCombustao * precoCombustivel;
       const fatorDistancia = kmsAdicionados / 100;
       const custoEletricoTotal = custo;
       const custoCombustaoTotal = custoCombustao100km * fatorDistancia;
       const poupancaTotal = custoCombustaoTotal - custoEletricoTotal;
-
-      const nomeCombustivel =
-        tipoCombustivel === 'gasolina' ? 'gasolina' : tipoCombustivel === 'gasoleo' ? 'gasóleo' : 'combustão';
-
+      const nomeCombustivel = tipoCombustivel === 'gasolina' ? 'gasolina' : tipoCombustivel === 'gasoleo' ? 'gasóleo' : 'combustão';
       const classeComb = tipoCombustivel || 'combustao';
       const formatadorEuro = new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR' });
       const formatadorNum = new Intl.NumberFormat('pt-PT', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
-
       const classePoupancaTotal = poupancaTotal >= 0 ? '' : 'is-negative';
-      const textoPoupancaTotal = poupancaTotal >= 0
-        ? 'Poupança do elétrico (simulação total)'
-        : 'Diferença de custo (simulação total)';
+      const textoPoupancaTotal = poupancaTotal >= 0 ? 'Poupança do elétrico (simulação total)' : 'Diferença de custo (simulação total)';
 
       resultadoDiv.innerHTML =
         '<div class="result-grid">' +
-          '<article class="metric">' +
-            '<div class="metric-label">Energia necessária</div>' +
-            '<div class="metric-value">' + formatadorNum.format(energiaNecessaria) + ' kWh</div>' +
-          '</article>' +
-          '<article class="metric">' +
-            '<div class="metric-label">Tempo estimado</div>' +
-            '<div class="metric-value">' + horasInteiras + ' h ' + (minutos < 10 ? '0' + minutos : minutos) + ' min</div>' +
-          '</article>' +
-          '<article class="metric">' +
-            '<div class="metric-label">Custo da sessão</div>' +
-            '<div class="metric-value">' + formatadorEuro.format(custo) + '</div>' +
-          '</article>' +
-          '<article class="metric">' +
-            '<div class="metric-label">Autonomia adicionada</div>' +
-            '<div class="metric-value">' + formatadorNum.format(kmsAdicionados) + ' km</div>' +
-          '</article>' +
+          '<article class="metric"><div class="metric-label">Energia necessária</div><div class="metric-value">' + formatadorNum.format(energiaNecessaria) + ' kWh</div></article>' +
+          '<article class="metric"><div class="metric-label">Tempo estimado</div><div class="metric-value">' + horasInteiras + ' h ' + (minutos < 10 ? '0' + minutos : minutos) + ' min</div></article>' +
+          '<article class="metric"><div class="metric-label">Custo da sessão</div><div class="metric-value">' + formatadorEuro.format(custo) + '</div></article>' +
+          '<article class="metric"><div class="metric-label">Autonomia adicionada</div><div class="metric-value">' + formatadorNum.format(kmsAdicionados) + ' km</div></article>' +
         '</div>' +
-
         '<div class="comparison-grid">' +
-          '<article class="cost-card ev">' +
-            '<p class="cost-label">Elétrico (simulação total)</p>' +
-            '<p class="cost-value">' + formatadorEuro.format(custoEletricoTotal) + '</p>' +
-          '</article>' +
-          '<article class="cost-card ' + classeComb + '">' +
-            '<p class="cost-label">' + nomeCombustivel + ' (simulação total)</p>' +
-            '<p class="cost-value">' + formatadorEuro.format(custoCombustaoTotal) + '</p>' +
-          '</article>' +
+          '<article class="cost-card ev"><p class="cost-label">Elétrico (simulação total)</p><p class="cost-value">' + formatadorEuro.format(custoEletricoTotal) + '</p></article>' +
+          '<article class="cost-card ' + classeComb + '"><p class="cost-label">' + nomeCombustivel + ' (simulação total)</p><p class="cost-value">' + formatadorEuro.format(custoCombustaoTotal) + '</p></article>' +
         '</div>' +
-
-        '<div class="saving-banner ' + classePoupancaTotal + '">' +
-          '<span class="saving-label">' + textoPoupancaTotal + '</span>' +
-          '<div class="saving-value">' + formatadorEuro.format(poupancaTotal) + '</div>' +
-        '</div>' +
-
-        '<div class="footnote">Potência usada: ' + potencia.toFixed(2) + ' kW · Eficiência: ' +
-        formatadorNum.format(kmPorKwh) + ' km/kWh · Ganho por hora: ' + formatadorNum.format(kmPorHora) +
-        ' km/h. Valores teóricos sujeitos a perdas e estilo de condução.</div>';
+        '<div class="saving-banner ' + classePoupancaTotal + '"><span class="saving-label">' + textoPoupancaTotal + '</span><div class="saving-value">' + formatadorEuro.format(poupancaTotal) + '</div></div>' +
+        '<div class="footnote">Potência usada: ' + potencia.toFixed(2) + ' kW · Eficiência: ' + formatadorNum.format(kmPorKwh) + ' km/kWh · Ganho por hora: ' + formatadorNum.format(kmPorHora) + ' km/h. Valores teóricos sujeitos a perdas e estilo de condução.</div>';
 
       acoesResultado.style.display = 'flex';
     }
@@ -914,7 +812,6 @@
       const linkMapa = document.getElementById('btnAbrirMapaOCM');
       const estado = document.getElementById('estadoCarregadores');
       const url = criarUrlMapa(latitude, longitude);
-
       mapa.src = url;
       linkMapa.href = url;
       estado.textContent = 'Mapa Open Charge Map centrado em ' + etiqueta + '. Toque nos marcadores do mapa para ver os detalhes dos postos.';
@@ -922,7 +819,6 @@
 
     function usarLocalizacaoAtual() {
       const estado = document.getElementById('estadoCarregadores');
-
       if (!navigator.geolocation) {
         estado.textContent = 'O navegador não permite obter localização. O mapa continua centrado em Almada.';
         atualizarMapaOpenChargeMap(LOCALIZACAO_PADRAO.latitude, LOCALIZACAO_PADRAO.longitude, LOCALIZACAO_PADRAO.etiqueta);
@@ -930,30 +826,19 @@
       }
 
       estado.textContent = 'A pedir permissão para usar a sua localização...';
-
       navigator.geolocation.getCurrentPosition(
-        posicao => {
-          const latitude = posicao.coords.latitude;
-          const longitude = posicao.coords.longitude;
-          atualizarMapaOpenChargeMap(latitude, longitude, 'a sua localização');
-        },
+        posicao => atualizarMapaOpenChargeMap(posicao.coords.latitude, posicao.coords.longitude, 'a sua localização'),
         () => {
           estado.textContent = 'Localização não autorizada. O mapa continua centrado em Almada.';
           atualizarMapaOpenChargeMap(LOCALIZACAO_PADRAO.latitude, LOCALIZACAO_PADRAO.longitude, LOCALIZACAO_PADRAO.etiqueta);
         },
-        {
-          enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 300000
-        }
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
       );
     }
 
     function obterPrimeiroValor(objeto, chaves) {
       for (const chave of chaves) {
-        if (objeto && objeto[chave] !== undefined && objeto[chave] !== null && objeto[chave] !== '') {
-          return objeto[chave];
-        }
+        if (objeto && objeto[chave] !== undefined && objeto[chave] !== null && objeto[chave] !== '') return objeto[chave];
       }
       return '';
     }
@@ -964,76 +849,138 @@
       if (Array.isArray(dados.results)) return dados.results;
       if (Array.isArray(dados.tariffs)) return dados.tariffs;
       if (Array.isArray(dados.items)) return dados.items;
-
       const primeiraLista = Object.values(dados || {}).find(valor => Array.isArray(valor));
       return primeiraLista || [];
     }
 
+    function valorExiste(valor) {
+      return valor !== null && valor !== undefined && valor !== '';
+    }
+
+    function valorNumerico(valor) {
+      if (typeof valor === 'number') return valor;
+      if (typeof valor === 'string') {
+        const limpo = valor.replace(',', '.').trim();
+        if (limpo === '') return NaN;
+        return Number(limpo);
+      }
+      return NaN;
+    }
+
+    function valorZero(valor) {
+      const numero = valorNumerico(valor);
+      return !Number.isNaN(numero) && numero === 0;
+    }
+
+    function achatarObjeto(objeto, prefixo = '', saida = []) {
+      if (!objeto || typeof objeto !== 'object') return saida;
+
+      Object.entries(objeto).forEach(([chave, valor]) => {
+        const novaChave = prefixo ? prefixo + '_' + chave : chave;
+        if (Array.isArray(valor)) {
+          valor.forEach((item, index) => {
+            if (item && typeof item === 'object') {
+              achatarObjeto(item, novaChave + '_' + (index + 1), saida);
+            } else if (valorExiste(item)) {
+              saida.push([novaChave, item]);
+            }
+          });
+        } else if (valor && typeof valor === 'object') {
+          achatarObjeto(valor, novaChave, saida);
+        } else if (valorExiste(valor)) {
+          saida.push([novaChave, valor]);
+        }
+      });
+
+      return saida;
+    }
+
     function formatarValorTarifario(valor) {
-      if (valor === null || valor === undefined || valor === '') return '';
+      if (!valorExiste(valor)) return '';
       if (typeof valor === 'number') return String(valor).replace('.', ',');
       if (typeof valor === 'boolean') return valor ? 'Sim' : 'Não';
       if (typeof valor === 'string') return valor;
       if (Array.isArray(valor)) return valor.map(formatarValorTarifario).filter(Boolean).join(', ');
-      if (typeof valor === 'object') {
-        return Object.values(valor)
-          .filter(item => item !== null && item !== undefined && item !== '')
-          .slice(0, 3)
-          .map(formatarValorTarifario)
-          .filter(Boolean)
-          .join(' · ');
-      }
+      if (typeof valor === 'object') return Object.values(valor).filter(valorExiste).slice(0, 3).map(formatarValorTarifario).filter(Boolean).join(' · ');
       return String(valor);
     }
 
-    function traduzirCampoTarifario(chave) {
-      const mapa = {
-        operator: 'Operador',
-        provider: 'Fornecedor',
-        supplier: 'Fornecedor',
-        cpo: 'CPO',
-        tariff: 'Tarifário',
-        tariff_name: 'Tarifário',
-        name: 'Nome',
-        title: 'Nome',
-        price: 'Preço',
-        price_kwh: 'Preço/kWh',
-        kwh: 'kWh',
-        energy: 'Energia',
-        time: 'Tempo',
-        idle: 'Ocupação',
-        activation: 'Ativação',
-        updated_at: 'Atualizado',
-        last_update: 'Atualizado',
-        date: 'Data'
-      };
-
-      return mapa[chave] || chave.replaceAll('_', ' ').replace(/\b\w/g, letra => letra.toUpperCase());
+    function normalizarChave(chave) {
+      return String(chave || '').toLowerCase();
     }
 
-    function camposPrioritariosTarifario(tarifario) {
-      const prioridades = [
-        'operator', 'provider', 'supplier', 'cpo', 'tariff', 'tariff_name', 'name', 'title',
-        'price', 'price_kwh', 'kwh', 'energy', 'time', 'idle', 'activation', 'updated_at', 'last_update', 'date'
-      ];
+    function traduzirCampoTarifario(chave) {
+      const chaveLimpa = String(chave).replace(/_\d+_/g, '_').replace(/^_+|_+$/g, '');
+      const mapa = {
+        ceme: 'CEME',
+        tariff_type: 'Tipo de tarifário',
+        period_type: 'Tipo de período',
+        updated: 'Atualizado',
+        updated_at: 'Atualizado',
+        last_update: 'Atualizado',
+        activation_fee_eur: 'Taxa de ativação',
+        energy_fee_eur_kwh: 'Preço por kWh',
+        price_kwh: 'Preço por kWh',
+        price_eur_kwh: 'Preço por kWh',
+        time_fee_eur_min: 'Preço por minuto',
+        time_fee_eur_hour: 'Preço por hora',
+        parking_fee_eur_min: 'Estacionamento por minuto',
+        idle_fee_eur_min: 'Ocupação por minuto',
+        min_price_eur: 'Preço mínimo',
+        max_price_eur: 'Preço máximo'
+      };
 
-      const entradas = [];
-      const usadas = new Set();
+      return mapa[chaveLimpa] || chaveLimpa.replaceAll('_', ' ').replace(/\b\w/g, letra => letra.toUpperCase());
+    }
 
-      prioridades.forEach(chave => {
-        if (tarifario[chave] !== undefined && tarifario[chave] !== null && tarifario[chave] !== '') {
-          entradas.push([chave, tarifario[chave]]);
-          usadas.add(chave);
+    function ehCampoPrincipal(chave) {
+      const c = normalizarChave(chave);
+      return ['ceme', 'tariff_type', 'period_type', 'updated', 'updated_at', 'last_update'].includes(c);
+    }
+
+    function ehCampoPreco(chave) {
+      const c = normalizarChave(chave);
+      if (/updated|date|id|ceme|operator|country|source|url/.test(c)) return false;
+      return /eur|price|fee|kwh|min|minute|hour|energy|time|parking|idle|activation|power|kw/.test(c);
+    }
+
+    function ordenarCamposPreco(a, b) {
+      const ordem = ['kwh', 'energy', 'time', 'min', 'hour', 'activation', 'parking', 'idle', 'price', 'fee'];
+      const chaveA = normalizarChave(a[0]);
+      const chaveB = normalizarChave(b[0]);
+      const scoreA = ordem.findIndex(item => chaveA.includes(item));
+      const scoreB = ordem.findIndex(item => chaveB.includes(item));
+      return (scoreA === -1 ? 99 : scoreA) - (scoreB === -1 ? 99 : scoreB);
+    }
+
+    function camposTarifario(tarifario) {
+      const planos = achatarObjeto(tarifario);
+      const principais = [];
+      const precos = [];
+      const usados = new Set();
+
+      planos.forEach(([chave, valor]) => {
+        if (!valorExiste(valor)) return;
+        if (ehCampoPrincipal(chave)) {
+          principais.push([chave, valor]);
+          usados.add(chave);
         }
       });
 
-      Object.entries(tarifario).forEach(([chave, valor]) => {
-        if (!usadas.has(chave) && valor !== null && valor !== undefined && valor !== '') {
-          entradas.push([chave, valor]);
+      planos.forEach(([chave, valor]) => {
+        if (usados.has(chave) || !valorExiste(valor)) return;
+        if (ehCampoPreco(chave) && !valorZero(valor)) {
+          precos.push([chave, valor]);
+          usados.add(chave);
         }
       });
 
-      return entradas.slice(0, 5);
+      const outros = planos.filter(([chave, valor]) => !usados.has(chave) && valorExiste(valor) && !valorZero(valor)).slice(0, 2);
+      return {
+        principais: principais.slice(0, 4),
+        precos: precos.sort(ordenarCamposPreco).slice(0, 4),
+        outros
+      };
     }
 
     function desenharTarifarios(tarifarios) {
@@ -1041,31 +988,33 @@
       lista.innerHTML = '';
 
       if (!Array.isArray(tarifarios) || tarifarios.length === 0) {
-        lista.innerHTML =
-          '<article class="tariff-item">' +
-            '<strong class="tariff-name">Sem dados disponíveis</strong>' +
-            '<div class="tariff-meta">Abra os dados da API para confirmar se o serviço está disponível neste momento.</div>' +
-          '</article>';
+        lista.innerHTML = '<article class="tariff-item"><strong class="tariff-name">Sem dados disponíveis</strong><div class="tariff-meta">Abra os dados da API para confirmar se o serviço está disponível neste momento.</div></article>';
         return;
       }
 
       tarifarios.slice(0, 8).forEach((tarifario, index) => {
-        const titulo = obterPrimeiroValor(tarifario, ['operator', 'provider', 'supplier', 'name', 'title', 'tariff_name', 'tariff']) || 'Tarifário ' + (index + 1);
-        const campos = camposPrioritariosTarifario(tarifario);
+        const titulo = obterPrimeiroValor(tarifario, ['ceme', 'operator', 'provider', 'supplier', 'name', 'title', 'tariff_name', 'tariff']) || 'Tarifário ' + (index + 1);
+        const campos = camposTarifario(tarifario);
         const artigo = document.createElement('article');
         artigo.className = 'tariff-item';
 
         let html = '<strong class="tariff-name">' + formatarValorTarifario(titulo) + '</strong>';
-        html += '<div class="tariff-meta">Dados recebidos da API Aberta</div>';
+        html += '<div class="tariff-meta">Valores zero ou vazios foram ocultados para facilitar a leitura.</div>';
 
-        campos.forEach(([chave, valor]) => {
+        if (campos.precos.length) {
+          html += '<div class="tariff-highlight">';
+          campos.precos.slice(0, 2).forEach(([chave, valor]) => {
+            html += '<div class="tariff-price-card"><span class="tariff-price-label">' + traduzirCampoTarifario(chave) + '</span><div class="tariff-price-value">' + formatarValorTarifario(valor) + '</div></div>';
+          });
+          html += '</div>';
+        } else {
+          html += '<div class="tariff-highlight"><div class="tariff-price-card"><span class="tariff-price-label">Preço</span><div class="tariff-price-value">Consultar detalhes</div></div></div>';
+        }
+
+        [...campos.principais, ...campos.precos.slice(2), ...campos.outros].forEach(([chave, valor]) => {
           const valorFormatado = formatarValorTarifario(valor);
-          if (!valorFormatado) return;
-          html +=
-            '<div class="tariff-field">' +
-              '<span>' + traduzirCampoTarifario(chave) + '</span>' +
-              '<span>' + valorFormatado + '</span>' +
-            '</div>';
+          if (!valorFormatado || valorZero(valor)) return;
+          html += '<div class="tariff-field"><span>' + traduzirCampoTarifario(chave) + '</span><span>' + valorFormatado + '</span></div>';
         });
 
         artigo.innerHTML = html;
@@ -1076,26 +1025,18 @@
     async function carregarTarifarios() {
       const estado = document.getElementById('estadoTarifarios');
       const lista = document.getElementById('listaTarifarios');
-
       estado.classList.remove('error');
       estado.textContent = 'A carregar tarifários da API Aberta...';
       lista.innerHTML = '';
 
       try {
-        const resposta = await fetch(ENDPOINT_TARIFARIOS, {
-          method: 'GET',
-          headers: { 'Accept': 'application/json' }
-        });
-
-        if (!resposta.ok) {
-          throw new Error('Resposta inválida da API');
-        }
+        const resposta = await fetch(ENDPOINT_TARIFARIOS, { method: 'GET', headers: { 'Accept': 'application/json' } });
+        if (!resposta.ok) throw new Error('Resposta inválida da API');
 
         const dados = await resposta.json();
         const tarifarios = extrairListaTarifarios(dados);
-
         desenharTarifarios(tarifarios);
-        estado.textContent = 'Tarifários carregados da API Aberta. São apresentados até 8 registos para manter a leitura simples.';
+        estado.textContent = 'Tarifários carregados. A apresentação agora dá prioridade aos preços úteis e oculta campos a zero.';
       } catch (erro) {
         estado.classList.add('error');
         estado.textContent = 'Não foi possível carregar os tarifários diretamente no navegador. Use o botão “Abrir dados da API” para consultar o endpoint.';
