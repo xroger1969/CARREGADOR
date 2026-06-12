@@ -26,9 +26,7 @@
       --danger-text: #be123c;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -102,22 +100,10 @@
       letter-spacing: 0.01em;
     }
 
-    .row {
-      margin-bottom: 14px;
-    }
-
-    .row:last-child {
-      margin-bottom: 0;
-    }
-
-    .row-inline {
-      display: flex;
-      gap: 14px;
-    }
-
-    .col {
-      flex: 1;
-    }
+    .row { margin-bottom: 14px; }
+    .row:last-child { margin-bottom: 0; }
+    .row-inline { display: flex; gap: 14px; }
+    .col { flex: 1; }
 
     label {
       display: block;
@@ -160,6 +146,7 @@
     .theme-comb h2 { color: #9a3412; }
     .theme-results h2 { color: #1e3a8a; }
     .theme-chargers h2 { color: #0369a1; }
+    .theme-tariffs h2 { color: #7c3aed; }
 
     .theme-results {
       background: linear-gradient(180deg, #ffffff 0%, #f3f7ff 100%);
@@ -175,9 +162,24 @@
       box-shadow: 0 20px 52px rgba(3, 105, 161, 0.14);
     }
 
+    .theme-tariffs {
+      background:
+        radial-gradient(circle at 100% 0%, rgba(124, 58, 237, 0.12), transparent 34%),
+        linear-gradient(180deg, #ffffff 0%, #f7f3ff 100%);
+      border-color: #ddd6fe;
+      box-shadow: 0 20px 52px rgba(91, 33, 182, 0.12);
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    }
+
     .btn-primary {
       width: 100%;
-      border: none;
       border-radius: 14px;
       padding: 14px;
       font-size: 1rem;
@@ -185,20 +187,13 @@
       letter-spacing: 0.01em;
       color: #fff;
       background: linear-gradient(135deg, #2563eb, #1d4ed8 55%, #1e40af);
-      cursor: pointer;
       box-shadow: 0 12px 28px rgba(29, 78, 216, 0.36);
-      transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
     }
 
-    .btn-primary:hover {
+    .btn-primary:hover,
+    .btn-secondary:hover {
       transform: translateY(-1px);
-      box-shadow: 0 16px 30px rgba(29, 78, 216, 0.4);
       filter: saturate(1.08);
-    }
-
-    .btn-primary:active {
-      transform: translateY(1px);
-      box-shadow: 0 8px 16px rgba(29, 78, 216, 0.34);
     }
 
     .btn-secondary {
@@ -207,28 +202,30 @@
       justify-content: center;
       min-height: 42px;
       padding: 10px 14px;
-      border: none;
       border-radius: 12px;
       color: #ffffff;
       font-size: 0.94rem;
       font-weight: 700;
-      text-decoration: none;
-      cursor: pointer;
       background: linear-gradient(135deg, #0f766e, #0d9488);
       box-shadow: 0 10px 22px rgba(13, 148, 136, 0.22);
-      transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
-    }
-
-    .btn-secondary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 14px 26px rgba(13, 148, 136, 0.28);
-      filter: saturate(1.08);
     }
 
     .btn-secondary.is-outline {
       color: #0369a1;
       background: #ffffff;
       border: 1px solid #bae6fd;
+      box-shadow: none;
+    }
+
+    .btn-secondary.is-purple {
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      box-shadow: 0 10px 22px rgba(109, 40, 217, 0.22);
+    }
+
+    .btn-secondary.is-purple-outline {
+      color: #6d28d9;
+      background: #ffffff;
+      border: 1px solid #ddd6fe;
       box-shadow: none;
     }
 
@@ -264,10 +261,6 @@
       font-weight: 800;
       letter-spacing: -0.02em;
       line-height: 1.15;
-    }
-
-    .metric-value.large {
-      font-size: clamp(1.45rem, 3.4vw, 1.9rem);
     }
 
     .comparison-grid {
@@ -359,7 +352,8 @@
       color: var(--muted);
     }
 
-    #resultado.error {
+    #resultado.error,
+    #estadoTarifarios.error {
       margin-top: 12px;
       border-radius: 10px;
       border: 1px solid #fecdd3;
@@ -394,20 +388,23 @@
       color: var(--muted);
     }
 
-    .charger-intro {
+    .charger-intro,
+    .tariff-intro {
       margin: -4px 0 14px;
       color: var(--muted);
       line-height: 1.55;
     }
 
-    .charger-actions {
+    .charger-actions,
+    .tariff-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       margin-bottom: 12px;
     }
 
-    #estadoCarregadores {
+    #estadoCarregadores,
+    #estadoTarifarios {
       margin: 6px 0 12px;
       border: 1px solid #bae6fd;
       border-radius: 12px;
@@ -418,32 +415,78 @@
       line-height: 1.45;
     }
 
-    .station-list {
+    #estadoTarifarios {
+      border-color: #ddd6fe;
+      background: #f5f3ff;
+      color: #5b21b6;
+    }
+
+    .station-list,
+    .tariff-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 10px;
       margin: 12px 0 14px;
     }
 
-    .station-item {
-      border: 1px solid #d7e9f8;
+    .station-item,
+    .tariff-item {
       border-radius: 14px;
       background: rgba(255, 255, 255, 0.82);
       padding: 12px;
     }
 
-    .station-name {
+    .station-item { border: 1px solid #d7e9f8; }
+    .tariff-item { border: 1px solid #e9d5ff; }
+
+    .station-name,
+    .tariff-name {
       display: block;
       margin-bottom: 6px;
-      color: #075985;
       font-weight: 800;
       text-decoration: none;
     }
 
-    .station-meta {
+    .station-name { color: #075985; }
+    .tariff-name { color: #6d28d9; }
+
+    .station-meta,
+    .tariff-meta {
       color: var(--muted);
       font-size: 0.84rem;
       line-height: 1.45;
+    }
+
+    .tariff-field {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      border-top: 1px solid #ede9fe;
+      padding-top: 7px;
+      margin-top: 7px;
+      font-size: 0.84rem;
+    }
+
+    .tariff-field span:first-child {
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .tariff-field span:last-child {
+      color: #1e293b;
+      text-align: right;
+      font-weight: 700;
+    }
+
+    .api-code {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 4px 7px;
+      border-radius: 8px;
+      background: #ede9fe;
+      color: #5b21b6;
+      font-size: 0.78rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
 
     .map-frame {
@@ -457,7 +500,8 @@
 
     @media (min-width: 861px) {
       .theme-results,
-      .theme-chargers {
+      .theme-chargers,
+      .theme-tariffs {
         grid-column: 1 / -1;
       }
     }
@@ -465,21 +509,21 @@
     @media (max-width: 860px) {
       .simulator-grid { grid-template-columns: 1fr; }
       .result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .station-list { grid-template-columns: 1fr; }
+      .station-list,
+      .tariff-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 620px) {
       .row-inline,
       .comparison-grid,
       .actions,
-      .charger-actions {
+      .charger-actions,
+      .tariff-actions {
         flex-direction: column;
         grid-template-columns: 1fr;
       }
 
-      body {
-        padding: 20px 12px 34px;
-      }
+      body { padding: 20px 12px 34px; }
 
       .page-header,
       .card {
@@ -490,6 +534,8 @@
       .metric-value { font-size: 1.08rem; }
       .container { max-width: 560px; }
       .map-frame { min-height: 300px; }
+      .tariff-field { flex-direction: column; gap: 3px; }
+      .tariff-field span:last-child { text-align: left; }
     }
   </style>
 </head>
@@ -639,6 +685,28 @@
           Dados fornecidos pela comunidade Open Charge Map. Confirme sempre disponibilidade, potência e condições no operador do posto.
         </p>
       </section>
+
+      <section class="card theme-tariffs">
+        <h2>5. Tarifários de carregamento</h2>
+        <p class="tariff-intro">
+          Consulte tarifários públicos de carregamento elétrico através da API Aberta. Estes dados ajudam a comparar operadores, preços e condições antes de carregar.
+          <span class="api-code">GET https://api.apiaberta.pt/v1/ev/tariffs</span>
+        </p>
+
+        <div class="tariff-actions">
+          <button id="btnTarifarios" class="btn-secondary is-purple" type="button">Atualizar tarifários</button>
+          <a class="btn-secondary is-purple-outline" href="https://api.apiaberta.pt/v1/ev/tariffs" target="_blank" rel="noopener">
+            Abrir dados da API
+          </a>
+        </div>
+
+        <div id="estadoTarifarios">A carregar tarifários da API Aberta...</div>
+        <div id="listaTarifarios" class="tariff-grid" aria-live="polite"></div>
+
+        <p class="footnote">
+          Confirme sempre o preço final na aplicação/cartão do operador, porque os custos podem incluir energia, tempo, taxa de ativação, estacionamento, IVA e outras condições.
+        </p>
+      </section>
     </div>
   </div>
 
@@ -648,6 +716,8 @@
       longitude: -9.156,
       etiqueta: 'Almada'
     };
+
+    const ENDPOINT_TARIFARIOS = 'https://api.apiaberta.pt/v1/ev/tariffs';
 
     function atualizarPotenciaCustom() {
       const select = document.getElementById('potencia');
@@ -674,9 +744,7 @@
           });
           return;
         } catch (err) {
-          if (err && err.name === 'AbortError') {
-            return;
-          }
+          if (err && err.name === 'AbortError') return;
         }
       }
 
@@ -784,7 +852,6 @@
         tipoCombustivel === 'gasolina' ? 'gasolina' : tipoCombustivel === 'gasoleo' ? 'gasóleo' : 'combustão';
 
       const classeComb = tipoCombustivel || 'combustao';
-
       const formatadorEuro = new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR' });
       const formatadorNum = new Intl.NumberFormat('pt-PT', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 
@@ -882,6 +949,160 @@
       );
     }
 
+    function obterPrimeiroValor(objeto, chaves) {
+      for (const chave of chaves) {
+        if (objeto && objeto[chave] !== undefined && objeto[chave] !== null && objeto[chave] !== '') {
+          return objeto[chave];
+        }
+      }
+      return '';
+    }
+
+    function extrairListaTarifarios(dados) {
+      if (Array.isArray(dados)) return dados;
+      if (Array.isArray(dados.data)) return dados.data;
+      if (Array.isArray(dados.results)) return dados.results;
+      if (Array.isArray(dados.tariffs)) return dados.tariffs;
+      if (Array.isArray(dados.items)) return dados.items;
+
+      const primeiraLista = Object.values(dados || {}).find(valor => Array.isArray(valor));
+      return primeiraLista || [];
+    }
+
+    function formatarValorTarifario(valor) {
+      if (valor === null || valor === undefined || valor === '') return '';
+      if (typeof valor === 'number') return String(valor).replace('.', ',');
+      if (typeof valor === 'boolean') return valor ? 'Sim' : 'Não';
+      if (typeof valor === 'string') return valor;
+      if (Array.isArray(valor)) return valor.map(formatarValorTarifario).filter(Boolean).join(', ');
+      if (typeof valor === 'object') {
+        return Object.values(valor)
+          .filter(item => item !== null && item !== undefined && item !== '')
+          .slice(0, 3)
+          .map(formatarValorTarifario)
+          .filter(Boolean)
+          .join(' · ');
+      }
+      return String(valor);
+    }
+
+    function traduzirCampoTarifario(chave) {
+      const mapa = {
+        operator: 'Operador',
+        provider: 'Fornecedor',
+        supplier: 'Fornecedor',
+        cpo: 'CPO',
+        tariff: 'Tarifário',
+        tariff_name: 'Tarifário',
+        name: 'Nome',
+        title: 'Nome',
+        price: 'Preço',
+        price_kwh: 'Preço/kWh',
+        kwh: 'kWh',
+        energy: 'Energia',
+        time: 'Tempo',
+        idle: 'Ocupação',
+        activation: 'Ativação',
+        updated_at: 'Atualizado',
+        last_update: 'Atualizado',
+        date: 'Data'
+      };
+
+      return mapa[chave] || chave.replaceAll('_', ' ').replace(/\b\w/g, letra => letra.toUpperCase());
+    }
+
+    function camposPrioritariosTarifario(tarifario) {
+      const prioridades = [
+        'operator', 'provider', 'supplier', 'cpo', 'tariff', 'tariff_name', 'name', 'title',
+        'price', 'price_kwh', 'kwh', 'energy', 'time', 'idle', 'activation', 'updated_at', 'last_update', 'date'
+      ];
+
+      const entradas = [];
+      const usadas = new Set();
+
+      prioridades.forEach(chave => {
+        if (tarifario[chave] !== undefined && tarifario[chave] !== null && tarifario[chave] !== '') {
+          entradas.push([chave, tarifario[chave]]);
+          usadas.add(chave);
+        }
+      });
+
+      Object.entries(tarifario).forEach(([chave, valor]) => {
+        if (!usadas.has(chave) && valor !== null && valor !== undefined && valor !== '') {
+          entradas.push([chave, valor]);
+        }
+      });
+
+      return entradas.slice(0, 5);
+    }
+
+    function desenharTarifarios(tarifarios) {
+      const lista = document.getElementById('listaTarifarios');
+      lista.innerHTML = '';
+
+      if (!Array.isArray(tarifarios) || tarifarios.length === 0) {
+        lista.innerHTML =
+          '<article class="tariff-item">' +
+            '<strong class="tariff-name">Sem dados disponíveis</strong>' +
+            '<div class="tariff-meta">Abra os dados da API para confirmar se o serviço está disponível neste momento.</div>' +
+          '</article>';
+        return;
+      }
+
+      tarifarios.slice(0, 8).forEach((tarifario, index) => {
+        const titulo = obterPrimeiroValor(tarifario, ['operator', 'provider', 'supplier', 'name', 'title', 'tariff_name', 'tariff']) || 'Tarifário ' + (index + 1);
+        const campos = camposPrioritariosTarifario(tarifario);
+        const artigo = document.createElement('article');
+        artigo.className = 'tariff-item';
+
+        let html = '<strong class="tariff-name">' + formatarValorTarifario(titulo) + '</strong>';
+        html += '<div class="tariff-meta">Dados recebidos da API Aberta</div>';
+
+        campos.forEach(([chave, valor]) => {
+          const valorFormatado = formatarValorTarifario(valor);
+          if (!valorFormatado) return;
+          html +=
+            '<div class="tariff-field">' +
+              '<span>' + traduzirCampoTarifario(chave) + '</span>' +
+              '<span>' + valorFormatado + '</span>' +
+            '</div>';
+        });
+
+        artigo.innerHTML = html;
+        lista.appendChild(artigo);
+      });
+    }
+
+    async function carregarTarifarios() {
+      const estado = document.getElementById('estadoTarifarios');
+      const lista = document.getElementById('listaTarifarios');
+
+      estado.classList.remove('error');
+      estado.textContent = 'A carregar tarifários da API Aberta...';
+      lista.innerHTML = '';
+
+      try {
+        const resposta = await fetch(ENDPOINT_TARIFARIOS, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (!resposta.ok) {
+          throw new Error('Resposta inválida da API');
+        }
+
+        const dados = await resposta.json();
+        const tarifarios = extrairListaTarifarios(dados);
+
+        desenharTarifarios(tarifarios);
+        estado.textContent = 'Tarifários carregados da API Aberta. São apresentados até 8 registos para manter a leitura simples.';
+      } catch (erro) {
+        estado.classList.add('error');
+        estado.textContent = 'Não foi possível carregar os tarifários diretamente no navegador. Use o botão “Abrir dados da API” para consultar o endpoint.';
+        desenharTarifarios([]);
+      }
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       const selectPotencia = document.getElementById('potencia');
       const btnCalcular = document.getElementById('btnCalcular');
@@ -891,6 +1112,7 @@
       const precoGasolina95 = document.getElementById('precoGasolina95');
       const precoGasoleoSimples = document.getElementById('precoGasoleoSimples');
       const btnCarregadores = document.getElementById('btnCarregadores');
+      const btnTarifarios = document.getElementById('btnTarifarios');
 
       selectPotencia.addEventListener('change', atualizarPotenciaCustom);
       btnCalcular.addEventListener('click', calcular);
@@ -900,9 +1122,11 @@
       precoGasolina95.addEventListener('input', sincronizarPrecoCombustivel);
       precoGasoleoSimples.addEventListener('input', sincronizarPrecoCombustivel);
       btnCarregadores.addEventListener('click', usarLocalizacaoAtual);
+      btnTarifarios.addEventListener('click', carregarTarifarios);
 
       sincronizarPrecoCombustivel();
       atualizarMapaOpenChargeMap(LOCALIZACAO_PADRAO.latitude, LOCALIZACAO_PADRAO.longitude, LOCALIZACAO_PADRAO.etiqueta);
+      carregarTarifarios();
     });
   </script>
 </body>
