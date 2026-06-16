@@ -24,7 +24,7 @@
         <div class="row"><label for="potencia">Potência de carga (kW)</label><select id="potencia"><option value="2.3">2,3 kW – Tomada Schuko ~10 A</option><option value="3.25" selected>3,25 kW – Wallbox / tomada dedicada</option><option value="3.7">3,7 kW – Wallbox monofásico 16 A</option><option value="5.75">5,75 kW – Contrato 25 A</option><option value="7.4">7,4 kW – Wallbox monofásico 32 A</option><option value="11">11 kW – Wallbox trifásico</option><option value="custom">Outro valor (kW)</option></select></div>
         <div class="row" id="linhaCustom" style="display:none;"><label for="potenciaCustom">Introduzir potência manual (kW)</label><input type="number" id="potenciaCustom" step="0.1" placeholder="Ex.: 3.2"></div>
         <div class="row"><label for="consumo">Consumo médio do veículo (kWh / 100 km)</label><input type="number" id="consumo" min="5" max="40" step="0.1" value="16.0"></div>
-        <div class="row"><label for="precoKwh">Preço da energia (€ / kWh)</label><input type="number" id="precoKwh" min="0" step="0.01" value="0.20"><small>Use a sua tarifa doméstica ou o preço do posto público.</small></div>
+        <div class="row"><label for="precoKwh">Preço da energia (€ / kWh)</label><input type="number" id="precoKwh" min="0" step="0.001" value="0.166"><small>Use a sua tarifa doméstica ou o preço do posto público.</small></div>
       </section>
 
       <section class="card theme-comb">
@@ -51,7 +51,7 @@
 
       <section class="card theme-tariffs">
         <h2>5. Tarifários de carregamento</h2><p class="intro">Consulte tarifários públicos de carregamento elétrico através da API Aberta. <span class="api-code">GET https://api.apiaberta.pt/v1/ev/tariffs</span></p>
-        <div class="button-row"><button id="btnTarifarios" class="btn-secondary is-purple" type="button">Atualizar tarifários</button><a class="btn-secondary is-purple-outline" href="https://api.apiaberta.pt/v1/ev/tariffs" target="_blank" rel="noopener">Abrir dados da API</a></div>
+        <div class="button-row"><button id="btnTarifarios" class="btn-secondary is-purple" type="button">Atualizar tarifários</button></div>
         <div id="estadoTarifarios" class="status">A carregar tarifários da API Aberta...</div><div id="listaTarifarios" class="tariff-grid" aria-live="polite"></div>
         <p class="footnote">Confirme sempre o preço final na aplicação/cartão do operador, porque os custos podem incluir energia, tempo, taxa de ativação, estacionamento, IVA e outras condições.</p>
       </section>
