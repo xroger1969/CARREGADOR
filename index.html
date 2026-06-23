@@ -16,7 +16,7 @@
 <section class="card full"><h2>5. Tarifários de carregamento</h2><p class="muted">Consulta através da API Aberta.</p><div class="buttons"><button id="btnTarifarios" class="btn2" type="button">Atualizar tarifários</button><a class="btn btn3" href="https://api.apiaberta.pt/v1/ev/tariffs" target="_blank" rel="noopener">Abrir dados da API</a></div><div id="estadoTarifarios" class="status">A carregar tarifários da API Aberta...</div><div id="listaTarifarios" class="tariffs"></div></section>
 </main></div><script>
 const apiFuel='https://api.apiaberta.pt/v1/fuel/prices',apiTariffs='https://api.apiaberta.pt/v1/ev/tariffs',localFuel='/api/precos-combustiveis',timeoutMs=10000;
-function endpoints(){let e=[apiFuel];if(!location.hostname.includes('github.io'))e.push(localFuel);return e}
+function endpoints(){return [localFuel,apiFuel]}
 function noCache(u){return u+(u.includes('?')?'&':'?')+'_='+Date.now()}
 async function getJson(u){let c=new AbortController(),t=setTimeout(()=>c.abort(),timeoutMs);try{let r=await fetch(noCache(u),{headers:{Accept:'application/json'},cache:'no-store',signal:c.signal}),tx=await r.text();if(!r.ok)throw Error('HTTP '+r.status);return JSON.parse(tx)}finally{clearTimeout(t)}}
 function norm(v){return String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')}
@@ -30,7 +30,7 @@ function byKey(d,req,exc=[]){return avg(flat(d).filter(([k])=>{let c=norm(k);ret
 function byList(arr,req,exc=[]){return avg(arr.filter(r=>{let tx=norm(JSON.stringify(r));return req.every(t=>tx.includes(norm(t)))&&!exc.some(t=>tx.includes(norm(t)))}).map(price).filter(v=>v!==null))}
 function firstDate(d){let vals=flat(d).filter(([k])=>{let c=norm(k);return c.endsWith('date')||c.endsWith('data')||c.endsWith('updated_at')}).map(x=>String(x[1])).filter(Boolean);return vals[0]||''}
 function exactFuel(arr,slug){let r=arr.find(x=>norm(x&&x.fuel_slug)===norm(slug));return r?(n(r.avg_price_eur)||price(r)):null}
-function extractFuel(d){let a=list(d);let gasolina=exactFuel(a,'gasoline_95')||n(d&&d.gasolina95)||byKey(d,['gasolina','95'],['aditivada','premium','especial'])||byKey(d,['gasoline','95'],['premium'])||byList(a,['gasolina','95'],['aditivada','premium','especial'])||byList(a,['gasolina','95'])||byList(a,['gasoline','95'],['plus','premium','especial']);let gasoleo=exactFuel(a,'diesel')||n(d&&d.gasoleoSimples)||byKey(d,['gasoleo','simples'],['aditivado','premium','especial','agricola','aquecimento'])||byKey(d,['gasóleo','simples'],['aditivado','premium','especial','agricola','aquecimento'])||byList(a,['gasoleo','simples'],['aditivado','premium','especial','agricola','aquecimento'])||byList(a,['gasóleo','simples'],['aditivado','premium','especial','agricola','aquecimento'])||byList(a,['diesel'],['plus','premium','colored','heating'])||byList(a,['gasoleo'],['aditivado','premium','especial','agricola','aquecimento']);return{gasolina,gasoleo,data:firstDate(d)}}
+function extractFuel(d){let a=list(d);let gasolina=exactFuel(a,'gasoline_95')||n(d&&d.gasolina95)||byKey(d,['gasolina','95'],['aditivada','premium','especial'])||byKey(d,['gasoline','95'],['premium'])||byList(a,['gasolina','95'],['aditivada','premium','especial'])||byList(a,['gasolina','95'])||byList(a,['gasoline','95'],['plus','premium','especial']);let gasoleo=exactFuel(a,'diesel')||n(d&&d.gasoleoSimples)||byKey(d,['gasoleo','simples'],['aditivado','premium','especial','agricola','aquecimento'])||byKey(d,['gasóleo','simples'],['aditivado','premium','especial','agricola','aquecimento'])||byList(a,['gasoleo','simples'],['aditivado','premium','especial','agricola','aquecimento'])||byList(a,['gasóleo','simples'],['aditivado','premium','especial','agricola','aquecimento'])||byList(a,['diesel'],['plus','premium','colored','heating'])||byList(a,['gasoleo'],['aditivado','premium','especial','agricola','aquecimento']);return{gasolina,gasoleo,data:firstDate(d)||d.data||'',fonte:d.fonte||d.source||''}}
 function syncFuel(){if(tipoCombustivel.value==='gasolina')precoCombustivel.value=precoGasolina95.value;if(tipoCombustivel.value==='gasoleo')precoCombustivel.value=precoGasoleoSimples.value}
 async function updateFuel(){
   estadoCombustiveis.className='status';
@@ -42,8 +42,9 @@ async function updateFuel(){
       if(p.gasolina)precoGasolina95.value=Number(p.gasolina).toFixed(3);
       if(p.gasoleo)precoGasoleoSimples.value=Number(p.gasoleo).toFixed(3);
       syncFuel();
+      let fonte=p.fonte||(ep===localFuel?'DGEG':'API Aberta');
       estadoCombustiveis.className='status ok';
-      estadoCombustiveis.textContent='Preços atualizados com sucesso'+(p.data?' · dados de '+p.data:'')+'.';
+      estadoCombustiveis.textContent='Preços atualizados com sucesso · fonte: '+fonte+(p.data?' · dados de '+p.data:'')+'.';
       return;
     }catch(e){
       console.warn('Falha ao atualizar combustíveis:',ep,e);
