@@ -1,6 +1,13 @@
 const DGEG_PRECO_MEDIO_URL = 'https://www.dgeg.gov.pt/pt/areas-setoriais/energia/combustiveis/petroleo-e-produtos-derivados/preco-medio-diario/';
 const REQUEST_TIMEOUT_MS = 8000;
 
+function setCorsHeaders(res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Cache-Control', 'no-store, max-age=0');
+}
+
 function abortSignalWithTimeout(ms) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), ms);
@@ -129,8 +136,14 @@ async function fetchDgegHtml() {
 }
 
 export default async function handler(req, res) {
+  setCorsHeaders(res);
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).end();
+  }
+
   if (req.method !== 'GET') {
-    res.setHeader('Allow', 'GET');
+    res.setHeader('Allow', 'GET, OPTIONS');
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
