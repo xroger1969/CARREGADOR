@@ -1,5 +1,15 @@
-const DGEG_PRECO_MEDIO_URL = 'https://www.dgeg.gov.pt/pt/areas-setoriais/energia/combustiveis/petroleo-e-produtos-derivados/preco-medio-diario/';
-const REQUEST_TIMEOUT_MS = 8000;
+const DGEG_API_URL = 'https://precoscombustiveis.dgeg.gov.pt/api/PrecoComb/PesquisarPostos';
+const REQUEST_TIMEOUT_MS = 9000;
+const FUEL_TYPES = {
+  gasolina95: {
+    id: '3201',
+    labels: ['gasolina simples 95']
+  },
+  gasoleoSimples: {
+    id: '2101',
+    labels: ['gasoleo simples', 'gasóleo simples']
+  }
+};
 
 function setCorsHeaders(res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -14,22 +24,8 @@ function abortSignalWithTimeout(ms) {
   return { signal: controller.signal, cancel: () => clearTimeout(timeoutId) };
 }
 
-function decodeHtmlEntities(value) {
-  return value
-    .replace(/&nbsp;/gi, ' ')
-    .replace(/&amp;/gi, '&')
-    .replace(/&quot;/gi, '"')
-    .replace(/&#39;/gi, "'")
-    .replace(/&lt;/gi, '<')
-    .replace(/&gt;/gi, '>');
-}
-
-function stripTags(html) {
-  return decodeHtmlEntities(html.replace(/<[^>]*>/g, ' ')).replace(/\s+/g, ' ').trim();
-}
-
 function normalizeText(value) {
-  return value
+  return String(value || '')
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/\s+/g, ' ')
@@ -37,90 +33,58 @@ function normalizeText(value) {
     .toLowerCase();
 }
 
-function parsePriceValue(raw) {
-  if (typeof raw !== 'string') return null;
-  const cleaned = raw.replace(/\s/g, '').replace(',', '.');
+function parsePrice(value) {
+  if (value === null || value === undefined) return null;
+  const cleaned = String(value)
+    .replace('€', '')
+    .replace(/\s/g, '')
+    .replace(',', '.');
   const parsed = Number.parseFloat(cleaned);
   if (!Number.isFinite(parsed) || parsed <= 0) return null;
-  return Number(parsed.toFixed(3));
+  return parsed;
 }
 
-function findPriceInRow(html, labelRegex) {
-  const rowRegex = new RegExp(`<tr[^>]*>[\\s\\S]*?${labelRegex}[\\s\\S]*?<\\/tr>`, 'i');
-  const rowMatch = html.match(rowRegex);
-  if (!rowMatch) return null;
-
-  const rowText = stripTags(rowMatch[0]);
-  const valueMatch = rowText.match(/(\d{1,2}[.,]\d{2,3})/);
-  if (!valueMatch) return null;
-  return parsePriceValue(valueMatch[1]);
+function average(values) {
+  if (!values.length) return null;
+  const total = values.reduce((sum, value) => sum + value, 0);
+  return Number((total / values.length).toFixed(3));
 }
 
-function findPriceNearLabel(text, labelRegex) {
-  const searchRegex = new RegExp(`${labelRegex}[^\\d]{0,120}(\\d{1,2}[.,]\\d{2,3})`, 'i');
-  const match = text.match(searchRegex);
-  if (!match) return null;
-  return parsePriceValue(match[1]);
+function matchesFuel(row, fuelConfig) {
+  const text = normalizeText(row.Combustivel || row.TipoCombustivel || row.Fuel || '');
+  return fuelConfig.labels.some(label => text.includes(normalizeText(label)));
 }
 
-function extractPriceFromHtml(html, labels) {
-  for (const label of labels) {
-    const labelRegex = label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s+');
-    const byRow = findPriceInRow(html, labelRegex);
-    if (byRow) return byRow;
-  }
-
-  const normalizedText = normalizeText(stripTags(html));
-  for (const label of labels) {
-    const normalizedLabelRegex = normalizeText(label).replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s+');
-    const byNearbyText = findPriceNearLabel(normalizedText, normalizedLabelRegex);
-    if (byNearbyText) return byNearbyText;
-  }
-
-  return null;
+function latestDate(rows) {
+  const dates = rows
+    .map(row => String(row.DataAtualizacao || row.dataAtualizacao || '').slice(0, 10))
+    .filter(value => /^20\d{2}-\d{2}-\d{2}$/.test(value))
+    .sort();
+  return dates[dates.length - 1] || null;
 }
 
-function extractReferenceDate(html) {
-  const rawText = stripTags(html);
-
-  const isoMatch = rawText.match(/\b(20\d{2})-(\d{2})-(\d{2})\b/);
-  if (isoMatch) return `${isoMatch[1]}-${isoMatch[2]}-${isoMatch[3]}`;
-
-  const ptNumericMatch = rawText.match(/\b(\d{1,2})\/(\d{1,2})\/(20\d{2})\b/);
-  if (ptNumericMatch) {
-    const day = ptNumericMatch[1].padStart(2, '0');
-    const month = ptNumericMatch[2].padStart(2, '0');
-    const year = ptNumericMatch[3];
-    return `${year}-${month}-${day}`;
-  }
-
-  const months = {
-    janeiro: '01', fevereiro: '02', marco: '03', março: '03', abril: '04', maio: '05', junho: '06',
-    julho: '07', agosto: '08', setembro: '09', outubro: '10', novembro: '11', dezembro: '12'
-  };
-
-  const normalizedText = normalizeText(rawText);
-  const ptLongMatch = normalizedText.match(/\b(\d{1,2})\s+de\s+([a-zç]+)\s+de\s+(20\d{2})\b/i);
-  if (ptLongMatch) {
-    const day = ptLongMatch[1].padStart(2, '0');
-    const month = months[ptLongMatch[2]];
-    const year = ptLongMatch[3];
-    if (month) return `${year}-${month}-${day}`;
-  }
-
-  return null;
+function buildUrl() {
+  const params = new URLSearchParams({
+    idsTiposComb: `${FUEL_TYPES.gasolina95.id},${FUEL_TYPES.gasoleoSimples.id}`,
+    idMarca: '',
+    idTipoPosto: '',
+    idDistrito: '',
+    idsMunicipios: '',
+    qtdPorPagina: '10000',
+    pagina: '1'
+  });
+  return `${DGEG_API_URL}?${params.toString()}`;
 }
 
-async function fetchDgegHtml() {
+async function fetchDgegPrices() {
   const { signal, cancel } = abortSignalWithTimeout(REQUEST_TIMEOUT_MS);
 
   try {
-    const response = await fetch(DGEG_PRECO_MEDIO_URL, {
+    const response = await fetch(buildUrl(), {
       method: 'GET',
       signal,
       headers: {
-        'accept': 'text/html,application/xhtml+xml',
-        'user-agent': 'carregador-simulador/1.0 (+https://vercel.com)'
+        Accept: 'application/json'
       },
       cache: 'no-store'
     });
@@ -129,7 +93,34 @@ async function fetchDgegHtml() {
       throw new Error(`DGEG HTTP ${response.status}`);
     }
 
-    return await response.text();
+    const payload = await response.json();
+    const rows = Array.isArray(payload?.resultado) ? payload.resultado : [];
+
+    if (!rows.length) {
+      throw new Error('A DGEG não devolveu resultados.');
+    }
+
+    const gasolinaRows = rows.filter(row => matchesFuel(row, FUEL_TYPES.gasolina95));
+    const gasoleoRows = rows.filter(row => matchesFuel(row, FUEL_TYPES.gasoleoSimples));
+
+    const gasolina95 = average(gasolinaRows.map(row => parsePrice(row.Preco)).filter(Number.isFinite));
+    const gasoleoSimples = average(gasoleoRows.map(row => parsePrice(row.Preco)).filter(Number.isFinite));
+    const data = latestDate(rows);
+
+    if (!gasolina95 || !gasoleoSimples || !data) {
+      throw new Error('Não foi possível calcular gasolina95, gasoleoSimples e data a partir da resposta da DGEG.');
+    }
+
+    return {
+      gasolina95,
+      gasoleoSimples,
+      fonte: 'DGEG',
+      data,
+      amostra: {
+        gasolina95: gasolinaRows.length,
+        gasoleoSimples: gasoleoRows.length
+      }
+    };
   } finally {
     cancel();
   }
@@ -148,27 +139,13 @@ export default async function handler(req, res) {
   }
 
   try {
-    const html = await fetchDgegHtml();
-
-    // Estratégia com múltiplos aliases para reduzir fragilidade do parsing.
-    const gasolina95 = extractPriceFromHtml(html, ['gasolina simples 95', 'gasolina 95 simples', 'gasolina simples']);
-    const gasoleoSimples = extractPriceFromHtml(html, ['gasoleo simples', 'gasóleo simples']);
-    const data = extractReferenceDate(html);
-
-    if (!gasolina95 || !gasoleoSimples || !data) {
-      throw new Error('Não foi possível extrair gasolina95, gasoleoSimples e data do HTML da DGEG.');
-    }
-
-    return res.status(200).json({
-      gasolina95,
-      gasoleoSimples,
-      fonte: 'DGEG',
-      data
-    });
+    const prices = await fetchDgegPrices();
+    return res.status(200).json(prices);
   } catch (error) {
     console.error('Erro no endpoint /api/precos-combustiveis:', error);
     return res.status(502).json({
-      error: 'Falha ao obter preços da DGEG.'
+      error: 'Falha ao obter preços da DGEG.',
+      detail: error instanceof Error ? error.message : String(error)
     });
   }
 }
