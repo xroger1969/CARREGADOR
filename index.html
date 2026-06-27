@@ -15,8 +15,8 @@
 <section class="card full"><h2>4. Postos de carregamento próximos</h2><p class="muted">Mapa público Open Charge Map. Por defeito abre em Almada.</p><div class="buttons"><button id="btnCarregadores" class="btn2" type="button">Usar a minha localização</button><a id="btnAbrirMapaOCM" class="btn btn3" href="https://map.openchargemap.io/?latitude=38.68000&longitude=-9.15600&zoom=13" target="_blank" rel="noopener">Abrir mapa completo</a></div><div id="estadoCarregadores" class="status">Mapa Open Charge Map carregado em Almada.</div><iframe id="mapaOpenChargeMap" class="map" title="Mapa Open Charge Map" loading="lazy" src="https://map.openchargemap.io/?latitude=38.68000&longitude=-9.15600&zoom=13"></iframe></section>
 <section class="card full"><h2>5. Tarifários de carregamento</h2><p class="muted">Consulta através da API Aberta.</p><div class="buttons"><button id="btnTarifarios" class="btn2" type="button">Atualizar tarifários</button><a class="btn btn3" href="https://api.apiaberta.pt/v1/ev/tariffs" target="_blank" rel="noopener">Abrir dados da API</a></div><div id="estadoTarifarios" class="status">A carregar tarifários da API Aberta...</div><div id="listaTarifarios" class="tariffs"></div></section>
 </main></div><script>
-const apiFuel='https://api.apiaberta.pt/v1/fuel/prices',apiTariffs='https://api.apiaberta.pt/v1/ev/tariffs',localFuel='/api/precos-combustiveis',timeoutMs=10000;
-function endpoints(){return [localFuel,apiFuel]}
+const apiTariffs='https://api.apiaberta.pt/v1/ev/tariffs',localFuel='/api/precos-combustiveis',timeoutMs=10000;
+function endpoints(){return [localFuel]}
 function noCache(u){return u+(u.includes('?')?'&':'?')+'_='+Date.now()}
 async function getJson(u){let c=new AbortController(),t=setTimeout(()=>c.abort(),timeoutMs);try{let r=await fetch(noCache(u),{headers:{Accept:'application/json'},cache:'no-store',signal:c.signal}),tx=await r.text();if(!r.ok)throw Error('HTTP '+r.status);return JSON.parse(tx)}finally{clearTimeout(t)}}
 function norm(v){return String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')}
@@ -34,24 +34,23 @@ function extractFuel(d){let a=list(d);let gasolina=exactFuel(a,'gasoline_95')||n
 function syncFuel(){if(!tipoCombustivel.value)tipoCombustivel.value='gasolina';if(tipoCombustivel.value==='gasolina')precoCombustivel.value=precoGasolina95.value;if(tipoCombustivel.value==='gasoleo')precoCombustivel.value=precoGasoleoSimples.value}
 async function updateFuel(){
   estadoCombustiveis.className='status';
-  estadoCombustiveis.textContent='A atualizar preços dos combustíveis...';
+  estadoCombustiveis.textContent='A atualizar preços dos combustíveis pela DGEG...';
   for(let ep of endpoints()){
     try{
       let data=await getJson(ep),p=extractFuel(data);
-      if(!p.gasolina&&!p.gasoleo)throw Error('sem preços reconhecidos');
-      if(p.gasolina)precoGasolina95.value=Number(p.gasolina).toFixed(3);
-      if(p.gasoleo)precoGasoleoSimples.value=Number(p.gasoleo).toFixed(3);
+      if(!p.gasolina||!p.gasoleo||!p.data)throw Error('sem preços ou data reconhecidos');
+      precoGasolina95.value=Number(p.gasolina).toFixed(3);
+      precoGasoleoSimples.value=Number(p.gasoleo).toFixed(3);
       syncFuel();
-      let fonte=p.fonte||(ep===localFuel?'DGEG':'API Aberta');
       estadoCombustiveis.className='status ok';
-      estadoCombustiveis.textContent='Preços atualizados com sucesso · fonte: '+fonte+(p.data?' · dados de '+p.data:'')+'. O preço usado no cálculo foi atualizado para '+(tipoCombustivel.value==='gasoleo'?'gasóleo simples':'gasolina 95')+'.';
+      estadoCombustiveis.textContent='Preços atualizados pela DGEG · dados de '+p.data+'. O preço usado no cálculo foi atualizado para '+(tipoCombustivel.value==='gasoleo'?'gasóleo simples':'gasolina 95')+'.';
       return;
     }catch(e){
       console.warn('Falha ao atualizar combustíveis:',ep,e);
     }
   }
   estadoCombustiveis.className='status bad';
-  estadoCombustiveis.textContent='Não foi possível atualizar os preços. Pode introduzir os valores manualmente.';
+  estadoCombustiveis.textContent='Não foi possível obter preços atualizados da DGEG. Introduza os valores manualmente.';
 }
 function calc(){let cap=n(bateria.value),si=n(socInicial.value),sf=n(socFinal.value),pot=potencia.value==='custom'?n(potenciaCustom.value):n(potencia.value),pk=n(precoKwh.value),cons=n(consumo.value),pc=n(precoCombustivel.value),cc=n(consumoCombustao.value),res=resultado,act=acoesResultado;function err(m){res.className='status bad';res.textContent=m;act.style.display='none'}if(!Number.isFinite(cap)||cap<40||cap>200)return err('Verifique a capacidade da bateria.');if(!Number.isFinite(si)||!Number.isFinite(sf)||sf<=si)return err('Verifique as percentagens da bateria.');if(!Number.isFinite(pot)||pot<=0)return err('Verifique a potência.');if(!Number.isFinite(pk)||pk<0)return err('Verifique o preço da energia.');if(!Number.isFinite(cons)||cons<=0)return err('Verifique o consumo elétrico.');if(!Number.isFinite(pc)||pc<=0)return err('Verifique o preço do combustível.');if(!Number.isFinite(cc)||cc<=0)return err('Verifique o consumo da viatura de combustão.');let en=cap*((sf-si)/100),h=en/pot,cEle=en*pk,km=en*(100/cons),cComb=cc*pc*(km/100),poup=cComb-cEle,euro=new Intl.NumberFormat('pt-PT',{style:'currency',currency:'EUR'}),nf=new Intl.NumberFormat('pt-PT',{maximumFractionDigits:2});res.className='';res.innerHTML=`<div class="result"><div class="box"><div>Energia</div><div class="big">${nf.format(en)} kWh</div></div><div class="box"><div>Tempo</div><div class="big">${Math.floor(h)} h ${String(Math.round((h-Math.floor(h))*60)).padStart(2,'0')} min</div></div><div class="box"><div>Custo elétrico</div><div class="big">${euro.format(cEle)}</div></div><div class="box"><div>Autonomia adicionada</div><div class="big">${nf.format(km)} km</div></div></div><div class="status ${poup>=0?'ok':'bad'}"><b>${poup>=0?'Poupança estimada':'Diferença de custo'}:</b> ${euro.format(poup)} em comparação com ${euro.format(cComb)} no combustível.</div>`;act.style.display='flex'}
 function mapUrl(lat,lon){return 'https://map.openchargemap.io/?latitude='+Number(lat).toFixed(5)+'&longitude='+Number(lon).toFixed(5)+'&zoom=13'}
