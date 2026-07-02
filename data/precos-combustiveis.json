@@ -1,0 +1,12 @@
+{
+  "gasolina95": 1.777,
+  "gasoleoSimples": 1.715,
+  "data": "2026-07-02",
+  "fonte": "Valor inicial — aguardando atualização automática DGEG",
+  "distrito": "15",
+  "atualizadoEm": "2026-07-02T00:00:00.000Z",
+  "amostra": {
+    "gasolina95": 0,
+    "gasoleoSimples": 0
+  }
+}
