@@ -1,62 +1,541 @@
 <!doctype html>
 <html lang="pt-PT">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Comparador de Custos: Elétrico vs Combustão</title>
-<style>
-*{box-sizing:border-box}body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;background:#eef4ff;color:#102033;padding:24px}.wrap{max-width:1050px;margin:auto}header,.card{background:#fff;border:1px solid #d7e2f2;border-radius:18px;box-shadow:0 12px 34px #d7e2f2;margin-bottom:18px;padding:20px}h1{margin:0;font-size:clamp(1.5rem,3vw,2.1rem)}h2{margin:0 0 14px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.full{grid-column:1/-1}label{display:block;font-weight:700;margin:10px 0 6px}input,select{width:100%;min-height:44px;border:1px solid #bdcbe0;border-radius:12px;padding:10px;font-size:1rem;background:#f8fbff}.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}button,.btn{border:0;border-radius:12px;background:#2563eb;color:#fff;font-weight:800;padding:12px 15px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;min-height:42px}.btn2{background:#0f766e}.btn3{background:#fff;color:#075985;border:1px solid #bae6fd}.status{margin:12px 0;padding:11px;border-radius:12px;background:#eef8ff;border:1px solid #bae6fd;color:#075985}.ok{background:#e8fff3;border-color:#bbf7d0;color:#0f7a43}.bad{background:#fff1f2;border-color:#fecdd3;color:#9f1239}.result{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.box{border:1px solid #dbe5f4;border-radius:14px;background:#f8fbff;padding:12px}.big{font-size:1.25rem;font-weight:900}.actions{display:none;gap:10px;margin-top:12px}.map{width:100%;height:340px;border:0;border-radius:14px;background:#dbeafe}.muted{color:#5b6b84;line-height:1.5}.buttons{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.tariffs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.tariff{border:1px solid #e9d5ff;border-radius:14px;background:#faf5ff;padding:12px}.price{font-weight:900;color:#5b21b6}.hidden{display:none!important}@media(max-width:850px){.grid,.row,.result,.tariffs{grid-template-columns:1fr}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Comparador de Custos: Elétrico vs Combustão</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;background:#eef4ff;color:#102033;padding:24px}
+    .wrap{max-width:1050px;margin:auto}
+    header,.card{background:#fff;border:1px solid #d7e2f2;border-radius:18px;box-shadow:0 12px 34px #d7e2f2;margin-bottom:18px;padding:20px}
+    h1{margin:0;font-size:clamp(1.5rem,3vw,2.1rem)}
+    h2{margin:0 0 14px}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .full{grid-column:1/-1}
+    label{display:block;font-weight:700;margin:10px 0 6px}
+    input,select{width:100%;min-height:44px;border:1px solid #bdcbe0;border-radius:12px;padding:10px;font-size:1rem;background:#f8fbff}
+    .row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    button,.btn{border:0;border-radius:12px;background:#2563eb;color:#fff;font-weight:800;padding:12px 15px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;min-height:42px}
+    .btn2{background:#0f766e}
+    .btn3{background:#fff;color:#075985;border:1px solid #bae6fd}
+    .status{margin:12px 0;padding:11px;border-radius:12px;background:#eef8ff;border:1px solid #bae6fd;color:#075985}
+    .ok{background:#e8fff3;border-color:#bbf7d0;color:#0f7a43}
+    .bad{background:#fff1f2;border-color:#fecdd3;color:#9f1239}
+    .result{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+    .box{border:1px solid #dbe5f4;border-radius:14px;background:#f8fbff;padding:12px}
+    .big{font-size:1.25rem;font-weight:900}
+    .actions{display:none;gap:10px;margin-top:12px}
+    .map{width:100%;height:340px;border:0;border-radius:14px;background:#dbeafe}
+    .muted{color:#5b6b84;line-height:1.5}
+    .buttons{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+    .tariffs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .tariff{border:1px solid #e9d5ff;border-radius:14px;background:#faf5ff;padding:12px}
+    .price{font-weight:900;color:#5b21b6}
+    .hidden{display:none!important}
+    @media(max-width:850px){body{padding:12px}.grid,.row,.result,.tariffs{grid-template-columns:1fr}}
+  </style>
 </head>
-<body><div class="wrap"><header><h1>Comparador de Custos: Elétrico vs Combustão</h1><p class="muted">Compare carregamento elétrico com viatura de combustão, de forma rápida e clara.</p></header><main class="grid">
-<section class="card"><h2>1. Dados do veículo elétrico</h2><label for="bateria">Capacidade da bateria (kWh)</label><input id="bateria" type="number" min="40" max="200" step="1" value="54"><div class="row"><div><label for="socInicial">% atual da bateria</label><input id="socInicial" type="number" min="0" max="99" value="18"></div><div><label for="socFinal">% alvo da bateria</label><input id="socFinal" type="number" min="1" max="100" value="80"></div></div><label for="potencia">Potência de carga (kW)</label><select id="potencia"><option value="2.3">2,3 kW – Tomada Schuko</option><option value="3.25" selected>3,25 kW – Wallbox / tomada dedicada</option><option value="3.7">3,7 kW – Wallbox 16 A</option><option value="5.75">5,75 kW – Contrato 25 A</option><option value="7.4">7,4 kW – Wallbox 32 A</option><option value="11">11 kW – Trifásico</option><option value="custom">Outro valor</option></select><div id="linhaCustom" style="display:none"><label for="potenciaCustom">Potência manual (kW)</label><input id="potenciaCustom" type="number" step="0.1" placeholder="Ex.: 3.2"></div><label for="consumo">Consumo médio (kWh / 100 km)</label><input id="consumo" type="number" min="5" max="40" step="0.1" value="14"><label for="precoKwh">Preço da energia (€ / kWh)</label><input id="precoKwh" type="number" min="0" step="0.0001" value="0.1496"></section>
-<section class="card"><h2>2. Dados da viatura de combustão</h2><label for="tipoCombustivel">Tipo de combustível</label><select id="tipoCombustivel"><option value="gasolina" selected>Gasolina</option><option value="gasoleo">Gasóleo</option></select><div class="row"><div><label for="precoCombustivel">Preço usado no cálculo (€ / litro)</label><input id="precoCombustivel" type="number" min="0" step="0.001" value="1.777"></div><div><label for="consumoCombustao">Consumo (L / 100 km)</label><input id="consumoCombustao" type="number" min="0" step="0.1" value="6"></div></div><div class="row"><div><label for="precoGasolina95">Gasolina 95 (€ / litro)</label><input id="precoGasolina95" type="number" min="0" step="0.001" value="1.777"></div><div><label for="precoGasoleoSimples">Gasóleo simples (€ / litro)</label><input id="precoGasoleoSimples" type="number" min="0" step="0.001" value="1.715"></div></div><div class="buttons"><button id="btnCombustiveis" class="btn2" type="button">Atualizar preços dos combustíveis</button></div><div id="estadoCombustiveis" class="status" aria-live="polite"></div></section>
-<div class="full"><button id="btnCalcular" type="button" style="width:100%">Calcular comparação</button></div>
-<section class="card full"><h2>3. Resultados finais</h2><div id="resultado" class="muted">Introduza os dados e clique em “Calcular comparação”.</div><div id="acoesResultado" class="actions"><button id="btnImprimir" type="button">Imprimir</button><button id="btnPartilhar" type="button">Partilhar</button></div></section>
-<section class="card full"><h2>4. Postos de carregamento próximos</h2><p class="muted">Mapa público Open Charge Map. Por defeito abre em Almada.</p><div class="buttons"><button id="btnCarregadores" class="btn2" type="button">Usar a minha localização</button><a id="btnAbrirMapaOCM" class="btn btn3" href="https://map.openchargemap.io/?latitude=38.68000&longitude=-9.15600&zoom=13" target="_blank" rel="noopener">Abrir mapa completo</a></div><div id="estadoCarregadores" class="status">Mapa Open Charge Map carregado em Almada.</div><iframe id="mapaOpenChargeMap" class="map" title="Mapa Open Charge Map" loading="lazy" src="https://map.openchargemap.io/?latitude=38.68000&longitude=-9.15600&zoom=13"></iframe></section>
-<section class="card full"><h2>5. Tarifários de carregamento</h2><p class="muted">Consulta através da API Aberta.</p><div class="buttons"><button id="btnTarifarios" class="btn2" type="button">Atualizar tarifários</button><a class="btn btn3" href="https://api.apiaberta.pt/v1/ev/tariffs" target="_blank" rel="noopener">Abrir dados da API</a></div><div id="estadoTarifarios" class="status">A carregar tarifários da API Aberta...</div><div id="listaTarifarios" class="tariffs"></div></section>
-</main></div><script>
-const apiTariffs='https://api.apiaberta.pt/v1/ev/tariffs',localFuel='/api/precos-combustiveis',timeoutMs=10000;
-function endpoints(){return [localFuel]}
-function noCache(u){return u+(u.includes('?')?'&':'?')+'_='+Date.now()}
-async function getJson(u){let c=new AbortController(),t=setTimeout(()=>c.abort(),timeoutMs);try{let r=await fetch(noCache(u),{headers:{Accept:'application/json'},cache:'no-store',signal:c.signal}),tx=await r.text();if(!r.ok)throw Error('HTTP '+r.status);return JSON.parse(tx)}finally{clearTimeout(t)}}
-function norm(v){return String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')}
-function n(v){if(typeof v==='number')return v;if(v==null)return NaN;let x=String(v).replace('€','').replace(/\s/g,'').replace(',','.');let y=parseFloat(x);return Number.isFinite(y)?y:NaN}
-function ex(v){return v!==null&&v!==undefined&&v!==''}
-function flat(o,p='',out=[]){if(!o||typeof o!=='object')return out;Object.entries(o).forEach(([k,v])=>{let nk=p?p+'_'+k:k;if(Array.isArray(v))v.forEach((it,i)=>it&&typeof it==='object'?flat(it,nk+'_'+i,out):ex(it)&&out.push([nk,it]));else if(v&&typeof v==='object')flat(v,nk,out);else if(ex(v))out.push([nk,v])});return out}
-function list(d){if(Array.isArray(d))return d;for(let k of ['data','results','prices','items','fuels','combustiveis','tariffs'])if(Array.isArray(d&&d[k]))return d[k];return Object.values(d||{}).find(Array.isArray)||[]}
-function avg(a){return a.length?a.reduce((s,v)=>s+v,0)/a.length:null}
-function price(rec){let vals=flat(rec).filter(([k])=>{let c=norm(k);return c.includes('preco')||c.includes('price')||c.includes('pvp')||c.includes('valor')||c.includes('eur')}).map(x=>n(x[1])).filter(v=>Number.isFinite(v)&&v>.5&&v<3.5);return vals.length?vals[0]:null}
-function byKey(d,req,exc=[]){return avg(flat(d).filter(([k])=>{let c=norm(k);return req.every(t=>c.includes(norm(t)))&&!exc.some(t=>c.includes(norm(t)))}).map(x=>n(x[1])).filter(v=>Number.isFinite(v)&&v>.5&&v<3.5))}
-function byList(arr,req,exc=[]){return avg(arr.filter(r=>{let tx=norm(JSON.stringify(r));return req.every(t=>tx.includes(norm(t)))&&!exc.some(t=>tx.includes(norm(t)))}).map(price).filter(v=>v!==null))}
-function firstDate(d){let vals=flat(d).filter(([k])=>{let c=norm(k);return c.endsWith('date')||c.endsWith('data')||c.endsWith('updated_at')}).map(x=>String(x[1])).filter(Boolean);return vals[0]||''}
-function exactFuel(arr,slug){let r=arr.find(x=>norm(x&&x.fuel_slug)===norm(slug));return r?(n(r.avg_price_eur)||price(r)):null}
-function extractFuel(d){let a=list(d);let gasolina=exactFuel(a,'gasoline_95')||n(d&&d.gasolina95)||byKey(d,['gasolina','95'],['aditivada','premium','especial'])||byKey(d,['gasoline','95'],['premium'])||byList(a,['gasolina','95'],['aditivada','premium','especial'])||byList(a,['gasolina','95'])||byList(a,['gasoline','95'],['plus','premium','especial']);let gasoleo=exactFuel(a,'diesel')||n(d&&d.gasoleoSimples)||byKey(d,['gasoleo','simples'],['aditivado','premium','especial','agricola','aquecimento'])||byKey(d,['gasóleo','simples'],['aditivado','premium','especial','agricola','aquecimento'])||byList(a,['gasoleo','simples'],['aditivado','premium','especial','agricola','aquecimento'])||byList(a,['gasóleo','simples'],['aditivado','premium','especial','agricola','aquecimento'])||byList(a,['diesel'],['plus','premium','colored','heating'])||byList(a,['gasoleo'],['aditivado','premium','especial','agricola','aquecimento']);return{gasolina,gasoleo,data:firstDate(d)||d.data||'',fonte:d.fonte||d.source||''}}
-function syncFuel(){if(!tipoCombustivel.value)tipoCombustivel.value='gasolina';if(tipoCombustivel.value==='gasolina')precoCombustivel.value=precoGasolina95.value;if(tipoCombustivel.value==='gasoleo')precoCombustivel.value=precoGasoleoSimples.value}
-async function updateFuel(){
-  estadoCombustiveis.className='status';
-  estadoCombustiveis.textContent='A atualizar preços dos combustíveis pela DGEG...';
-  for(let ep of endpoints()){
-    try{
-      let data=await getJson(ep),p=extractFuel(data);
-      if(!p.gasolina||!p.gasoleo||!p.data)throw Error('sem preços ou data reconhecidos');
-      precoGasolina95.value=Number(p.gasolina).toFixed(3);
-      precoGasoleoSimples.value=Number(p.gasoleo).toFixed(3);
-      syncFuel();
-      estadoCombustiveis.className='status ok';
-      estadoCombustiveis.textContent='Preços atualizados pela DGEG · dados de '+p.data+'. O preço usado no cálculo foi atualizado para '+(tipoCombustivel.value==='gasoleo'?'gasóleo simples':'gasolina 95')+'.';
-      return;
-    }catch(e){
-      console.warn('Falha ao atualizar combustíveis:',ep,e);
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Comparador de Custos: Elétrico vs Combustão</h1>
+      <p class="muted">Compare carregamento elétrico com viatura de combustão, de forma rápida e clara.</p>
+    </header>
+
+    <main class="grid">
+      <section class="card">
+        <h2>1. Dados do veículo elétrico</h2>
+
+        <label for="bateria">Capacidade da bateria (kWh)</label>
+        <input id="bateria" type="number" min="40" max="200" step="1" value="54">
+
+        <div class="row">
+          <div>
+            <label for="socInicial">% atual da bateria</label>
+            <input id="socInicial" type="number" min="0" max="99" value="18">
+          </div>
+          <div>
+            <label for="socFinal">% alvo da bateria</label>
+            <input id="socFinal" type="number" min="1" max="100" value="80">
+          </div>
+        </div>
+
+        <label for="potencia">Potência de carga (kW)</label>
+        <select id="potencia">
+          <option value="2.3">2,3 kW – Tomada Schuko</option>
+          <option value="3.25" selected>3,25 kW – Wallbox / tomada dedicada</option>
+          <option value="3.7">3,7 kW – Wallbox 16 A</option>
+          <option value="5.75">5,75 kW – Contrato 25 A</option>
+          <option value="7.4">7,4 kW – Wallbox 32 A</option>
+          <option value="11">11 kW – Trifásico</option>
+          <option value="custom">Outro valor</option>
+        </select>
+
+        <div id="linhaCustom" style="display:none">
+          <label for="potenciaCustom">Potência manual (kW)</label>
+          <input id="potenciaCustom" type="number" step="0.1" placeholder="Ex.: 3.2">
+        </div>
+
+        <label for="consumo">Consumo médio (kWh / 100 km)</label>
+        <input id="consumo" type="number" min="5" max="40" step="0.1" value="14">
+
+        <label for="precoKwh">Preço da energia (€ / kWh)</label>
+        <input id="precoKwh" type="number" min="0" step="0.0001" value="0.1496">
+      </section>
+
+      <section class="card">
+        <h2>2. Dados da viatura de combustão</h2>
+
+        <label for="tipoCombustivel">Tipo de combustível</label>
+        <select id="tipoCombustivel">
+          <option value="gasolina" selected>Gasolina</option>
+          <option value="gasoleo">Gasóleo</option>
+        </select>
+
+        <div class="row">
+          <div>
+            <label for="precoCombustivel">Preço usado no cálculo (€ / litro)</label>
+            <input id="precoCombustivel" type="number" min="0" step="0.001" value="1.777">
+          </div>
+          <div>
+            <label for="consumoCombustao">Consumo (L / 100 km)</label>
+            <input id="consumoCombustao" type="number" min="0" step="0.1" value="6">
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label for="precoGasolina95">Gasolina 95 (€ / litro)</label>
+            <input id="precoGasolina95" type="number" min="0" step="0.001" value="1.777">
+          </div>
+          <div>
+            <label for="precoGasoleoSimples">Gasóleo simples (€ / litro)</label>
+            <input id="precoGasoleoSimples" type="number" min="0" step="0.001" value="1.715">
+          </div>
+        </div>
+
+        <div class="buttons">
+          <button id="btnCombustiveis" class="btn2" type="button">Atualizar preços dos combustíveis</button>
+        </div>
+        <div id="estadoCombustiveis" class="status" aria-live="polite">A carregar preços guardados...</div>
+      </section>
+
+      <div class="full">
+        <button id="btnCalcular" type="button" style="width:100%">Calcular comparação</button>
+      </div>
+
+      <section class="card full">
+        <h2>3. Resultados finais</h2>
+        <div id="resultado" class="muted">Introduza os dados e clique em “Calcular comparação”.</div>
+        <div id="acoesResultado" class="actions">
+          <button id="btnImprimir" type="button">Imprimir</button>
+          <button id="btnPartilhar" type="button">Partilhar</button>
+        </div>
+      </section>
+
+      <section class="card full">
+        <h2>4. Postos de carregamento próximos</h2>
+        <p class="muted">Mapa público Open Charge Map. Por defeito abre em Almada.</p>
+        <div class="buttons">
+          <button id="btnCarregadores" class="btn2" type="button">Usar a minha localização</button>
+          <a id="btnAbrirMapaOCM" class="btn btn3" href="https://map.openchargemap.io/?latitude=38.68000&longitude=-9.15600&zoom=13" target="_blank" rel="noopener">Abrir mapa completo</a>
+        </div>
+        <div id="estadoCarregadores" class="status">Mapa Open Charge Map carregado em Almada.</div>
+        <iframe id="mapaOpenChargeMap" class="map" title="Mapa Open Charge Map" loading="lazy" src="https://map.openchargemap.io/?latitude=38.68000&longitude=-9.15600&zoom=13"></iframe>
+      </section>
+
+      <section class="card full">
+        <h2>5. Tarifários de carregamento</h2>
+        <p class="muted">Consulta através da API Aberta.</p>
+        <div class="buttons">
+          <button id="btnTarifarios" class="btn2" type="button">Atualizar tarifários</button>
+          <a class="btn btn3" href="https://api.apiaberta.pt/v1/ev/tariffs" target="_blank" rel="noopener">Abrir dados da API</a>
+        </div>
+        <div id="estadoTarifarios" class="status">A carregar tarifários da API Aberta...</div>
+        <div id="listaTarifarios" class="tariffs"></div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+
+    const apiTariffs = 'https://api.apiaberta.pt/v1/ev/tariffs';
+    const localFuel = 'data/precos-combustiveis.json';
+    const timeoutMs = 10000;
+
+    function noCache(url) {
+      return url + (url.includes('?') ? '&' : '?') + '_=' + Date.now();
     }
-  }
-  estadoCombustiveis.className='status bad';
-  estadoCombustiveis.textContent='Não foi possível obter preços atualizados da DGEG. Introduza os valores manualmente.';
-}
-function calc(){let cap=n(bateria.value),si=n(socInicial.value),sf=n(socFinal.value),pot=potencia.value==='custom'?n(potenciaCustom.value):n(potencia.value),pk=n(precoKwh.value),cons=n(consumo.value),pc=n(precoCombustivel.value),cc=n(consumoCombustao.value),res=resultado,act=acoesResultado;function err(m){res.className='status bad';res.textContent=m;act.style.display='none'}if(!Number.isFinite(cap)||cap<40||cap>200)return err('Verifique a capacidade da bateria.');if(!Number.isFinite(si)||!Number.isFinite(sf)||sf<=si)return err('Verifique as percentagens da bateria.');if(!Number.isFinite(pot)||pot<=0)return err('Verifique a potência.');if(!Number.isFinite(pk)||pk<0)return err('Verifique o preço da energia.');if(!Number.isFinite(cons)||cons<=0)return err('Verifique o consumo elétrico.');if(!Number.isFinite(pc)||pc<=0)return err('Verifique o preço do combustível.');if(!Number.isFinite(cc)||cc<=0)return err('Verifique o consumo da viatura de combustão.');let en=cap*((sf-si)/100),h=en/pot,cEle=en*pk,km=en*(100/cons),cComb=cc*pc*(km/100),poup=cComb-cEle,euro=new Intl.NumberFormat('pt-PT',{style:'currency',currency:'EUR'}),nf=new Intl.NumberFormat('pt-PT',{maximumFractionDigits:2});res.className='';res.innerHTML=`<div class="result"><div class="box"><div>Energia</div><div class="big">${nf.format(en)} kWh</div></div><div class="box"><div>Tempo</div><div class="big">${Math.floor(h)} h ${String(Math.round((h-Math.floor(h))*60)).padStart(2,'0')} min</div></div><div class="box"><div>Custo elétrico</div><div class="big">${euro.format(cEle)}</div></div><div class="box"><div>Autonomia adicionada</div><div class="big">${nf.format(km)} km</div></div></div><div class="status ${poup>=0?'ok':'bad'}"><b>${poup>=0?'Poupança estimada':'Diferença de custo'}:</b> ${euro.format(poup)} em comparação com ${euro.format(cComb)} no combustível.</div>`;act.style.display='flex'}
-function mapUrl(lat,lon){return 'https://map.openchargemap.io/?latitude='+Number(lat).toFixed(5)+'&longitude='+Number(lon).toFixed(5)+'&zoom=13'}
-function useLocation(){if(!navigator.geolocation){estadoCarregadores.textContent='O navegador não permite obter localização.';return}estadoCarregadores.textContent='A pedir permissão para usar a sua localização...';navigator.geolocation.getCurrentPosition(p=>{let u=mapUrl(p.coords.latitude,p.coords.longitude);mapaOpenChargeMap.src=u;btnAbrirMapaOCM.href=u;estadoCarregadores.textContent='Mapa centrado na sua localização.'},()=>estadoCarregadores.textContent='Localização não autorizada. O mapa continua centrado em Almada.',{enableHighAccuracy:true,timeout:10000,maximumAge:300000})}
-function firstText(d,keys){for(let k of keys){let v=d&&d[k];if((typeof v==='string'||typeof v==='number'||typeof v==='boolean')&&String(v).trim()!=='')return String(v)}return''}
-function fmt(v){if(!ex(v))return'';if(typeof v==='object')return Object.values(v).filter(ex).slice(0,3).map(fmt).join(' · ');return String(v)}
-async function updateTariffs(){estadoTarifarios.className='status';estadoTarifarios.textContent='A carregar tarifários...';listaTarifarios.innerHTML='';try{let d=await getJson(apiTariffs),a=list(d).slice(0,8);if(!a.length)throw Error('sem dados');listaTarifarios.innerHTML=a.map((t,i)=>{let title=firstText(t,['ceme','operator','provider','supplier','name','title','tariff_name','tariff'])||'Tarifário '+(i+1);let ps=flat(t).filter(([k,v])=>{let c=norm(k),x=n(v);return Number.isFinite(x)&&x!==0&&(c.includes('price')||c.includes('preco')||c.includes('eur')||c.includes('fee')||c.includes('kwh')||c.includes('min'))}).slice(0,3);return `<article class="tariff"><b>${fmt(title)}</b>${ps.map(p=>`<div><span class="price">${p[0].replace(/_/g,' ')}:</span> ${fmt(p[1])}</div>`).join('')||'<div>Consultar detalhes na API</div>'}</article>`}).join('');estadoTarifarios.className='status ok';estadoTarifarios.textContent='Tarifários carregados. Confirme sempre o preço final na aplicação do operador.'}catch(e){estadoTarifarios.className='status bad';estadoTarifarios.textContent='Não foi possível carregar os tarifários diretamente. Use o botão “Abrir dados da API”.';listaTarifarios.innerHTML='<article class="tariff">Sem dados disponíveis.</article>';console.warn(e)}}
-potencia.addEventListener('change',()=>linhaCustom.style.display=potencia.value==='custom'?'block':'none');tipoCombustivel.addEventListener('change',syncFuel);precoGasolina95.addEventListener('input',syncFuel);precoGasoleoSimples.addEventListener('input',syncFuel);btnCombustiveis.addEventListener('click',updateFuel);btnCalcular.addEventListener('click',calc);btnImprimir.addEventListener('click',()=>window.print());btnPartilhar.addEventListener('click',async()=>{let text='Comparador de Custos: Elétrico vs Combustão\n'+resultado.innerText+'\n'+location.href;if(navigator.share){try{await navigator.share({title:'Resultados do simulador',text});return}catch(e){}}if(navigator.clipboard){await navigator.clipboard.writeText(text);alert('Resultado copiado.')}});btnCarregadores.addEventListener('click',useLocation);btnTarifarios.addEventListener('click',updateTariffs);syncFuel();updateFuel();updateTariffs();
-</script></body></html>
+
+    async function getJson(url) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+      try {
+        const response = await fetch(noCache(url), {
+          headers: { Accept: 'application/json' },
+          cache: 'no-store',
+          signal: controller.signal
+        });
+
+        const text = await response.text();
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        return JSON.parse(text);
+      } finally {
+        clearTimeout(timeout);
+      }
+    }
+
+    function norm(value) {
+      return String(value || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+    }
+
+    function n(value) {
+      if (typeof value === 'number') return value;
+      if (value === null || value === undefined) return NaN;
+      const parsed = Number.parseFloat(String(value).replace('€', '').replace(/\s/g, '').replace(',', '.'));
+      return Number.isFinite(parsed) ? parsed : NaN;
+    }
+
+    function exists(value) {
+      return value !== null && value !== undefined && value !== '';
+    }
+
+    function flat(object, prefix = '', out = []) {
+      if (!object || typeof object !== 'object') return out;
+
+      Object.entries(object).forEach(([key, value]) => {
+        const nextKey = prefix ? prefix + '_' + key : key;
+
+        if (Array.isArray(value)) {
+          value.forEach((item, index) => {
+            if (item && typeof item === 'object') flat(item, nextKey + '_' + index, out);
+            else if (exists(item)) out.push([nextKey, item]);
+          });
+        } else if (value && typeof value === 'object') {
+          flat(value, nextKey, out);
+        } else if (exists(value)) {
+          out.push([nextKey, value]);
+        }
+      });
+
+      return out;
+    }
+
+    function list(data) {
+      if (Array.isArray(data)) return data;
+      for (const key of ['data', 'results', 'prices', 'items', 'fuels', 'combustiveis', 'tariffs']) {
+        if (Array.isArray(data && data[key])) return data[key];
+      }
+      return Object.values(data || {}).find(Array.isArray) || [];
+    }
+
+    function average(values) {
+      return values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : null;
+    }
+
+    function price(record) {
+      const values = flat(record)
+        .filter(([key]) => {
+          const cleanKey = norm(key);
+          return cleanKey.includes('preco') || cleanKey.includes('price') || cleanKey.includes('pvp') || cleanKey.includes('valor') || cleanKey.includes('eur');
+        })
+        .map(([, value]) => n(value))
+        .filter(value => Number.isFinite(value) && value > 0.5 && value < 3.5);
+
+      return values.length ? values[0] : null;
+    }
+
+    function byKey(data, required, excluded = []) {
+      return average(
+        flat(data)
+          .filter(([key]) => {
+            const cleanKey = norm(key);
+            return required.every(term => cleanKey.includes(norm(term))) && !excluded.some(term => cleanKey.includes(norm(term)));
+          })
+          .map(([, value]) => n(value))
+          .filter(value => Number.isFinite(value) && value > 0.5 && value < 3.5)
+      );
+    }
+
+    function byList(items, required, excluded = []) {
+      return average(
+        items
+          .filter(item => {
+            const text = norm(JSON.stringify(item));
+            return required.every(term => text.includes(norm(term))) && !excluded.some(term => text.includes(norm(term)));
+          })
+          .map(price)
+          .filter(value => value !== null)
+      );
+    }
+
+    function firstDate(data) {
+      const values = flat(data)
+        .filter(([key]) => {
+          const cleanKey = norm(key);
+          return cleanKey.endsWith('date') || cleanKey.endsWith('data') || cleanKey.endsWith('updated_at') || cleanKey.endsWith('atualizadoem');
+        })
+        .map(([, value]) => String(value).slice(0, 10))
+        .filter(Boolean);
+
+      return values[0] || '';
+    }
+
+    function exactFuel(items, slug) {
+      const record = items.find(item => norm(item && item.fuel_slug) === norm(slug));
+      return record ? n(record.avg_price_eur) || price(record) : null;
+    }
+
+    function extractFuel(data) {
+      const items = list(data);
+      const gasolina =
+        n(data && data.gasolina95) ||
+        exactFuel(items, 'gasoline_95') ||
+        byKey(data, ['gasolina', '95'], ['aditivada', 'premium', 'especial']) ||
+        byKey(data, ['gasoline', '95'], ['premium']) ||
+        byList(items, ['gasolina', '95'], ['aditivada', 'premium', 'especial']) ||
+        byList(items, ['gasoline', '95'], ['plus', 'premium', 'especial']);
+
+      const gasoleo =
+        n(data && data.gasoleoSimples) ||
+        exactFuel(items, 'diesel') ||
+        byKey(data, ['gasoleo', 'simples'], ['aditivado', 'premium', 'especial', 'agricola', 'aquecimento']) ||
+        byKey(data, ['gasóleo', 'simples'], ['aditivado', 'premium', 'especial', 'agricola', 'aquecimento']) ||
+        byList(items, ['gasoleo', 'simples'], ['aditivado', 'premium', 'especial', 'agricola', 'aquecimento']) ||
+        byList(items, ['gasóleo', 'simples'], ['aditivado', 'premium', 'especial', 'agricola', 'aquecimento']) ||
+        byList(items, ['diesel'], ['plus', 'premium', 'colored', 'heating']);
+
+      return {
+        gasolina,
+        gasoleo,
+        data: data.data || firstDate(data),
+        fonte: data.fonte || data.source || 'ficheiro local'
+      };
+    }
+
+    function syncFuel() {
+      const tipoCombustivel = $('tipoCombustivel');
+      const precoCombustivel = $('precoCombustivel');
+
+      if (!tipoCombustivel.value) tipoCombustivel.value = 'gasolina';
+      if (tipoCombustivel.value === 'gasolina') precoCombustivel.value = $('precoGasolina95').value;
+      if (tipoCombustivel.value === 'gasoleo') precoCombustivel.value = $('precoGasoleoSimples').value;
+    }
+
+    async function updateFuel() {
+      const estadoCombustiveis = $('estadoCombustiveis');
+      estadoCombustiveis.className = 'status';
+      estadoCombustiveis.textContent = 'A carregar preços médios guardados pelo GitHub...';
+
+      try {
+        const data = await getJson(localFuel);
+        const prices = extractFuel(data);
+
+        if (!prices.gasolina || !prices.gasoleo) {
+          throw new Error('sem preços reconhecidos no ficheiro local');
+        }
+
+        $('precoGasolina95').value = Number(prices.gasolina).toFixed(3);
+        $('precoGasoleoSimples').value = Number(prices.gasoleo).toFixed(3);
+        syncFuel();
+
+        estadoCombustiveis.className = 'status ok';
+        estadoCombustiveis.textContent = 'Preços carregados de ' + prices.fonte + ' · dados de ' + (prices.data || 'data não indicada') + '. O GitHub atualiza este ficheiro automaticamente todos os dias.';
+      } catch (error) {
+        console.warn('Falha ao carregar preços guardados:', error);
+        estadoCombustiveis.className = 'status bad';
+        estadoCombustiveis.textContent = 'Não foi possível ler o ficheiro de preços atualizado. Mantêm-se os valores preenchidos; pode alterá-los manualmente.';
+      }
+    }
+
+    function formatCurrency(value) {
+      return Number(value).toLocaleString('pt-PT', { style: 'currency', currency: 'EUR' });
+    }
+
+    function formatNumber(value, digits = 2) {
+      return Number(value).toLocaleString('pt-PT', { minimumFractionDigits: digits, maximumFractionDigits: digits });
+    }
+
+    function formatHours(hours) {
+      const totalMinutes = Math.round(hours * 60);
+      const h = Math.floor(totalMinutes / 60);
+      const m = totalMinutes % 60;
+      if (h <= 0) return m + ' min';
+      if (m === 0) return h + ' h';
+      return h + ' h ' + m + ' min';
+    }
+
+    function calc() {
+      const cap = n($('bateria').value);
+      const si = n($('socInicial').value);
+      const sf = n($('socFinal').value);
+      const pot = $('potencia').value === 'custom' ? n($('potenciaCustom').value) : n($('potencia').value);
+      const pk = n($('precoKwh').value);
+      const cons = n($('consumo').value);
+      const pc = n($('precoCombustivel').value);
+      const cc = n($('consumoCombustao').value);
+      const resultado = $('resultado');
+      const acoesResultado = $('acoesResultado');
+
+      function err(message) {
+        resultado.className = 'status bad';
+        resultado.textContent = message;
+        acoesResultado.style.display = 'none';
+      }
+
+      if (!Number.isFinite(cap) || cap < 1) return err('Verifique a capacidade da bateria.');
+      if (!Number.isFinite(si) || !Number.isFinite(sf) || sf <= si || si < 0 || sf > 100) return err('Verifique as percentagens da bateria.');
+      if (!Number.isFinite(pot) || pot <= 0) return err('Verifique a potência de carregamento.');
+      if (!Number.isFinite(pk) || pk < 0) return err('Verifique o preço da energia.');
+      if (!Number.isFinite(cons) || cons <= 0) return err('Verifique o consumo elétrico.');
+      if (!Number.isFinite(pc) || pc <= 0) return err('Verifique o preço do combustível.');
+      if (!Number.isFinite(cc) || cc <= 0) return err('Verifique o consumo da viatura de combustão.');
+
+      const energiaCarregada = cap * ((sf - si) / 100);
+      const custoCarga = energiaCarregada * pk;
+      const tempoCarga = energiaCarregada / pot;
+      const autonomiaAdicionada = energiaCarregada / cons * 100;
+      const custoEletrico100 = cons * pk;
+      const custoCombustao100 = cc * pc;
+      const poupanca100 = custoCombustao100 - custoEletrico100;
+      const percentagemPoupanca = custoCombustao100 > 0 ? (poupanca100 / custoCombustao100) * 100 : 0;
+      const custoEletricoKm = custoEletrico100 / 100;
+      const custoCombustaoKm = custoCombustao100 / 100;
+
+      resultado.className = '';
+      resultado.innerHTML = `
+        <div class="result">
+          <div class="box"><div class="muted">Energia carregada</div><div class="big">${formatNumber(energiaCarregada)} kWh</div></div>
+          <div class="box"><div class="muted">Custo da carga</div><div class="big">${formatCurrency(custoCarga)}</div></div>
+          <div class="box"><div class="muted">Tempo estimado</div><div class="big">${formatHours(tempoCarga)}</div></div>
+          <div class="box"><div class="muted">Autonomia adicionada</div><div class="big">${formatNumber(autonomiaAdicionada, 0)} km</div></div>
+          <div class="box"><div class="muted">Elétrico / 100 km</div><div class="big">${formatCurrency(custoEletrico100)}</div></div>
+          <div class="box"><div class="muted">Combustão / 100 km</div><div class="big">${formatCurrency(custoCombustao100)}</div></div>
+          <div class="box"><div class="muted">Poupança / 100 km</div><div class="big">${formatCurrency(poupanca100)}</div></div>
+          <div class="box"><div class="muted">Diferença</div><div class="big">${formatNumber(percentagemPoupanca, 1)}%</div></div>
+        </div>
+        <p class="muted">Custo por km: elétrico ${formatCurrency(custoEletricoKm)} · combustão ${formatCurrency(custoCombustaoKm)}. Valores estimados; confirme sempre consumos reais, perdas de carregamento e preço final do posto/tarifário.</p>
+      `;
+      acoesResultado.style.display = 'flex';
+    }
+
+    function mapUrl(latitude, longitude) {
+      return 'https://map.openchargemap.io/?latitude=' + encodeURIComponent(latitude.toFixed(5)) + '&longitude=' + encodeURIComponent(longitude.toFixed(5)) + '&zoom=13';
+    }
+
+    function useLocation() {
+      const estadoCarregadores = $('estadoCarregadores');
+
+      if (!navigator.geolocation) {
+        estadoCarregadores.textContent = 'O navegador não permite obter localização.';
+        return;
+      }
+
+      estadoCarregadores.textContent = 'A pedir permissão para usar a sua localização...';
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const url = mapUrl(position.coords.latitude, position.coords.longitude);
+          $('mapaOpenChargeMap').src = url;
+          $('btnAbrirMapaOCM').href = url;
+          estadoCarregadores.textContent = 'Mapa centrado na sua localização.';
+        },
+        () => {
+          estadoCarregadores.textContent = 'Localização não autorizada. O mapa continua centrado em Almada.';
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
+      );
+    }
+
+    function firstText(data, keys) {
+      for (const key of keys) {
+        const value = data && data[key];
+        if ((typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') && String(value).trim() !== '') return String(value);
+      }
+      return '';
+    }
+
+    function fmt(value) {
+      if (!exists(value)) return '';
+      if (typeof value === 'object') return Object.values(value).filter(exists).slice(0, 3).map(fmt).join(' · ');
+      return String(value);
+    }
+
+    async function updateTariffs() {
+      const estadoTarifarios = $('estadoTarifarios');
+      const listaTarifarios = $('listaTarifarios');
+
+      estadoTarifarios.className = 'status';
+      estadoTarifarios.textContent = 'A carregar tarifários...';
+      listaTarifarios.innerHTML = '';
+
+      try {
+        const data = await getJson(apiTariffs);
+        const items = list(data).slice(0, 8);
+        if (!items.length) throw new Error('sem dados');
+
+        listaTarifarios.innerHTML = items
+          .map((tariff, index) => {
+            const title = firstText(tariff, ['ceme', 'operator', 'provider', 'supplier', 'name', 'title', 'tariff_name', 'tariff']) || 'Tarifário ' + (index + 1);
+            const prices = flat(tariff)
+              .filter(([key, value]) => {
+                const cleanKey = norm(key);
+                const numberValue = n(value);
+                return Number.isFinite(numberValue) && numberValue !== 0 && (cleanKey.includes('price') || cleanKey.includes('preco') || cleanKey.includes('eur') || cleanKey.includes('fee') || cleanKey.includes('kwh') || cleanKey.includes('min'));
+              })
+              .slice(0, 3);
+
+            return `<article class="tariff"><b>${fmt(title)}</b>${prices.map(item => `<div><span class="price">${item[0].replace(/_/g, ' ')}:</span> ${fmt(item[1])}</div>`).join('') || '<div>Consultar detalhes na API</div>'}</article>`;
+          })
+          .join('');
+
+        estadoTarifarios.className = 'status ok';
+        estadoTarifarios.textContent = 'Tarifários carregados. Confirme sempre o preço final na aplicação do operador.';
+      } catch (error) {
+        console.warn(error);
+        estadoTarifarios.className = 'status bad';
+        estadoTarifarios.textContent = 'Não foi possível carregar os tarifários diretamente. Use o botão “Abrir dados da API”.';
+        listaTarifarios.innerHTML = '<article class="tariff">Sem dados disponíveis.</article>';
+      }
+    }
+
+    $('potencia').addEventListener('change', () => {
+      $('linhaCustom').style.display = $('potencia').value === 'custom' ? 'block' : 'none';
+    });
+    $('tipoCombustivel').addEventListener('change', syncFuel);
+    $('precoGasolina95').addEventListener('input', syncFuel);
+    $('precoGasoleoSimples').addEventListener('input', syncFuel);
+    $('btnCombustiveis').addEventListener('click', updateFuel);
+    $('btnCalcular').addEventListener('click', calc);
+    $('btnImprimir').addEventListener('click', () => window.print());
+    $('btnPartilhar').addEventListener('click', async () => {
+      const text = 'Comparador de Custos: Elétrico vs Combustão\n' + $('resultado').innerText + '\n' + location.href;
+
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: 'Resultados do simulador', text });
+          return;
+        } catch (error) {
+          console.warn(error);
+        }
+      }
+
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(text);
+        alert('Resultado copiado.');
+      }
+    });
+    $('btnCarregadores').addEventListener('click', useLocation);
+    $('btnTarifarios').addEventListener('click', updateTariffs);
+
+    syncFuel();
+    updateFuel();
+    updateTariffs();
+  </script>
+</body>
+</html>
