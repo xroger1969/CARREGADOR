@@ -2,6 +2,12 @@ name: Atualizar preços dos combustíveis
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/update-fuel-prices.yml'
+      - 'scripts/update-fuel-prices.mjs'
   schedule:
     - cron: '25 6 * * *'
 
