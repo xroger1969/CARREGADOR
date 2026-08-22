@@ -4,7 +4,9 @@ import path from 'node:path';
 
 const DGEG_HOST = 'precoscombustiveis.dgeg.gov.pt';
 const DGEG_PATH = '/api/PrecoComb/PesquisarPostos';
-const REQUEST_TIMEOUT_MS = 15000;
+const REQUEST_TIMEOUT_MS = 30000;
+const MAX_REQUEST_ATTEMPTS = 3;
+const RETRY_DELAY_MS = 2000;
 const PAGE_SIZE = 1000;
 const OUTPUT_FILE = path.join('data', 'precos-combustiveis.json');
 
@@ -137,7 +139,11 @@ function buildPath(idDistrito, pagina = 1) {
   return `${DGEG_PATH}?${params.toString()}`;
 }
 
-function getJsonFromDgeg(requestPath) {
+function wait(milliseconds) {
+  return new Promise(resolve => setTimeout(resolve, milliseconds));
+}
+
+function getJsonFromDgegOnce(requestPath) {
   return new Promise((resolve, reject) => {
     const req = https.get(
       {
@@ -178,6 +184,30 @@ function getJsonFromDgeg(requestPath) {
 
     req.on('error', reject);
   });
+}
+
+async function getJsonFromDgeg(requestPath) {
+  let lastError;
+
+  for (let attempt = 1; attempt <= MAX_REQUEST_ATTEMPTS; attempt += 1) {
+    try {
+      return await getJsonFromDgegOnce(requestPath);
+    } catch (error) {
+      lastError = error;
+
+      if (attempt === MAX_REQUEST_ATTEMPTS) break;
+
+      const delay = RETRY_DELAY_MS * attempt;
+      console.warn(
+        `Tentativa ${attempt}/${MAX_REQUEST_ATTEMPTS} falhou: ${error instanceof Error ? error.message : String(error)}. Nova tentativa dentro de ${delay / 1000}s.`
+      );
+      await wait(delay);
+    }
+  }
+
+  throw new Error(
+    `A DGEG não respondeu após ${MAX_REQUEST_ATTEMPTS} tentativas: ${lastError instanceof Error ? lastError.message : String(lastError)}`
+  );
 }
 
 async function fetchRows(idDistrito) {
