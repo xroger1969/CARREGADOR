@@ -23,30 +23,28 @@ jobs:
           from pathlib import Path
 
           path = Path('index.html')
-          text = path.read_text(encoding='utf-8')
+          lines = path.read_text(encoding='utf-8').splitlines()
 
-          old_calc = """      const custoEletricoKm = custoEletrico100 / 100;
-      const custoCombustaoKm = custoCombustao100 / 100;
-"""
-          new_calc = old_calc + """      const custoCombustaoTotal = custoCombustaoKm * autonomiaAdicionada;
-      const poupancaTotal = custoCombustaoTotal - custoCarga;
-"""
+          calc_anchor = '      const custoCombustaoKm = custoCombustao100 / 100;'
+          calc_line_1 = '      const custoCombustaoTotal = custoCombustaoKm * autonomiaAdicionada;'
+          calc_line_2 = '      const poupancaTotal = custoCombustaoTotal - custoCarga;'
+          if calc_line_1 not in lines:
+              i = lines.index(calc_anchor) + 1
+              lines[i:i] = [calc_line_1, calc_line_2]
 
-          if old_calc not in text:
-              raise SystemExit('Bloco de cálculo esperado não encontrado; alteração cancelada.')
-          text = text.replace(old_calc, new_calc, 1)
+          old_label = '          <div class="box"><div class="muted">Custo da carga</div><div class="big">${formatCurrency(custoCarga)}</div></div>'
+          new_label = '          <div class="box"><div class="muted">Custo elétrico total</div><div class="big">${formatCurrency(custoCarga)}</div></div>'
+          if old_label in lines:
+              lines[lines.index(old_label)] = new_label
 
-          old_box = """          <div class=\"box\"><div class=\"muted\">Diferença</div><div class=\"big\">${formatNumber(percentagemPoupanca, 1)}%</div></div>
-"""
-          new_box = old_box + """          <div class=\"box\"><div class=\"muted\">Combustível / ${formatNumber(autonomiaAdicionada, 0)} km</div><div class=\"big\">${formatCurrency(custoCombustaoTotal)}</div></div>
-          <div class=\"box\"><div class=\"muted\">Poupança total</div><div class=\"big\">${formatCurrency(poupancaTotal)}</div></div>
-"""
+          result_anchor = '          <div class="box"><div class="muted">Diferença</div><div class="big">${formatNumber(percentagemPoupanca, 1)}%</div></div>'
+          total_fuel_box = '          <div class="box"><div class="muted">Combustível / ${formatNumber(autonomiaAdicionada, 0)} km</div><div class="big">${formatCurrency(custoCombustaoTotal)}</div></div>'
+          total_saving_box = '          <div class="box"><div class="muted">Poupança total</div><div class="big">${formatCurrency(poupancaTotal)}</div></div>'
+          if total_fuel_box not in lines:
+              i = lines.index(result_anchor) + 1
+              lines[i:i] = [total_fuel_box, total_saving_box]
 
-          if old_box not in text:
-              raise SystemExit('Bloco de resultados esperado não encontrado; alteração cancelada.')
-          text = text.replace(old_box, new_box, 1)
-
-          path.write_text(text, encoding='utf-8')
+          path.write_text('\n'.join(lines) + '\n', encoding='utf-8')
           PY
 
       - name: Commit change and remove one-time workflow
