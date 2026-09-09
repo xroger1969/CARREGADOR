@@ -1,0 +1,60 @@
+name: Apply total fuel cost result
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/apply-total-fuel-cost.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Add total fuel cost and total savings
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          old_calc = """      const custoEletricoKm = custoEletrico100 / 100;
+      const custoCombustaoKm = custoCombustao100 / 100;
+"""
+          new_calc = old_calc + """      const custoCombustaoTotal = custoCombustaoKm * autonomiaAdicionada;
+      const poupancaTotal = custoCombustaoTotal - custoCarga;
+"""
+
+          if old_calc not in text:
+              raise SystemExit('Bloco de cálculo esperado não encontrado; alteração cancelada.')
+          text = text.replace(old_calc, new_calc, 1)
+
+          old_box = """          <div class=\"box\"><div class=\"muted\">Diferença</div><div class=\"big\">${formatNumber(percentagemPoupanca, 1)}%</div></div>
+"""
+          new_box = old_box + """          <div class=\"box\"><div class=\"muted\">Combustível / ${formatNumber(autonomiaAdicionada, 0)} km</div><div class=\"big\">${formatCurrency(custoCombustaoTotal)}</div></div>
+          <div class=\"box\"><div class=\"muted\">Poupança total</div><div class=\"big\">${formatCurrency(poupancaTotal)}</div></div>
+"""
+
+          if old_box not in text:
+              raise SystemExit('Bloco de resultados esperado não encontrado; alteração cancelada.')
+          text = text.replace(old_box, new_box, 1)
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Commit change and remove one-time workflow
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/apply-total-fuel-cost.yml
+          git add index.html
+          git commit -m "feat: show total fuel cost for equivalent range"
+          git push
