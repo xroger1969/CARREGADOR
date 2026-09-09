@@ -407,18 +407,22 @@
       const percentagemPoupanca = custoCombustao100 > 0 ? (poupanca100 / custoCombustao100) * 100 : 0;
       const custoEletricoKm = custoEletrico100 / 100;
       const custoCombustaoKm = custoCombustao100 / 100;
+      const custoCombustaoTotal = custoCombustaoKm * autonomiaAdicionada;
+      const poupancaTotal = custoCombustaoTotal - custoCarga;
 
       resultado.className = '';
       resultado.innerHTML = `
         <div class="result">
           <div class="box"><div class="muted">Energia carregada</div><div class="big">${formatNumber(energiaCarregada)} kWh</div></div>
-          <div class="box"><div class="muted">Custo da carga</div><div class="big">${formatCurrency(custoCarga)}</div></div>
+          <div class="box"><div class="muted">Custo elétrico total</div><div class="big">${formatCurrency(custoCarga)}</div></div>
           <div class="box"><div class="muted">Tempo estimado</div><div class="big">${formatHours(tempoCarga)}</div></div>
           <div class="box"><div class="muted">Autonomia adicionada</div><div class="big">${formatNumber(autonomiaAdicionada, 0)} km</div></div>
           <div class="box"><div class="muted">Elétrico / 100 km</div><div class="big">${formatCurrency(custoEletrico100)}</div></div>
           <div class="box"><div class="muted">Combustão / 100 km</div><div class="big">${formatCurrency(custoCombustao100)}</div></div>
           <div class="box"><div class="muted">Poupança / 100 km</div><div class="big">${formatCurrency(poupanca100)}</div></div>
           <div class="box"><div class="muted">Diferença</div><div class="big">${formatNumber(percentagemPoupanca, 1)}%</div></div>
+          <div class="box"><div class="muted">Combustível / ${formatNumber(autonomiaAdicionada, 0)} km</div><div class="big">${formatCurrency(custoCombustaoTotal)}</div></div>
+          <div class="box"><div class="muted">Poupança total</div><div class="big">${formatCurrency(poupancaTotal)}</div></div>
         </div>
         <p class="muted">Custo por km: elétrico ${formatCurrency(custoEletricoKm)} · combustão ${formatCurrency(custoCombustaoKm)}. Valores estimados; confirme sempre consumos reais, perdas de carregamento e preço final do posto/tarifário.</p>
       `;
