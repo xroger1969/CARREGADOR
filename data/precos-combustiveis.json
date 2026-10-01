@@ -1,12 +1,12 @@
 {
-  "gasolina95": 2.147,
-  "gasoleoSimples": 2.252,
-  "data": "2026-09-30",
+  "gasolina95": 2.149,
+  "gasoleoSimples": 2.25,
+  "data": "2026-10-01",
   "fonte": "DGEG (Setúbal)",
   "distrito": "15",
-  "atualizadoEm": "2026-09-30T12:46:25.225Z",
+  "atualizadoEm": "2026-10-01T13:31:33.245Z",
   "amostra": {
-    "gasolina95": 196,
-    "gasoleoSimples": 185
+    "gasolina95": 189,
+    "gasoleoSimples": 178
   }
 }
