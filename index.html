@@ -43,7 +43,8 @@
     .detail-box{border:1px solid #e2e8f0;border-radius:12px;background:#f8fafc;padding:11px 12px}
     .detail-label{color:#64748b;font-size:.9rem;margin-bottom:3px}
     .detail-value{font-weight:900;font-size:1.08rem;color:#0f172a}
-    .actions{display:none;gap:10px;margin-top:12px}
+    .actions{display:none;flex-wrap:wrap;gap:10px;margin-top:12px}
+    .actions>*{min-height:44px}
     .map{width:100%;height:340px;border:0;border-radius:14px;background:#dbeafe}
     .muted{color:#5b6b84;line-height:1.5}
     .buttons{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
@@ -147,6 +148,7 @@
         <h2>3. Comparação de custos</h2>
         <div id="resultado" class="muted">Introduza os dados e clique em “Calcular comparação”.</div>
         <div id="acoesResultado" class="actions">
+          <a class="btn btn2" href="https://autovalorpt-assistente.vercel.app/eletricos.html">Ver elétricos disponíveis</a>
           <button id="btnImprimir" type="button">Imprimir</button>
           <button id="btnPartilhar" type="button">Partilhar</button>
         </div>
